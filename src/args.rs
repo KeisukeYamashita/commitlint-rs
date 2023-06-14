@@ -40,13 +40,13 @@ impl Args {
     /// Check wether the commit message is from stdin or not.
     ///
     /// Inspired by https://github.com/conventional-changelog/commitlint/blob/af2f3a82d38ea0272578c8066565a0e6cf5810b0/%40commitlint/cli/src/cli.ts#L336
-    fn from_stdin(&self) -> bool {
+    fn has_stdin(&self) -> bool {
         !stdin().is_terminal()
     }
 
     /// Read commit messages from stdin.
     pub fn read(&self) -> Result<Vec<Message>, Error> {
-        if self.from_stdin() {
+        if self.has_stdin() {
             let mut buffer = String::new();
             stdin()
                 .read_to_string(&mut buffer)
