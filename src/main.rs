@@ -1,4 +1,5 @@
 mod args;
+mod config;
 mod git;
 mod message;
 mod result;
@@ -11,6 +12,18 @@ use std::process::exit;
 #[tokio::main]
 async fn main() {
     let args = Args::parse();
+
+    let config = match config::load(args.config.clone()).await {
+        Ok(config) => config,
+        Err(err) => {
+            eprintln!("Failed to load config: {}", err);
+            exit(1)
+        }
+    };
+
+    if args.print_config {
+        println!("{:?}", config);
+    }
 
     let messages = match args.read() {
         Ok(messages) => messages,

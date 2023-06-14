@@ -1,6 +1,5 @@
 use regex::Regex;
 use std::{collections::HashMap, process::Command};
-
 /// ReadCommitMessageOptions represents the options for reading commit messages.
 /// Transparently, it is defined to be similar to the behavior of the git log command.
 #[derive(Clone, Debug)]
