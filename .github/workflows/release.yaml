@@ -10,6 +10,7 @@ concurrency:
 
 permissions:
   contents: write # To write to release
+  pages: write # To deploy to GitHub Pages
 
 jobs:
   crate:
@@ -25,10 +26,24 @@ jobs:
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
 
+  web:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: withastro/action@v0
+        with:
+          path: ./web
+      - id: deployment
+        uses: actions/deploy-pages@v1
+
   publish:
     runs-on: ubuntu-latest
     needs:
       - crate
+      - web
     steps:
       - uses: ncipollo/release-action@v1
         with:
