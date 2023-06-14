@@ -1,0 +1,7 @@
+version: 2
+updates:
+  # Maintain dependencies for Rust (Cargo)
+  - package-ecosystem: "cargo"
+    directory: "/"
+    schedule:
+      interval: "daily"
