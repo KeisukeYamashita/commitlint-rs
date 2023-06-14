@@ -15,6 +15,7 @@ exclude = ["/web"]
 [dependencies]
 clap = { version = "4.3.3", features = ["derive", "env", "string"] }
 futures = "0.3.28"
+regex = "1.8.4"
 tokio = { version = "1.28.2", features = ["full"] }
 
 

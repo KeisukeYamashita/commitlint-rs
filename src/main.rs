@@ -1,4 +1,5 @@
 mod args;
+mod config;
 mod git;
 mod message;
 mod result;
