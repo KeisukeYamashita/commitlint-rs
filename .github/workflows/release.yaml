@@ -1,0 +1,33 @@
+name: Release
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+*"
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write # To write to release
+
+jobs:
+  crate:
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+      - run: cargo publish
+
+  publish:
+    runs-on: ubuntu-latest
+    needs:
+      - crate
+    steps:
+      - uses: ncipollo/release-action@v1
+        with:
+          generateReleaseNotes: true
