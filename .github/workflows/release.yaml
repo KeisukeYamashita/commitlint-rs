@@ -16,7 +16,7 @@ permissions:
 jobs:
   crate:
     runs-on: ubuntu-latest
-    environment: release
+    environment: crate
     steps:
       - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
