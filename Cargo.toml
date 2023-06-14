@@ -1,12 +1,13 @@
 [package]
 name = "commitlint-rs"
 description = "CLI tool to lint commits by Conventional Commits"
+authors = ["KeisukeYamashita <19yamashita15@gmail.com>"]
 keywords = ["conventional-commits", "lint"]
 categories = ["command-line-utilities"]
 version = "0.0.3"
 readme = "README.md"
 repository = "https://github.com/KeisukeYamashita/commitlint-rs"
-license-file = "LICENSE"
+license-file = "Apache-2.0 or MIT"
 edition = "2021"
 exclude = ["/web"]
 
