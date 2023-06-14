@@ -1,10 +1,17 @@
 use regex::Regex;
 use std::{collections::HashMap, process::Command};
 
+/// ReadCommitMessageOptions represents the options for reading commit messages.
+/// Transparently, it is defined to be similar to the behavior of the git log command.
 #[derive(Clone, Debug)]
 pub struct ReadCommitMessageOptions {
+    /// From is the starting commit hash to read from.
     pub from: Option<String>,
+
+    /// Path is the path to read commit messages from.
     pub path: String,
+
+    /// To is the ending commit hash to read to.
     pub to: Option<String>,
 }
 
@@ -56,6 +63,7 @@ fn extract_commit_messages(input: &str) -> Vec<String> {
     messages
 }
 
+/// Parse a commit message and return the subject, body, and footers.
 pub fn parse_commit_message(
     message: &str,
 ) -> (String, Option<String>, Option<HashMap<String, String>>) {
@@ -86,9 +94,14 @@ pub fn parse_commit_message(
     (subject, body, footer)
 }
 
+/// Parse a commit message subject and return the type, scope, and description.
+///
+/// Note that exclamation mark is not respected as the existing commitlint
+/// does not have any rules for it.
+/// See: https://commitlint.js.org/#/reference-rules
 pub fn parse_subject(subject: &str) -> Option<(String, Option<String>, String)> {
     let re =
-        regex::Regex::new(r"(?i)^(?P<type>\w+)(?:\((?P<scope>[\w-]+)\))?:\s*(?P<description>.+)$")
+        regex::Regex::new(r"^(?P<type>\w+)(?:\((?P<scope>[^\)]+)\))?(!)?\:\s(?P<description>.+)$")
             .unwrap();
     if let Some(captures) = re.captures(subject) {
         let r#type = captures.name("type").unwrap().as_str().to_string();
@@ -98,4 +111,53 @@ pub fn parse_subject(subject: &str) -> Option<(String, Option<String>, String)> 
         return Some((r#type, scope, description));
     }
     None
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn text_parse_subject_with_scope() {
+        let input = "feat(cli): add dummy option";
+        assert_eq!(
+            parse_subject(input),
+            Some((
+                "feat".to_string(),
+                Some("cli".to_string()),
+                "add dummy option".to_string()
+            ))
+        );
+    }
+
+    #[test]
+    fn text_parse_subject_with_emphasized_type_with_scope() {
+        let input = "feat(cli)!: add dummy option";
+        assert_eq!(
+            parse_subject(input),
+            Some((
+                "feat".to_string(),
+                Some("cli".to_string()),
+                "add dummy option".to_string()
+            ))
+        );
+    }
+
+    #[test]
+    fn text_parse_subject_without_scope() {
+        let input = "feat: add dummy option";
+        assert_eq!(
+            parse_subject(input),
+            Some(("feat".to_string(), None, "add dummy option".to_string()))
+        );
+    }
+
+    #[test]
+    fn text_parse_subject_with_emphasized_type_without_scope() {
+        let input = "feat!: add dummy option";
+        assert_eq!(
+            parse_subject(input),
+            Some(("feat".to_string(), None, "add dummy option".to_string()))
+        );
+    }
 }

@@ -14,6 +14,7 @@ use std::{collections::HashMap, fmt::Error};
 ///
 /// [optional footer(s)]
 /// ```
+///
 #[derive(Clone, Debug)]
 pub struct Message {
     /// Description part of the commit message.
@@ -35,6 +36,7 @@ pub struct Message {
     pub footers: Option<HashMap<String, String>>,
 }
 
+/// Message represents a commit message.
 impl Message {
     /// Create a new Message.
     pub fn new(raw: String) -> Self {
