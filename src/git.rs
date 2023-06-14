@@ -75,7 +75,7 @@ pub fn parse_commit_message(
 
     for line in lines {
         if in_footer {
-            let parts: Vec<&str> = line.splitn(2, ":").collect();
+            let parts: Vec<&str> = line.splitn(2, ':').collect();
             if parts.len() == 2 {
                 let key = parts[0].trim().to_string();
                 let value = parts[1].trim().to_string();
@@ -86,7 +86,7 @@ pub fn parse_commit_message(
             in_footer = true;
         } else {
             body.get_or_insert_with(String::new).push_str(line);
-            body.as_mut().map(|b| b.push('\n'));
+            if let Some(b) = body.as_mut() { b.push('\n') }
         }
     }
 

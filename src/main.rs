@@ -14,7 +14,7 @@ async fn main() {
     let args = Args::parse();
 
     let config = match config::load(args.config.clone()).await {
-        Ok(config) => config,
+        Ok(c) => c,
         Err(err) => {
             eprintln!("Failed to load config: {}", err);
             exit(1)
