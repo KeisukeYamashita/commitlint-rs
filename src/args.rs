@@ -17,8 +17,8 @@ use crate::message::Message;
 #[command(author, about = "CLI to lint with conventional commits", long_about = None, version)]
 pub struct Args {
     /// Path to the config file
-    #[arg(short = 'g', long)]
-    pub config: Option<PathBuf>,
+    #[arg(short = 'g', long, default_value = ".")]
+    pub config: PathBuf,
 
     /// Directory to execute in
     #[arg(short = 'd', long, default_value = ".")]
@@ -31,6 +31,10 @@ pub struct Args {
     /// Lower end of the commit range to lint
     #[arg(short = 'f', long)]
     pub from: Option<String>,
+
+    /// Print resolved config
+    #[arg(long = "print-config")]
+    pub print_config: bool,
 
     /// Upper end of the commit range to lint
     #[arg(short = 't', long)]
