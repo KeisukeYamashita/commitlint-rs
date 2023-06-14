@@ -10,6 +10,7 @@ concurrency:
 
 permissions:
   contents: write # To write to release
+  id-token: write # To deploy to GitHub Pages
   pages: write # To deploy to GitHub Pages
 
 jobs:
@@ -29,7 +30,7 @@ jobs:
   web:
     runs-on: ubuntu-latest
     environment:
-      name: github-pages
+      name: web
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v3
