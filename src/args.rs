@@ -17,8 +17,8 @@ use crate::message::Message;
 #[command(author, about = "CLI to lint with conventional commits", long_about = None, version)]
 pub struct Args {
     /// Path to the config file
-    #[arg(short = 'g', long, default_value = ".")]
-    pub config: PathBuf,
+    #[arg(short = 'g', long)]
+    pub config: Option<PathBuf>,
 
     /// Directory to execute in
     #[arg(short = 'd', long, default_value = ".")]
