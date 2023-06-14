@@ -1,6 +1,5 @@
+use crate::result::Result as LintResult;
 use std::fmt::Error;
-
-use crate::result::Result as Res;
 
 /// Message represents a single commit message.
 #[derive(Debug)]
@@ -16,11 +15,11 @@ impl Message {
     }
 
     /// Lint the raw commit message.
-    pub async fn lint(&self) -> Result<Res, Error> {
+    pub async fn lint(&self) -> Result<LintResult, Error> {
         // TODO: Implement linting.
         println!("Linting: {}", self.raw);
-        Ok(Res {
-            violations: Some(vec![]),
+        Ok(LintResult {
+            violations: Some(vec!["Hello".to_string()]),
         })
     }
 }

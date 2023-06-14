@@ -26,5 +26,26 @@ async fn main() {
         .collect::<Vec<_>>();
 
     let results = futures::future::join_all(threads).await;
-    println!("{:?}", results)
+
+    let mut invalid: bool = false;
+    for result in &results {
+        if let Err(err) = result {
+            eprintln!("{}", err);
+        }
+
+        if let Ok(r) = result {
+            if let Ok(h) = r {
+                if let Some(violations) = &h.violations {
+                    for violation in violations {
+                        eprintln!("{}", violation);
+                        invalid = true;
+                    }
+                }
+            }
+        }
+    }
+
+    if invalid {
+        exit(1)
+    }
 }
