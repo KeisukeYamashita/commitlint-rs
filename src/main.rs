@@ -1,10 +1,10 @@
 mod args;
+mod git;
 mod message;
 mod result;
 
 use args::Args;
 use clap::Parser;
-
 
 use std::process::exit;
 

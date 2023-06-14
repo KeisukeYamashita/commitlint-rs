@@ -6,6 +6,7 @@ use std::{
 
 use clap::Parser;
 
+use crate::git::{self, ReadCommitMessageOptions};
 use crate::message::Message;
 
 /// Cli represents the command line arguments.
@@ -57,6 +58,16 @@ impl Args {
                 .collect());
         }
 
-        Ok(vec![Message::new("hoho".to_string())])
+        let config = ReadCommitMessageOptions {
+            from: self.from.clone(),
+            path: self.cwd.clone(),
+            to: self.to.clone(),
+        };
+        let messages = git::read(config)
+            .iter()
+            .map(|s| Message::new(s.to_string()))
+            .collect();
+
+        Ok(messages)
     }
 }

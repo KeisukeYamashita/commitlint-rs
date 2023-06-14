@@ -18,6 +18,9 @@ impl Message {
     /// Lint the raw commit message.
     pub async fn lint(&self) -> Result<Res, Error> {
         // TODO: Implement linting.
-        Ok(Res { valid: true })
+        println!("Linting: {}", self.raw);
+        Ok(Res {
+            violations: Some(vec![]),
+        })
     }
 }
