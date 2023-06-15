@@ -1,4 +1,5 @@
 use crate::{
+    config::Config,
     git::{parse_commit_message, parse_subject},
     result::Result as LintResult,
 };
@@ -17,8 +18,14 @@ use std::{collections::HashMap, fmt::Error};
 ///
 #[derive(Clone, Debug)]
 pub struct Message {
+    /// Body part of the commit message.
+    pub body: Option<String>,
+
     /// Description part of the commit message.
     pub description: Option<String>,
+
+    /// Footers part of the commit message.
+    pub footers: Option<HashMap<String, String>>,
 
     /// Raw commit message (or any input from stdin) including the body and footers.
     pub raw: String,
@@ -28,12 +35,6 @@ pub struct Message {
 
     /// Scope part of the commit message.
     pub scope: Option<String>,
-
-    /// Body part of the commit message.
-    pub body: Option<String>,
-
-    /// Footers part of the commit message.
-    pub footers: Option<HashMap<String, String>>,
 }
 
 /// Message represents a commit message.
@@ -60,12 +61,11 @@ impl Message {
             },
         }
     }
+}
 
-    /// Lint the raw commit message.
-    pub async fn lint(&self) -> Result<LintResult, Error> {
-        // TODO: Implement linting.
-        Ok(LintResult {
-            violations: Some(vec!["Hello".to_string()]),
-        })
-    }
+/// validate the raw commit message.
+pub async fn validate(msg: &Message, config: &Config) -> Result<LintResult, Error> {
+    let violations = config.rules.validate(msg);
+
+    Ok(LintResult { violations })
 }

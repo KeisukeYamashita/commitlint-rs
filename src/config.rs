@@ -1,4 +1,10 @@
-use std::{fmt::Error, path::PathBuf};
+use serde::Deserialize;
+use std::{fs, path::PathBuf};
+
+use crate::rule::{Rules};
+
+/// Default Root config file path to search for.
+const DEFAULT_CONFIG_ROOT: &str = ".";
 
 /// Default commitlintrc configuration files
 /// If the user didn't specify a configuration file with -g or --config argument,
@@ -11,23 +17,27 @@ const DEFAULT_CONFIG_FILE: [&str; 4] = [
 ];
 
 /// Config represents the configuration of commitlint.
-#[derive(Debug)]
-pub struct Config {}
-
-/// Default configuration if no configuration file is found.
-pub fn default_config() -> Config {
-    Config {}
+#[derive(Clone, Debug, Default, Deserialize)]
+pub struct Config {
+    /// Rules represents the rules of commitlint.
+    pub rules: Rules,
 }
 
 /// Load configuration from the specified path.
-pub async fn load(path: PathBuf) -> Result<Config, Error> {
-    let config_file = find_config_file(path);
+pub async fn load(path: Option<PathBuf>) -> Result<Config, String> {
+    let config_file = match &path {
+        Some(p) => Some(p.clone()),
+        None => find_config_file(PathBuf::from(DEFAULT_CONFIG_ROOT)),
+    };
 
-    if config_file.is_none() {
-        return Ok(default_config());
+    match (config_file, path) {
+        // If the file was specified and found, load it.
+        (Some(p), _) => load_config_file(p).await,
+        // If the file was not specified and not found, return default config.
+        (None, None) => Ok(Config::default()),
+        // If the was explicitly specified but not found, return an error.
+        (None, Some(p)) => Err(format!("Configuration file not found in {}", p.display())),
     }
-
-    Ok(Config {})
 }
 
 /// Find configuration file in the specified path.
@@ -42,4 +52,66 @@ pub fn find_config_file(path: PathBuf) -> Option<PathBuf> {
     }
 
     None
+}
+
+/// Load config file from the specified path.
+pub async fn load_config_file(path: PathBuf) -> Result<Config, String> {
+    if !path.exists() {
+        return Err(format!(
+            "Configuration file not found in {}",
+            path.display()
+        ));
+    }
+
+    match path.extension() {
+        Some(ext) => match ext.to_str() {
+            Some("json") => load_json_config_file(path).await,
+            Some("yaml") | Some("yml") => load_yaml_config_file(path).await,
+            _ => load_unknown_config_file(path).await,
+        },
+        None => Err(format!(
+            "Unsupported configuration file format: {}",
+            path.display()
+        )),
+    }
+}
+
+/// Load JSON config file from the specified path.
+async fn load_json_config_file(path: PathBuf) -> Result<Config, String> {
+    let text = fs::read_to_string(path).unwrap();
+
+    match serde_json::from_str::<Config>(&text) {
+        Ok(config) => Ok(config),
+        Err(err) => Err(format!("Failed to parse configuration file: {}", err)),
+    }
+}
+
+/// Load YAML config file from the specified path.
+async fn load_yaml_config_file(path: PathBuf) -> Result<Config, String> {
+    let text = fs::read_to_string(path).unwrap();
+
+    match serde_yaml::from_str::<Config>(&text) {
+        Ok(config) => Ok(config),
+        Err(err) => Err(format!("Failed to parse configuration file: {}", err)),
+    }
+}
+
+/// Try to load configuration file from the specified path.
+/// First try to load it as JSON, then as YAML.
+/// If both fail, return an error.
+async fn load_unknown_config_file(path: PathBuf) -> Result<Config, String> {
+    let text = fs::read_to_string(path.clone()).unwrap();
+
+    if let Ok(config) = serde_json::from_str::<Config>(&text) {
+        return Ok(config);
+    }
+
+    if let Ok(config) = serde_yaml::from_str::<Config>(&text) {
+        return Ok(config);
+    }
+
+    Err(format!(
+        "Failed to parse configuration file: {}",
+        path.display()
+    ))
 }
