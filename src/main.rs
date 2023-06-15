@@ -3,9 +3,11 @@ mod config;
 mod git;
 mod message;
 mod result;
+mod rule;
 
 use args::Args;
 use clap::Parser;
+use message::validate;
 
 use std::process::exit;
 
@@ -35,7 +37,11 @@ async fn main() {
 
     let threads = messages
         .into_iter()
-        .map(|message| tokio::spawn(async move { message.lint().await }))
+        .map(|message| {
+            let config = config.clone();
+
+            tokio::spawn(async move { validate(&message, &config).await })
+        })
         .collect::<Vec<_>>();
 
     let results = futures::future::join_all(threads).await;
@@ -46,13 +52,11 @@ async fn main() {
             eprintln!("{}", err);
         }
 
-        if let Ok(r) = result {
-            if let Ok(h) = r {
-                if let Some(violations) = &h.violations {
-                    for violation in violations {
-                        eprintln!("{}", violation);
-                        invalid = true;
-                    }
+        if let Ok(Ok(h)) = result {
+            if !h.violations.is_empty() {
+                for violation in &h.violations {
+                    eprintln!("{}", violation.message);
+                    invalid = true;
                 }
             }
         }

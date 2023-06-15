@@ -1,9 +1,7 @@
 use serde::Deserialize;
 use std::{fs, path::PathBuf};
 
-/// Defaults rules that will be apply if configuration
-/// file is not found.
-const DEFAULT_RULES: Rules = Rules {};
+use crate::rule::{Rules};
 
 /// Default Root config file path to search for.
 const DEFAULT_CONFIG_ROOT: &str = ".";
@@ -19,22 +17,10 @@ const DEFAULT_CONFIG_FILE: [&str; 4] = [
 ];
 
 /// Config represents the configuration of commitlint.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize)]
 pub struct Config {
     /// Rules represents the rules of commitlint.
     pub rules: Rules,
-}
-
-/// Rules represents the rules of commitlint.
-/// See: https://commitlint.js.org/#/reference-rules
-#[derive(Clone, Debug, Deserialize)]
-pub struct Rules {}
-
-/// Default configuration if no configuration file is found.
-pub fn default_config() -> Config {
-    Config {
-        rules: DEFAULT_RULES,
-    }
 }
 
 /// Load configuration from the specified path.
@@ -48,7 +34,7 @@ pub async fn load(path: Option<PathBuf>) -> Result<Config, String> {
         // If the file was specified and found, load it.
         (Some(p), _) => load_config_file(p).await,
         // If the file was not specified and not found, return default config.
-        (None, None) => Ok(default_config()),
+        (None, None) => Ok(Config::default()),
         // If the was explicitly specified but not found, return an error.
         (None, Some(p)) => Err(format!("Configuration file not found in {}", p.display())),
     }

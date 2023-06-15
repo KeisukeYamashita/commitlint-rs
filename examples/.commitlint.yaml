@@ -1,2 +1,3 @@
 rules:
-  type-empty: [2, "never"]
+  body-empty:
+    hoge: hoho

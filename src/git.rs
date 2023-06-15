@@ -86,7 +86,9 @@ pub fn parse_commit_message(
             in_footer = true;
         } else {
             body.get_or_insert_with(String::new).push_str(line);
-            if let Some(b) = body.as_mut() { b.push('\n') }
+            if let Some(b) = body.as_mut() {
+                b.push('\n')
+            }
         }
     }
 
@@ -117,7 +119,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn text_parse_subject_with_scope() {
+    fn test_parse_subject_with_scope() {
         let input = "feat(cli): add dummy option";
         assert_eq!(
             parse_subject(input),
@@ -130,7 +132,7 @@ mod tests {
     }
 
     #[test]
-    fn text_parse_subject_with_emphasized_type_with_scope() {
+    fn test_parse_subject_with_emphasized_type_with_scope() {
         let input = "feat(cli)!: add dummy option";
         assert_eq!(
             parse_subject(input),
@@ -143,7 +145,7 @@ mod tests {
     }
 
     #[test]
-    fn text_parse_subject_without_scope() {
+    fn test_parse_subject_without_scope() {
         let input = "feat: add dummy option";
         assert_eq!(
             parse_subject(input),
@@ -152,7 +154,7 @@ mod tests {
     }
 
     #[test]
-    fn text_parse_subject_with_emphasized_type_without_scope() {
+    fn test_parse_subject_with_emphasized_type_without_scope() {
         let input = "feat!: add dummy option";
         assert_eq!(
             parse_subject(input),
