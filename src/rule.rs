@@ -4,8 +4,9 @@ use crate::{message::Message, result::Violation};
 use serde::Deserialize;
 
 use self::{
-    body_empty::BodyEmpty, body_max_length::BodyMaxLength, r#type::Type, scope::Scope,
-    scope_empty::ScopeEmpty, subject_empty::SubjectEmpty, type_empty::TypeEmpty,
+    body_empty::BodyEmpty, body_max_length::BodyMaxLength, description_empty::DescriptionEmpty,
+    r#type::Type, scope::Scope, scope_empty::ScopeEmpty, subject_empty::SubjectEmpty,
+    type_empty::TypeEmpty,
 };
 
 pub mod body_empty;
@@ -26,6 +27,9 @@ pub struct Rules {
 
     #[serde(rename = "body-max-length")]
     pub body_max_length: Option<BodyMaxLength>,
+
+    #[serde(rename = "description-empty")]
+    pub description_empty: Option<DescriptionEmpty>,
 
     #[serde(rename = "scope")]
     pub scope: Option<Scope>,
@@ -55,6 +59,12 @@ impl Rules {
         }
 
         if let Some(rule) = &self.body_max_length {
+            if let Some(validation) = rule.validate(message) {
+                results.push(validation);
+            }
+        }
+
+        if let Some(rule) = &self.description_empty {
             if let Some(validation) = rule.validate(message) {
                 results.push(validation);
             }
@@ -101,6 +111,7 @@ impl Default for Rules {
         Self {
             body_empty: None,
             body_max_length: None,
+            description_empty: DescriptionEmpty::default().into(),
             scope: None,
             scope_empty: None,
             subject_empty: SubjectEmpty::default().into(),
