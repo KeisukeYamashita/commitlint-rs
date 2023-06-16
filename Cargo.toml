@@ -1,6 +1,7 @@
 [package]
 name = "commitlint-rs"
 description = "CLI tool to lint commits by Conventional Commits"
+documentation = "https://keisukeyamashita.github.io/commitlint-rs"
 authors = ["KeisukeYamashita <19yamashita15@gmail.com>"]
 keywords = ["conventional-commits", "lint"]
 categories = ["command-line-utilities"]
