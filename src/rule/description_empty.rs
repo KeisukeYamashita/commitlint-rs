@@ -19,7 +19,7 @@ impl Rule for DescriptionEmpty {
     const LEVEL: Level = Level::Error;
 
     fn message(&self, _message: &Message) -> String {
-        "description is empty".to_string()
+        "description is empty or missing space in the beginning".to_string()
     }
 
     fn validate(&self, message: &Message) -> Option<Violation> {
