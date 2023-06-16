@@ -63,7 +63,7 @@ Hello world"
             subject: Some("feat(scope): broadcast $destroy event on scope destruction".to_string()),
         };
 
-        assert_eq!(rule.validate(&message).is_none(), true);
+        assert!(rule.validate(&message).is_none());
     }
 
     #[test]
@@ -83,10 +83,10 @@ Hello world"
         };
 
         let violation = rule.validate(&message);
-        assert_eq!(violation.is_some(), true);
+        assert!(violation.is_some());
         assert_eq!(violation.clone().unwrap().level, Level::Error);
         assert_eq!(
-            violation.clone().unwrap().message,
+            violation.unwrap().message,
             "subject is empty".to_string()
         );
     }

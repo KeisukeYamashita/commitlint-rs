@@ -76,7 +76,7 @@ pub fn parse_commit_message(
     let mut in_body = false;
     let mut in_footer = false;
 
-    while let Some(line) = lines_iter.next() {
+    for line in lines_iter {
         if line.trim().is_empty() {
             if in_body {
                 in_body = false;
@@ -90,14 +90,12 @@ pub fn parse_commit_message(
                 let footer_map = footer.get_or_insert(HashMap::new());
                 footer_map.insert(key, value);
             }
-        } else {
-            if !in_body {
-                in_body = true;
-                body = Some(line.trim().to_string());
-            } else if let Some(b) = body.as_mut() {
-                b.push('\n');
-                b.push_str(line.trim());
-            }
+        } else if !in_body {
+            in_body = true;
+            body = Some(line.trim().to_string());
+        } else if let Some(b) = body.as_mut() {
+            b.push('\n');
+            b.push_str(line.trim());
         }
     }
 
@@ -160,7 +158,7 @@ Link: Hello";
         f.insert("Link".to_string(), "Hello".to_string());
         assert_eq!(subject, "feat(cli): add dummy option");
         assert_eq!(body, Some("Hello, there!".to_string()));
-        assert_eq!(footer.is_some(), true);
+        assert!(footer.is_some());
         assert_eq!(f.get("Link"), Some(&"Hello".to_string()));
     }
 
@@ -176,13 +174,13 @@ Name: Keke";
 
         assert_eq!(subject, "feat(cli): add dummy option");
         assert_eq!(body, Some("Hello, there!".to_string()));
-        assert_eq!(footer.is_some(), true);
+        assert!(footer.is_some());
         assert_eq!(
             footer.clone().unwrap().get("Link"),
             Some(&"Hello".to_string())
         );
         assert_eq!(
-            footer.clone().unwrap().get("Name"),
+            footer.unwrap().get("Name"),
             Some(&"Keke".to_string())
         );
     }
