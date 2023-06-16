@@ -3,7 +3,7 @@
 <h1>Commitlint</h1>
 <img src="./web/src/assets/checker.png" height="100"/>
 
-<p style="margin-top: 12px">🔦 Lint commit messages with conventional commit messages</p>
+<h3 style="margin-top: 20px; margin-bottom: 10px; ">🔦 Lint commit messages with conventional commit messages</h3>
 
 Documents are available [here](https://keisukeyamashita.github.io/commitlint-rs)
 
