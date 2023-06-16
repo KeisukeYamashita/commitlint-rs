@@ -7,9 +7,11 @@
 
 Documents are available [here](https://keisukeyamashita.github.io/commitlint-rs)
 
-[![](https://img.shields.io/crates/v/commitlint-rs)](https://crates.io/crates/commitlint-rs)
-[![](https://img.shields.io/crates/d/commitlint-rs)](https://crates.io/crates/commitlint-rs)
+[![](https://img.shields.io/crates/v/commitlint-rs?logo=rust)](https://crates.io/crates/commitlint-rs)
+[![](https://img.shields.io/crates/d/commitlint-rs?logo=rust)](https://crates.io/crates/commitlint-rs)
 [![](https://img.shields.io/crates/l/commitlint-rs)](https://github.com/KeisukeYamashita/commitlint-rs)
+[![](https://img.shields.io/badge/Dependency-Dependabot-%230361cd?logo=dependabot)](https://github.com/KeisukeYamashita/commitlint-rs)
+[![](https://img.shields.io/badge/Security-Snyk-%2321204b?logo=snyk)](https://github.com/KeisukeYamashita/commitlint-rs)
 
 </br>
 
