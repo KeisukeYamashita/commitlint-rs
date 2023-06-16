@@ -1,10 +1,10 @@
 use crate::{message::Message, result::Violation, rule::Rule};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use super::Level;
 
 /// TypeEmpty represents the type-empty rule.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct TypeEmpty {
     /// Level represents the level of the rule.
     ///

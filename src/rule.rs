@@ -1,7 +1,7 @@
 use std::fmt::Debug;
 
 use crate::{message::Message, result::Violation};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use self::{
     body_empty::BodyEmpty, body_max_length::BodyMaxLength, description_empty::DescriptionEmpty,
@@ -20,30 +20,38 @@ pub mod type_empty;
 
 /// Rules represents the rules of commitlint.
 /// See: https://commitlint.js.org/#/reference-rules
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Rules {
     #[serde(rename = "body-empty")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub body_empty: Option<BodyEmpty>,
 
     #[serde(rename = "body-max-length")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub body_max_length: Option<BodyMaxLength>,
 
     #[serde(rename = "description-empty")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub description_empty: Option<DescriptionEmpty>,
 
     #[serde(rename = "scope")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub scope: Option<Scope>,
 
     #[serde(rename = "scope-empty")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub scope_empty: Option<ScopeEmpty>,
 
     #[serde(rename = "subject-empty")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub subject_empty: Option<SubjectEmpty>,
 
     #[serde(rename = "type")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub r#type: Option<Type>,
 
     #[serde(rename = "type-empty")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub type_empty: Option<TypeEmpty>,
 }
 
@@ -138,7 +146,7 @@ pub trait Rule: Default {
 }
 
 /// Level represents the level of a rule.
-#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub enum Level {
     #[serde(rename = "error")]
     Error,
