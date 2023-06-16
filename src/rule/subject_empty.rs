@@ -19,11 +19,11 @@ impl Rule for SubjectEmpty {
     const LEVEL: Level = Level::Error;
 
     fn message(&self, _message: &Message) -> String {
-        "subject is empty or invalid".to_string()
+        "subject is empty".to_string()
     }
 
     fn validate(&self, message: &Message) -> Option<Violation> {
-        if message.raw == "" {
+        if message.subject.is_none() {
             return Some(Violation {
                 level: self.level.unwrap_or(Self::LEVEL),
                 message: self.message(message),
@@ -40,5 +40,54 @@ impl Default for SubjectEmpty {
         Self {
             level: Some(Self::LEVEL),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_non_empty_subject() {
+        let rule = SubjectEmpty::default();
+        let message = Message {
+            body: None,
+            description: Some("broadcast $destroy event on scope destruction".to_string()),
+            footers: None,
+            r#type: Some("feat".to_string()),
+            raw: "feat(scope): broadcast $destroy event on scope destruction
+
+Hello world"
+                .to_string(),
+            scope: Some("scope".to_string()),
+            subject: Some("feat(scope): broadcast $destroy event on scope destruction".to_string()),
+        };
+
+        assert_eq!(rule.validate(&message).is_none(), true);
+    }
+
+    #[test]
+    fn test_empty_description() {
+        let rule = SubjectEmpty::default();
+        let message = Message {
+            body: None,
+            description: None,
+            footers: None,
+            r#type: Some("feat".to_string()),
+            raw: "
+
+Hello world"
+                .to_string(),
+            scope: Some("scope".to_string()),
+            subject: None,
+        };
+
+        let violation = rule.validate(&message);
+        assert_eq!(violation.is_some(), true);
+        assert_eq!(violation.clone().unwrap().level, Level::Error);
+        assert_eq!(
+            violation.clone().unwrap().message,
+            "subject is empty".to_string()
+        );
     }
 }

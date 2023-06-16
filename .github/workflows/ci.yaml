@@ -2,10 +2,6 @@ name: CI
 on:
   - pull_request
 
-defaults:
-  run:
-    working-directory: apps/backend
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,4 +15,18 @@ jobs:
 
       - uses: actions-rs/cargo@v1
         with:
-          command: clippy
+          command: build
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+          components: rustfmt, clippy
+
+      - uses: actions-rs/cargo@v1
+        with:
+          command: test
