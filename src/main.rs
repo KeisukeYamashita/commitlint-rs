@@ -24,7 +24,7 @@ async fn main() {
     };
 
     if args.print_config {
-        println!("{:?}", config);
+        println!("{}", config.to_string());
     }
 
     let messages = match args.read() {
