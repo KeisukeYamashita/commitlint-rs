@@ -8,6 +8,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'Commitlint',
+      base: '/commitlint-rs',
       logo: {
         src: '/src/assets/checker.png',
       },
