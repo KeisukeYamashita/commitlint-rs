@@ -56,10 +56,7 @@ impl Args {
             stdin()
                 .read_to_string(&mut buffer)
                 .expect("Failed to read commit messages from stdin");
-            return Ok(buffer
-                .lines()
-                .map(|s| Message::new(s.to_string()))
-                .collect());
+            return Ok(vec![Message::new(buffer)]);
         }
 
         let config = ReadCommitMessageOptions {

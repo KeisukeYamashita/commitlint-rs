@@ -20,6 +20,7 @@ Commitlint will look for configuration in the following places.
 If no flag (see next section) is specified, the Commitlint will look for configuration in the following places **in the current working directory**:
 
 * `.commitlintrc` (JSON or YAML file)
+* `.commitlintrc.json` (JSON file)
 * `.commitlintrc.yml` (YAML file)
 * `.commitlintrc.yaml` (YAML file)
 

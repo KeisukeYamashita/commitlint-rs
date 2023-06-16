@@ -73,7 +73,7 @@ mod tests {
             subject: None,
         };
 
-        assert_eq!(rule.validate(&message).is_none(), true);
+        assert!(rule.validate(&message).is_none());
     }
 
     #[test]
@@ -92,10 +92,10 @@ mod tests {
         };
 
         let violation = rule.validate(&message);
-        assert_eq!(violation.is_some(), true);
+        assert!(violation.is_some());
         assert_eq!(violation.clone().unwrap().level, Level::Error);
         assert_eq!(
-            violation.clone().unwrap().message,
+            violation.unwrap().message,
             "scope invalid is not allowed. Only [\"api\", \"web\"] are allowed".to_string()
         );
     }
@@ -115,10 +115,10 @@ mod tests {
         };
 
         let violation = rule.validate(&message);
-        assert_eq!(violation.is_some(), true);
+        assert!(violation.is_some());
         assert_eq!(violation.clone().unwrap().level, Level::Error);
         assert_eq!(
-            violation.clone().unwrap().message,
+            violation.unwrap().message,
             "scope invalid is not allowed. Only [] are allowed".to_string()
         );
     }
