@@ -3,7 +3,8 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://keisukeyamashita.github.io/commitlint-rs',
+  site: 'https://keisukeyamashita.github.io',
+  base: '/commitlint-rs',
   integrations: [
     starlight({
       title: 'Commitlint',
