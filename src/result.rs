@@ -8,8 +8,12 @@ pub struct Result {
     pub violations: Vec<Violation>,
 }
 
+/// Violation is a message that will be printed.
 #[derive(Clone, Debug)]
 pub struct Violation {
+    /// Level of the violation.
     pub level: Level,
+
+    /// Message of the violation.
     pub message: String,
 }

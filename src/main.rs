@@ -46,7 +46,7 @@ async fn main() {
 
     let results = futures::future::join_all(threads).await;
 
-    let mut invalid: bool = false;
+    let mut has_error: bool = false;
     for result in &results {
         if let Err(err) = result {
             eprintln!("{}", err);
@@ -55,14 +55,22 @@ async fn main() {
         if let Ok(Ok(h)) = result {
             if !h.violations.is_empty() {
                 for violation in &h.violations {
-                    eprintln!("{}", violation.message);
-                    invalid = true;
+                    match violation.level {
+                        rule::Level::Error => {
+                            eprintln!("{}", violation.message);
+                            has_error = true
+                        }
+                        rule::Level::Warning => {
+                            println!("{}", violation.message);
+                        }
+                        _ => {}
+                    }
                 }
             }
         }
     }
 
-    if invalid {
+    if has_error {
         exit(1)
     }
 }
