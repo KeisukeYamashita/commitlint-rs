@@ -33,6 +33,8 @@ jobs:
           sudo chmod +x target/release/commitlint
           sudo mv target/release/commitlint /usr/local/bin/commitlint
       - uses: mig4/setup-bats@v1
+        with:
+          bats-version: 1.9.0
       - run: bats e2e --filter-tags ${{ matrix.tag }}
 
   test:
