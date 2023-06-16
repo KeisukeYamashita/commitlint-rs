@@ -23,7 +23,7 @@ impl Rule for SubjectEmpty {
     }
 
     fn validate(&self, message: &Message) -> Option<Violation> {
-        if message.r#type.is_none() && message.scope.is_none() && message.description.is_none() {
+        if message.raw != "" {
             return Some(Violation {
                 level: self.level.unwrap_or(Self::LEVEL),
                 message: self.message(message),
