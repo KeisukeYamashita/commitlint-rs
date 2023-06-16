@@ -11,10 +11,12 @@ Documents are available [here](https://keisukeyamashita.github.io/commitlint-rs)
 [![](https://img.shields.io/crates/d/commitlint-rs)](https://crates.io/crates/commitlint-rs)
 [![](https://img.shields.io/crates/l/commitlint-rs)](https://github.com/KeisukeYamashita/commitlint-rs)
 
-</div>
+</br>
 
 ## License
 
 Commitlint source code is licensed either [MIT](LICENSE-MIT) or [Apache-2.0](./LICENSE-APACHE).
 
-[Chinese-checkers icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/chinese-checkers).
+<a  href="https://www.flaticon.com/free-icons/chinese-checkers" style="font-size: 12px;font-style: italic;"> Chinese-checkers icons created by Freepik - Flaticon</a>
+
+</div>
