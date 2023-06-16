@@ -1,36 +1,44 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
+title: Welcome to Commitlint
+description: Lint commit messages with conventional commits
 template: splash
 hero:
-  tagline: Congrats on setting up a new Starlight project!
+  tagline: Guard rail for your commit messages for sustainable development
   image:
-    file: ../../assets/houston.webp
+    file: ../../assets/checker.png
   actions:
-    - text: Example Guide
-      link: /guides/example/
+    - text: Install to your project
+      link: /setup/install
       icon: right-arrow
       variant: primary
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
+    - text: Read the rules
+      link: /guides/rules/
       icon: external
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid } from "@astrojs/starlight/components";
 
 ## Next steps
 
 <CardGrid stagger>
-  <Card title="Update content" icon="pencil">
-    Edit `src/content/docs/index.mdx` to see this page change.
+  <Card title="Understand Conventional Commits" icon="open-book">
+    Learn more in the [Conventional
+    Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
   </Card>
-  <Card title="Add new content" icon="add-document">
-    Add Markdown or MDX files to `src/content/docs` to create new pages.
+  <Card title="Run the lint" icon="rocket">
+    Run `commitlint` to lint your commit messages. See [the guides](/guides/cli)
+    about the CLI.
   </Card>
-  <Card title="Configure your site" icon="setting">
-    Edit your `sidebar` and other config in `astro.config.mjs`.
+  <Card title="Check the Rules" icon="add-document">
+    Check each rules to see what is allowed and what is not. See [the
+    rules](/guide/rules) for more information.
   </Card>
-  <Card title="Read the docs" icon="open-book">
-    Learn more in [the Starlight Docs](https://starlight.astro.build/).
+  <Card title="Customize your rules" icon="setting">
+    Edit commitlint configurations to customize your rules. See [the
+    rules](/guide/rules) for more information.
+  </Card>
+  <Card title="Report issues" icon="error">
+    Report issues to the [GitHub
+    repository](https://github.com/KeisukeYamashita/commitlint-rs/issues).
   </Card>
 </CardGrid>
