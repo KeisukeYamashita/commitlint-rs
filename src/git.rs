@@ -66,28 +66,37 @@ fn extract_commit_messages(input: &str) -> Vec<String> {
 pub fn parse_commit_message(
     message: &str,
 ) -> (String, Option<String>, Option<HashMap<String, String>>) {
-    let mut lines = message.lines();
-    let subject = lines.next().unwrap_or("").trim().to_string();
+    let lines: Vec<&str> = message.lines().collect();
+    let mut lines_iter = lines.iter();
+
+    let subject = lines_iter.next().unwrap_or(&"").trim().to_string();
     let mut body = None;
     let mut footer = None;
 
+    let mut in_body = false;
     let mut in_footer = false;
 
-    for line in lines {
-        if in_footer {
-            let parts: Vec<&str> = line.splitn(2, ':').collect();
+    while let Some(line) = lines_iter.next() {
+        if line.trim().is_empty() {
+            if in_body {
+                in_body = false;
+                in_footer = true;
+            }
+        } else if in_footer {
+            let parts: Vec<&str> = line.splitn(2, ':').map(|part| part.trim()).collect();
             if parts.len() == 2 {
-                let key = parts[0].trim().to_string();
-                let value = parts[1].trim().to_string();
+                let key = parts[0].to_string();
+                let value = parts[1].to_string();
                 let footer_map = footer.get_or_insert(HashMap::new());
                 footer_map.insert(key, value);
             }
-        } else if line.trim().is_empty() {
-            in_footer = true;
         } else {
-            body.get_or_insert_with(String::new).push_str(line);
-            if let Some(b) = body.as_mut() {
-                b.push('\n')
+            if !in_body {
+                in_body = true;
+                body = Some(line.trim().to_string());
+            } else if let Some(b) = body.as_mut() {
+                b.push('\n');
+                b.push_str(line.trim());
             }
         }
     }
@@ -117,6 +126,66 @@ pub fn parse_subject(subject: &str) -> Option<(String, Option<String>, String)> 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_single_line_parse_commit_message() {
+        let input = "feat(cli): add dummy option";
+        let (subject, body, footer) = parse_commit_message(input);
+        assert_eq!(subject, "feat(cli): add dummy option");
+        assert_eq!(body, None);
+        assert_eq!(footer, None);
+    }
+
+    #[test]
+    fn test_body_parse_commit_message() {
+        let input = "feat(cli): add dummy option
+
+Hello, there!";
+        let (subject, body, footer) = parse_commit_message(input);
+        assert_eq!(subject, "feat(cli): add dummy option");
+        assert_eq!(body, Some("Hello, there!".to_string()));
+        assert_eq!(footer, None);
+    }
+
+    #[test]
+    fn test_footer_parse_commit_message() {
+        let input = "feat(cli): add dummy option
+
+Hello, there!
+
+Link: Hello";
+        let (subject, body, footer) = parse_commit_message(input);
+
+        let mut f = HashMap::new();
+        f.insert("Link".to_string(), "Hello".to_string());
+        assert_eq!(subject, "feat(cli): add dummy option");
+        assert_eq!(body, Some("Hello, there!".to_string()));
+        assert_eq!(footer.is_some(), true);
+        assert_eq!(f.get("Link"), Some(&"Hello".to_string()));
+    }
+
+    #[test]
+    fn test_multiple_footers_parse_commit_message() {
+        let input = "feat(cli): add dummy option
+
+Hello, there!
+
+Link: Hello
+Name: Keke";
+        let (subject, body, footer) = parse_commit_message(input);
+
+        assert_eq!(subject, "feat(cli): add dummy option");
+        assert_eq!(body, Some("Hello, there!".to_string()));
+        assert_eq!(footer.is_some(), true);
+        assert_eq!(
+            footer.clone().unwrap().get("Link"),
+            Some(&"Hello".to_string())
+        );
+        assert_eq!(
+            footer.clone().unwrap().get("Name"),
+            Some(&"Keke".to_string())
+        );
+    }
 
     #[test]
     fn test_parse_subject_with_scope() {
