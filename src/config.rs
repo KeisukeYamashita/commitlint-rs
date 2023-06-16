@@ -1,7 +1,8 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
+use std::fmt;
 use std::{fs, path::PathBuf};
 
-use crate::rule::{Rules};
+use crate::rule::Rules;
 
 /// Default Root config file path to search for.
 const DEFAULT_CONFIG_ROOT: &str = ".";
@@ -17,10 +18,17 @@ const DEFAULT_CONFIG_FILE: [&str; 4] = [
 ];
 
 /// Config represents the configuration of commitlint.
-#[derive(Clone, Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Config {
     /// Rules represents the rules of commitlint.
     pub rules: Rules,
+}
+
+impl fmt::Display for Config {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let s = serde_yaml::to_string(&self).unwrap();
+        write!(f, "{}", s)
+    }
 }
 
 /// Load configuration from the specified path.

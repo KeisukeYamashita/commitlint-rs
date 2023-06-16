@@ -1,10 +1,10 @@
 use crate::{message::Message, result::Violation, rule::Rule};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use super::Level;
 
 /// SubjectEmpty represents the subject-empty rule.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct SubjectEmpty {
     /// Level represents the level of the rule.
     ///

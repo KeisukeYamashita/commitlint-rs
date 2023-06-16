@@ -1,10 +1,10 @@
 use crate::{message::Message, result::Violation, rule::Rule};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use super::Level;
 
 /// BodyEmpty represents the body-empty rule.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct BodyEmpty {
     /// Level represents the level of the rule.
     ///
@@ -82,9 +82,6 @@ Hello world"
         let violation = rule.validate(&message);
         assert!(violation.is_some());
         assert_eq!(violation.clone().unwrap().level, Level::Error);
-        assert_eq!(
-            violation.unwrap().message,
-            "body is empty".to_string()
-        );
+        assert_eq!(violation.unwrap().message, "body is empty".to_string());
     }
 }
