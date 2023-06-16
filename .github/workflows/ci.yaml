@@ -17,6 +17,24 @@ jobs:
         with:
           command: build
 
+  e2e:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        tag: [default]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release
+      - run: |
+          sudo chmod +x target/release/commitlint
+          sudo mv target/release/commitlint /usr/local/bin/commitlint
+      - uses: mig4/setup-bats@v1
+      - run: bats e2e --filter-tags ${{ matrix.tag }}
+
   test:
     runs-on: ubuntu-latest
     steps:
