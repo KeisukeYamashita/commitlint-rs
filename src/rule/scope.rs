@@ -70,6 +70,7 @@ mod tests {
             r#type: Some("feat".to_string()),
             raw: "feat(web): broadcast $destroy event on scope destruction".to_string(),
             scope: Some("web".to_string()),
+            subject: None,
         };
 
         assert_eq!(rule.validate(&message).is_none(), true);
@@ -87,6 +88,7 @@ mod tests {
             r#type: Some("feat".to_string()),
             raw: "feat(invalid): broadcast $destroy event on scope destruction".to_string(),
             scope: Some("invalid".to_string()),
+            subject: None,
         };
 
         let violation = rule.validate(&message);
@@ -109,6 +111,7 @@ mod tests {
             r#type: Some("feat".to_string()),
             raw: "feat(invalid): broadcast $destroy event on scope destruction".to_string(),
             scope: Some("invalid".to_string()),
+            subject: None,
         };
 
         let violation = rule.validate(&message);

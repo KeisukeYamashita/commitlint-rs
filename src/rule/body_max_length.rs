@@ -46,3 +46,58 @@ impl Default for BodyMaxLength {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_long_body() {
+        let rule = BodyMaxLength {
+            length: 10, // Short length for testing
+            ..Default::default()
+        };
+        let message = Message {
+            body: Some("Hello world".to_string()),
+            description: Some("broadcast $destroy event on scope destruction".to_string()),
+            footers: None,
+            r#type: Some("feat".to_string()),
+            raw: "feat(scope): broadcast $destroy event on scope destruction
+
+Hey!"
+                .to_string(),
+            scope: Some("scope".to_string()),
+            subject: Some("feat(scope): broadcast $destroy event on scope destruction".to_string()),
+        };
+
+        assert_eq!(rule.validate(&message).is_none(), true);
+    }
+
+    #[test]
+    fn test_short_body() {
+        let rule = BodyMaxLength {
+            length: 10, // Short length for testing
+            ..Default::default()
+        };
+        let message = Message {
+            body: None,
+            description: None,
+            footers: None,
+            r#type: Some("feat".to_string()),
+            raw: "feat(scope): broadcast $destroy event on scope destruction
+
+Hello, I'm a long body"
+                .to_string(),
+            scope: Some("scope".to_string()),
+            subject: None,
+        };
+
+        let violation = rule.validate(&message);
+        assert_eq!(violation.is_some(), true);
+        assert_eq!(violation.clone().unwrap().level, Level::Error);
+        assert_eq!(
+            violation.clone().unwrap().message,
+            format!("body is longer than {} characters", rule.length)
+        );
+    }
+}

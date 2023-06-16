@@ -35,6 +35,9 @@ pub struct Message {
 
     /// Scope part of the commit message.
     pub scope: Option<String>,
+
+    /// Subject part of the commit message.
+    pub subject: Option<String>,
 }
 
 /// Message represents a commit message.
@@ -44,12 +47,13 @@ impl Message {
         let (subject, body, footers) = parse_commit_message(&raw);
         match parse_subject(&subject) {
             Some((r#type, scope, description)) => Self {
-                raw,
+                body,
                 description: Some(description),
+                footers,
+                raw,
                 r#type: Some(r#type),
                 scope,
-                body,
-                footers,
+                subject: Some(subject),
             },
             None => Self {
                 raw,
@@ -58,6 +62,7 @@ impl Message {
                 scope: None,
                 body,
                 footers,
+                subject: Some(subject),
             },
         }
     }

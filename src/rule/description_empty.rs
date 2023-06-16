@@ -57,6 +57,7 @@ mod tests {
             r#type: Some("feat".to_string()),
             raw: "feat(scope): broadcast $destroy event on scope destruction".to_string(),
             scope: Some("scope".to_string()),
+            subject: None,
         };
 
         assert_eq!(rule.validate(&message).is_none(), true);
@@ -72,6 +73,7 @@ mod tests {
             r#type: Some("feat".to_string()),
             raw: "(scope):".to_string(),
             scope: Some("scope".to_string()),
+            subject: None,
         };
 
         let violation = rule.validate(&message);
@@ -79,7 +81,7 @@ mod tests {
         assert_eq!(violation.clone().unwrap().level, Level::Error);
         assert_eq!(
             violation.clone().unwrap().message,
-            "description is empty".to_string()
+            "description is empty or missing space in the beginning".to_string()
         );
     }
 }
