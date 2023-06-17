@@ -69,6 +69,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - crate
+      - docker
       - web
     steps:
       - uses: ncipollo/release-action@v1
