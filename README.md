@@ -10,6 +10,7 @@ Documents are available [here](https://keisukeyamashita.github.io/commitlint-rs)
 [![](https://img.shields.io/crates/v/commitlint-rs?logo=rust)](https://crates.io/crates/commitlint-rs)
 [![](https://img.shields.io/crates/d/commitlint-rs?logo=rust)](https://crates.io/crates/commitlint-rs)
 [![](https://img.shields.io/crates/l/commitlint-rs)](https://github.com/KeisukeYamashita/commitlint-rs)
+[![](https://img.shields.io/badge/Docker-Supported-%232496ED?logo=docker)](https://hub.docker.com/repository/docker/1915keke/commitlint)
 [![](https://img.shields.io/badge/Dependency-Dependabot-%230361cd?logo=dependabot)](https://github.com/KeisukeYamashita/commitlint-rs)
 [![](https://img.shields.io/badge/Security-Snyk-%2321204b?logo=snyk)](https://github.com/KeisukeYamashita/commitlint-rs)
 
