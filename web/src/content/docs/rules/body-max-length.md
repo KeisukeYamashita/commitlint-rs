@@ -7,6 +7,8 @@ description: Check if the body length is less than or equal to the specified len
   * Level: `ignore`
   * Length: `72`
 
+In this page, we will use the following commit message as an example.
+
 ```yaml
 rules:
     body-max-length:
@@ -31,6 +33,8 @@ Hey.
 ```
 
 ## Example
+
+### Body length should be less than or equal to 72
 
 ```yaml
 rules:

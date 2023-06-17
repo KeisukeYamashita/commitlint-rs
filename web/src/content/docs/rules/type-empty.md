@@ -23,8 +23,10 @@ docs(scope): fix typo
 
 ## Example
 
+### Type must exist
+
 ```yaml
 rules:
-    scope-empty:
+    type-empty:
         level: error
 ```

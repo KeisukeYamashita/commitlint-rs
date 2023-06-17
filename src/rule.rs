@@ -5,18 +5,22 @@ use serde::{Deserialize, Serialize};
 
 use self::{
     body_empty::BodyEmpty, body_max_length::BodyMaxLength, description_empty::DescriptionEmpty,
-    r#type::Type, scope::Scope, scope_empty::ScopeEmpty, subject_empty::SubjectEmpty,
-    type_empty::TypeEmpty,
+    description_format::DescriptionFormat, r#type::Type, scope::Scope, scope_empty::ScopeEmpty,
+    scope_format::ScopeFormat, subject_empty::SubjectEmpty, type_empty::TypeEmpty,
+    type_format::TypeFormat,
 };
 
 pub mod body_empty;
 pub mod body_max_length;
 pub mod description_empty;
+pub mod description_format;
 pub mod scope;
 pub mod scope_empty;
+pub mod scope_format;
 pub mod subject_empty;
 pub mod r#type;
 pub mod type_empty;
+pub mod type_format;
 
 /// Rules represents the rules of commitlint.
 /// See: https://commitlint.js.org/#/reference-rules
@@ -34,6 +38,10 @@ pub struct Rules {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description_empty: Option<DescriptionEmpty>,
 
+    #[serde(rename = "description-format")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description_format: Option<DescriptionFormat>,
+
     #[serde(rename = "scope")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub scope: Option<Scope>,
@@ -41,6 +49,10 @@ pub struct Rules {
     #[serde(rename = "scope-empty")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub scope_empty: Option<ScopeEmpty>,
+
+    #[serde(rename = "scope-format")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub scope_format: Option<ScopeFormat>,
 
     #[serde(rename = "subject-empty")]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -53,6 +65,10 @@ pub struct Rules {
     #[serde(rename = "type-empty")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub type_empty: Option<TypeEmpty>,
+
+    #[serde(rename = "type-format")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub type_format: Option<TypeFormat>,
 }
 
 /// Rule is a collection of rules.
@@ -78,6 +94,12 @@ impl Rules {
             }
         }
 
+        if let Some(rule) = &self.description_format {
+            if let Some(validation) = rule.validate(message) {
+                results.push(validation);
+            }
+        }
+
         if let Some(rule) = &self.scope {
             if let Some(validation) = rule.validate(message) {
                 results.push(validation);
@@ -85,6 +107,12 @@ impl Rules {
         }
 
         if let Some(rule) = &self.scope_empty {
+            if let Some(validation) = rule.validate(message) {
+                results.push(validation);
+            }
+        }
+
+        if let Some(rule) = &self.scope_format {
             if let Some(validation) = rule.validate(message) {
                 results.push(validation);
             }
@@ -108,6 +136,12 @@ impl Rules {
             }
         }
 
+        if let Some(rule) = &self.type_format {
+            if let Some(validation) = rule.validate(message) {
+                results.push(validation);
+            }
+        }
+
         results
     }
 }
@@ -120,11 +154,14 @@ impl Default for Rules {
             body_empty: None,
             body_max_length: None,
             description_empty: DescriptionEmpty::default().into(),
+            description_format: None,
             scope: None,
             scope_empty: None,
+            scope_format: None,
             subject_empty: SubjectEmpty::default().into(),
             r#type: None,
             type_empty: TypeEmpty::default().into(),
+            type_format: None,
         }
     }
 }
