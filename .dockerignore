@@ -1,0 +1,10 @@
+# Allowlist not to add unnecessary files to the repository
+
+*
+
+!/Cargo.lock
+!/Cargo.toml
+!/src
+!/LICENSE-APACHE
+!/LICENSE-MIT
+!/README.md
