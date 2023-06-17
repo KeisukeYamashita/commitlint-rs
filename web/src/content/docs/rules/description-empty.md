@@ -19,6 +19,8 @@ feat(cli): add new flag
 
 ## Example
 
+### Description must exist
+
 ```yaml
 rules:
     description-empty:

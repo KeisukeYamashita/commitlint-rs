@@ -31,6 +31,8 @@ fix(api): fix typo
 
 ## Example
 
+### Only allow types `feat` and `fix`
+
 ```yaml
 rules:
     scope:

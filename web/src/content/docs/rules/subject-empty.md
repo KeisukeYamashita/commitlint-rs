@@ -23,6 +23,8 @@ Body of the commit
 
 ## Example
 
+### Subject must exist
+
 ```yaml
 rules:
     subject-empty:

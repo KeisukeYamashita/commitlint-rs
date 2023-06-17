@@ -19,6 +19,8 @@ docs(cli): fix typo
 
 ## Example
 
+### Scope must exist
+
 ```yaml
 rules:
     type-empty:

@@ -31,6 +31,8 @@ chore(api): fix typo
 
 ## Example
 
+### Only allow scopes `api` and `web`
+
 ```yaml
 rules:
     scope:
