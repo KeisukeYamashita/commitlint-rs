@@ -101,7 +101,7 @@ mod tests {
         assert_eq!(violation.clone().unwrap().level, Level::Error);
         assert_eq!(
             violation.unwrap().message,
-            format!("description is longer than {} characters", rule.length)
+            format!("type is longer than {} characters", rule.length)
         );
     }
 }
