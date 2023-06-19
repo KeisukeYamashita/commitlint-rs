@@ -1,6 +1,6 @@
 ---
-title: Body Max Length
-description: Check if the body length is less than or equal to the specified length
+title: Type Max Length
+description: Check if the type length is less than or equal to the specified length
 ---
 
 * Default:
@@ -10,34 +10,30 @@ In this page, we will use the following commit message as an example.
 
 ```yaml
 rules:
-    body-max-length:
+    type-max-length:
         level: error
-        length: 4
+        length: 6
 ```
 
 ## ❌ Bad
 
 ```console
-feat(cli): add new flag
-
-Hello, I'm a body of the commit message.
+feature-for-future(cli): add new flag
 ```
 
 ## ✅ Good
 
 ```console
 feat(cli): add new flag
-
-Hey.
 ```
 
 ## Example
 
-### Body length should be less than or equal to 72
+### Type length should be less than or equal to 72
 
 ```yaml
 rules:
-    body-max-length:
+    type-max-length:
         level: error
         length: 72
 ```

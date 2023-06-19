@@ -26,6 +26,12 @@ Make it smart. But we should not be opinionated so the default is ignored.\" | c
 }
 
 # bats test_tags=default
+@test "description max length" {
+    run bash -c 'echo "feat(other): add script" | commitlint'
+    [ "$status" -eq 0 ]
+}
+
+# bats test_tags=default
 @test "scope" {
     run bash -c 'echo "feat(other): add script" | commitlint'
     [ "$status" -eq 0 ]
@@ -33,6 +39,12 @@ Make it smart. But we should not be opinionated so the default is ignored.\" | c
 
 # bats test_tags=default
 @test "scope format" {
+    run bash -c 'echo "feat(other): add script" | commitlint'
+    [ "$status" -eq 0 ]
+}
+
+# bats test_tags=default
+@test "scope max length" {
     run bash -c 'echo "feat(other): add script" | commitlint'
     [ "$status" -eq 0 ]
 }
@@ -57,6 +69,12 @@ Make it smart. But we should not be opinionated so the default is ignored.\" | c
 
 # bats test_tags=default
 @test "type format" {
+    run bash -c 'echo "feat(other): add script" | commitlint'
+    [ "$status" -eq 0 ]
+}
+
+# bats test_tags=default
+@test "type max length" {
     run bash -c 'echo "feat(other): add script" | commitlint'
     [ "$status" -eq 0 ]
 }
