@@ -3,32 +3,32 @@ use serde::{Deserialize, Serialize};
 
 use super::Level;
 
-/// BodyMaxLength represents the body-max-length rule.
+/// TypeMaxLength represents the description-max-length rule.
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct BodyMaxLength {
+pub struct TypeMaxLength {
     /// Level represents the level of the rule.
     ///
     // Note that currently the default literal is not supported.
     // See: https://github.com/serde-rs/serde/issues/368
     level: Option<Level>,
 
-    /// Length represents the maximum length of the body.
+    /// Length represents the maximum length of the type.
     length: usize,
 }
 
-/// BodyMaxLength represents the body-max-length rule.
-impl Rule for BodyMaxLength {
-    const NAME: &'static str = "body-max-length";
+/// TypeMaxLength represents the type-max-length rule.
+impl Rule for TypeMaxLength {
+    const NAME: &'static str = "type-max-length";
     const LEVEL: Level = Level::Error;
 
     fn message(&self, _message: &Message) -> String {
-        format!("body is longer than {} characters", self.length)
+        format!("type is longer than {} characters", self.length)
     }
 
     fn validate(&self, message: &Message) -> Option<Violation> {
-        match &message.body {
-            Some(body) => {
-                if body.len() >= self.length {
+        match &message.r#type {
+            Some(t) => {
+                if t.len() >= self.length {
                     return Some(Violation {
                         level: self.level.unwrap_or(Self::LEVEL),
                         message: self.message(message),
@@ -47,8 +47,8 @@ impl Rule for BodyMaxLength {
     }
 }
 
-/// Default implementation of BodyMaxLength.
-impl Default for BodyMaxLength {
+/// Default implementation of TypeMaxLength.
+impl Default for TypeMaxLength {
     fn default() -> Self {
         Self {
             level: Some(Self::LEVEL),
@@ -62,42 +62,36 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_long_body() {
-        let rule = BodyMaxLength {
+    fn test_long_type() {
+        let rule = TypeMaxLength {
             length: usize::MAX, // Long length for testing
             ..Default::default()
         };
         let message = Message {
-            body: Some("Hello world".to_string()),
-            description: Some("broadcast $destroy event on scope destruction".to_string()),
+            body: None,
+            description: Some("desc".to_string()),
             footers: None,
             r#type: Some("feat".to_string()),
-            raw: "feat(scope): broadcast $destroy event on scope destruction
-
-Hey!"
-                .to_string(),
+            raw: "feat(scope): desc".to_string(),
             scope: Some("scope".to_string()),
-            subject: Some("feat(scope): broadcast $destroy event on scope destruction".to_string()),
+            subject: Some("feat(scope): desc".to_string()),
         };
 
         assert!(rule.validate(&message).is_none());
     }
 
     #[test]
-    fn test_short_body() {
-        let rule = BodyMaxLength {
-            length: 10, // Short length for testing
+    fn test_short_type() {
+        let rule = TypeMaxLength {
+            length: 3, // Short length for testing
             ..Default::default()
         };
         let message = Message {
-            body: Some("Hello, I'm a long body".to_string()),
-            description: None,
+            body: None,
+            description: Some("feat(scope): I'm long description".to_string()),
             footers: None,
             r#type: Some("feat".to_string()),
-            raw: "feat(scope): broadcast $destroy event on scope destruction
-
-Hello, I'm a long body"
-                .to_string(),
+            raw: "feat(scope): I'm long description".to_string(),
             scope: Some("scope".to_string()),
             subject: None,
         };
@@ -107,7 +101,7 @@ Hello, I'm a long body"
         assert_eq!(violation.clone().unwrap().level, Level::Error);
         assert_eq!(
             violation.unwrap().message,
-            format!("body is longer than {} characters", rule.length)
+            format!("description is longer than {} characters", rule.length)
         );
     }
 }

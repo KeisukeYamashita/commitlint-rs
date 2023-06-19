@@ -5,22 +5,26 @@ use serde::{Deserialize, Serialize};
 
 use self::{
     body_empty::BodyEmpty, body_max_length::BodyMaxLength, description_empty::DescriptionEmpty,
-    description_format::DescriptionFormat, r#type::Type, scope::Scope, scope_empty::ScopeEmpty,
-    scope_format::ScopeFormat, subject_empty::SubjectEmpty, type_empty::TypeEmpty,
-    type_format::TypeFormat,
+    description_format::DescriptionFormat, description_max_length::DescriptionMaxLength,
+    r#type::Type, scope::Scope, scope_empty::ScopeEmpty, scope_format::ScopeFormat,
+    scope_max_length::ScopeMaxLength, subject_empty::SubjectEmpty, type_empty::TypeEmpty,
+    type_format::TypeFormat, type_max_length::TypeMaxLength,
 };
 
 pub mod body_empty;
 pub mod body_max_length;
 pub mod description_empty;
 pub mod description_format;
+pub mod description_max_length;
 pub mod scope;
 pub mod scope_empty;
 pub mod scope_format;
+pub mod scope_max_length;
 pub mod subject_empty;
 pub mod r#type;
 pub mod type_empty;
 pub mod type_format;
+pub mod type_max_length;
 
 /// Rules represents the rules of commitlint.
 /// See: https://commitlint.js.org/#/reference-rules
@@ -42,6 +46,10 @@ pub struct Rules {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description_format: Option<DescriptionFormat>,
 
+    #[serde(rename = "description-max-length")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description_max_length: Option<DescriptionMaxLength>,
+
     #[serde(rename = "scope")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub scope: Option<Scope>,
@@ -53,6 +61,10 @@ pub struct Rules {
     #[serde(rename = "scope-format")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub scope_format: Option<ScopeFormat>,
+
+    #[serde(rename = "scope-max-length")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub scope_max_length: Option<ScopeMaxLength>,
 
     #[serde(rename = "subject-empty")]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -69,6 +81,10 @@ pub struct Rules {
     #[serde(rename = "type-format")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub type_format: Option<TypeFormat>,
+
+    #[serde(rename = "type-max-length")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub type_max_length: Option<TypeMaxLength>,
 }
 
 /// Rule is a collection of rules.
@@ -100,6 +116,12 @@ impl Rules {
             }
         }
 
+        if let Some(rule) = &self.description_max_length {
+            if let Some(validation) = rule.validate(message) {
+                results.push(validation);
+            }
+        }
+
         if let Some(rule) = &self.scope {
             if let Some(validation) = rule.validate(message) {
                 results.push(validation);
@@ -113,6 +135,12 @@ impl Rules {
         }
 
         if let Some(rule) = &self.scope_format {
+            if let Some(validation) = rule.validate(message) {
+                results.push(validation);
+            }
+        }
+
+        if let Some(rule) = &self.scope_max_length {
             if let Some(validation) = rule.validate(message) {
                 results.push(validation);
             }
@@ -142,6 +170,12 @@ impl Rules {
             }
         }
 
+        if let Some(rule) = &self.type_max_length {
+            if let Some(validation) = rule.validate(message) {
+                results.push(validation);
+            }
+        }
+
         results
     }
 }
@@ -155,13 +189,16 @@ impl Default for Rules {
             body_max_length: None,
             description_empty: DescriptionEmpty::default().into(),
             description_format: None,
+            description_max_length: None,
             scope: None,
             scope_empty: None,
             scope_format: None,
+            scope_max_length: None,
             subject_empty: SubjectEmpty::default().into(),
             r#type: None,
             type_empty: TypeEmpty::default().into(),
             type_format: None,
+            type_max_length: None,
         }
     }
 }
