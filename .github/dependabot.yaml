@@ -2,18 +2,27 @@ version: 2
 updates:
   # Maintain dependencies for Rust (Cargo)
   - package-ecosystem: "cargo"
+    commit-message:
+      include: scope
+      prefix: bump
     directory: "/"
     schedule:
       interval: "daily"
 
   # Maintain dependencies for Docker
   - package-ecosystem: "docker"
+    commit-message:
+      include: scope
+      prefix: bump
     directory: "/"
     schedule:
       interval: "daily"
 
   # Maintain dependencies for npm
   - package-ecosystem: "npm"
+    commit-message:
+      include: scope
+      prefix: bump
     directory: "/web"
     schedule:
       interval: "daily"
