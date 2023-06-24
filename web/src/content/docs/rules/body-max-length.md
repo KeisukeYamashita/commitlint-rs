@@ -10,9 +10,9 @@ In this page, we will use the following commit message as an example.
 
 ```yaml
 rules:
-    body-max-length:
-        level: error
-        length: 4
+  body-max-length:
+    level: error
+    length: 4
 ```
 
 ## ❌ Bad
@@ -37,7 +37,7 @@ Hey.
 
 ```yaml
 rules:
-    body-max-length:
-        level: error
-        length: 72
+  body-max-length:
+    level: error
+    length: 72
 ```

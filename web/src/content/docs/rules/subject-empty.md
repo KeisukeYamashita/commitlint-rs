@@ -27,6 +27,6 @@ Body of the commit
 
 ```yaml
 rules:
-    subject-empty:
-        level: error
+  subject-empty:
+    level: error
 ```

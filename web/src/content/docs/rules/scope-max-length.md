@@ -10,9 +10,9 @@ In this page, we will use the following commit message as an example.
 
 ```yaml
 rules:
-    scope-max-length:
-        level: error
-        length: 6
+  scope-max-length:
+    level: error
+    length: 6
 ```
 
 ## ❌ Bad
@@ -33,7 +33,7 @@ feat(cli): add new flag
 
 ```yaml
 rules:
-    scope-max-length:
-        level: error
-        length: 72
+  scope-max-length:
+    level: error
+    length: 72
 ```

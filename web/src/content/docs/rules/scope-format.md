@@ -9,9 +9,9 @@ In this page, we will use the following commit message as an example.
 
 ```yaml
 rules:
-    scope-format:
-        level: error
-        format: ^[A-Z].*$
+  scope-format:
+    level: error
+    format: ^[A-Z].*$
 ```
 
 ## ❌ Bad
@@ -32,7 +32,7 @@ feat(cli): Added a new flag
 
 ```yaml
 rules:
-    scope-format:
-        level: error
-        format: ^[A-Z].*$
+  scope-format:
+    level: error
+    format: ^[A-Z].*$
 ```

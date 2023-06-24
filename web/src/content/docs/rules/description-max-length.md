@@ -10,9 +10,9 @@ In this page, we will use the following commit message as an example.
 
 ```yaml
 rules:
-    description-max-length:
-        level: error
-        length: 12
+  description-max-length:
+    level: error
+    length: 12
 ```
 
 ## ❌ Bad
@@ -33,7 +33,7 @@ feat(cli): add help flag
 
 ```yaml
 rules:
-    description-max-length:
-        level: error
-        length: 72
+  description-max-length:
+    level: error
+    length: 72
 ```

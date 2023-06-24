@@ -23,6 +23,6 @@ docs(cli): fix typo
 
 ```yaml
 rules:
-    type-empty:
-        level: error
+  type-empty:
+    level: error
 ```

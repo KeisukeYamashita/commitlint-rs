@@ -9,11 +9,11 @@ In this example, we assumed that you have a project with the following scopes:
 
 ```yaml
 rules:
-    scope:
-        level: error
-        options:
-            - api
-            - web
+  scope:
+    level: error
+    options:
+      - api
+      - web
 ```
 
 ## ❌ Bad
@@ -35,9 +35,9 @@ chore(api): fix typo
 
 ```yaml
 rules:
-    scope:
-        level: error
-        options:
-            - api
-            - web
+  scope:
+    level: error
+    options:
+      - api
+      - web
 ```
