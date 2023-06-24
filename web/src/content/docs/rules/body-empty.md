@@ -23,6 +23,6 @@ Add new flag --help for https://github.com/KeisukeYamashita/commitlint-rs/issues
 
 ```yaml
 rules:
-    body-empty:
-        level: error
+  body-empty:
+    level: error
 ```

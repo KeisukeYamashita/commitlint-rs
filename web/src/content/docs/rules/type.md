@@ -9,11 +9,11 @@ In this example, we assumed that you have a project with the following types:
 
 ```yaml
 rules:
-    type:
-        level: error
-        options:
-            - feat
-            - fix
+  type:
+    level: error
+    options:
+      - feat
+      - fix
 ```
 
 ## ❌ Bad
@@ -35,9 +35,9 @@ fix(api): fix typo
 
 ```yaml
 rules:
-    scope:
-        level: error
-        options:
-            - api
-            - web
+  scope:
+    level: error
+    options:
+      - api
+      - web
 ```

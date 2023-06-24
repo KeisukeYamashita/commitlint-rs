@@ -51,10 +51,10 @@ You can use the `--print-config` flag to print the configuration that will be us
 ```console
 $ commitlint --print-config
 rules:
-    description-empty: # Description must not be empty
-        level: warn
-    subject-empty: # Subject line must not be empty
-        level: error
-    type-empty: # Type must not be empty
-        level: error
+  description-empty: # Description must not be empty
+    level: warn
+  subject-empty: # Subject line must not be empty
+    level: error
+  type-empty: # Type must not be empty
+    level: error
 ```

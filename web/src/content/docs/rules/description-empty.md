@@ -23,6 +23,6 @@ feat(cli): add new flag
 
 ```yaml
 rules:
-    description-empty:
-        level: error
+  description-empty:
+    level: error
 ```
