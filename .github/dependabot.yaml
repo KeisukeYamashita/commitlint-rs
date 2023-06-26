@@ -18,6 +18,12 @@ updates:
     schedule:
       interval: "daily"
 
+  # Maintain dependencies for GitHub Action
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+
   # Maintain dependencies for npm
   - package-ecosystem: "npm"
     commit-message:
