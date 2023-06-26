@@ -39,6 +39,10 @@ jobs:
         with:
           command: clippy
 
+      - uses: sksat/action-clippy@v0.2.1
+        with:
+          reporter: github-pr-review
+
   markdown:
     name: markdown
     runs-on: ubuntu-latest
