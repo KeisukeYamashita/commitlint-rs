@@ -55,7 +55,7 @@ impl Args {
         // `pre-commit`, stdin exists, so this needs to come first.
         if self.edit {
             let msg = std::fs::read_to_string("./.git/COMMIT_EDITMSG")
-                .expect("Failed to read './.git/COMMIT_EDITMSG");
+                .expect("Failed to read './.git/COMMIT_EDITMSG'");
             return Ok(vec![Message::new(msg)]);
         }
 
