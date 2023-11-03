@@ -39,7 +39,6 @@ async fn main() {
         .into_iter()
         .map(|message| {
             let config = config.clone();
-
             tokio::spawn(async move { validate(&message, &config).await })
         })
         .collect::<Vec<_>>();

@@ -228,4 +228,20 @@ Name: Keke";
             Some(("feat".to_string(), None, "add dummy option".to_string()))
         );
     }
+    #[test]
+    fn test_parse_subject_with_on_message() {
+        let input = "";
+        assert_eq!(
+            parse_subject(input),
+            None
+        );
+    }
+      #[test]
+    fn test_parse_subject_with_error_message() {
+        let input = "test";
+        assert_eq!(
+            parse_subject(input),
+            None
+        );
+    }
 }

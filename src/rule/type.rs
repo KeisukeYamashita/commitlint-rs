@@ -25,7 +25,7 @@ impl Rule for Type {
     fn message(&self, message: &Message) -> String {
         format!(
             "type {} is not allowed. Only {:?} are allowed",
-            message.r#type.as_ref().unwrap(),
+            message.r#type.as_ref().unwrap_or(&message.raw.to_string()),
             self.options
         )
     }
@@ -121,5 +121,43 @@ mod tests {
             violation.unwrap().message,
             "type invalid is not allowed. Only [] are allowed".to_string()
         );
+    }
+
+    #[test]
+    fn test_no_type() {
+        let rule = Type::default();
+
+        let message = Message {
+            body: None,
+            description: None,
+            footers: None,
+            r#type: None,
+            raw: "".to_string(),
+            scope: None,
+            subject: None,
+        };
+        assert_eq!(rule.validate(&message).unwrap().level, Level::Error);
+        assert_eq!(
+            rule.validate(&message).unwrap().message,
+            "type  is not allowed. Only [] are allowed".to_string());
+    }
+
+    #[test]
+    fn test_invalid_raw() {
+        let rule = Type::default();
+        let input = "test".to_string();
+        let message = Message {
+            body: None,
+            description: None,
+            footers: None,
+            r#type: None,
+            raw: input.clone(),
+            scope: None,
+            subject: None,
+        };
+        assert_eq!(rule.validate(&message).unwrap().level, Level::Error);
+        assert_eq!(
+            rule.validate(&message).unwrap().message,
+            format!("type {} is not allowed. Only [] are allowed", input));
     }
 }
