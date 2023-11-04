@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: crate
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
@@ -82,7 +82,7 @@ jobs:
       name: web
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: withastro/action@v0
         with:
           path: ./web
