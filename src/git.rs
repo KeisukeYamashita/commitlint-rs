@@ -229,7 +229,7 @@ Name: Keke";
         );
     }
     #[test]
-    fn test_parse_subject_with_on_message() {
+    fn test_parse_subject_without_message() {
         let input = "";
         assert_eq!(
             parse_subject(input),
