@@ -21,11 +21,10 @@ pub struct Type {
 impl Rule for Type {
     const NAME: &'static str = "type";
     const LEVEL: Level = Level::Error;
-
     fn message(&self, message: &Message) -> String {
         format!(
             "type {} is not allowed. Only {:?} are allowed",
-            message.r#type.as_ref().unwrap(),
+            message.r#type.as_ref().unwrap_or(&"".to_string()),
             self.options
         )
     }
@@ -121,5 +120,44 @@ mod tests {
             violation.unwrap().message,
             "type invalid is not allowed. Only [] are allowed".to_string()
         );
+    }
+
+    #[test]
+    fn test_empty_message() {
+        let rule = Type::default();
+
+        let message = Message {
+            body: None,
+            description: None,
+            footers: None,
+            r#type: None,
+            raw: "".to_string(),
+            scope: None,
+            subject: None,
+        };
+        assert_eq!(rule.validate(&message).unwrap().level, Level::Error);
+        assert_eq!(
+            rule.validate(&message).unwrap().message,
+            "type  is not allowed. Only [] are allowed".to_string());
+    }
+
+    #[test]
+    fn test_missing_type() {
+        let rule = Type::default();
+        let input = "test".to_string();
+
+        let message = Message {
+            body: None,
+            description: None,
+            footers: None,
+            r#type: None,
+            raw: input.clone(),
+            scope: None,
+            subject: None,
+        };
+        assert_eq!(rule.validate(&message).unwrap().level, Level::Error);
+        assert_eq!(
+            rule.validate(&message).unwrap().message,
+            "type  is not allowed. Only [] are allowed");
     }
 }

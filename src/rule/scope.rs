@@ -25,7 +25,7 @@ impl Rule for Scope {
     fn message(&self, message: &Message) -> String {
         format!(
             "scope {} is not allowed. Only {:?} are allowed",
-            message.scope.as_ref().unwrap(),
+            message.scope.as_ref().unwrap_or(&"".to_string()),
             self.options
         )
     }
@@ -120,6 +120,29 @@ mod tests {
         assert_eq!(
             violation.unwrap().message,
             "scope invalid is not allowed. Only [] are allowed".to_string()
+        );
+    }
+
+    #[test]
+    fn test_without_scope() {
+        let rule = Scope::default();
+
+        let message = Message {
+            body: None,
+            description: None,
+            footers: None,
+            r#type: None,
+            raw: "".to_string(),
+            scope: None,
+            subject: None,
+        };
+
+        let violation = rule.validate(&message);
+        assert!(violation.is_some());
+        assert_eq!(violation.clone().unwrap().level, Level::Error);
+        assert_eq!(
+            violation.unwrap().message,
+            "scope  is not allowed. Only [] are allowed"
         );
     }
 }
