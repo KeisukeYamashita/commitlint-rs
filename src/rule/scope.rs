@@ -77,6 +77,29 @@ mod tests {
     }
 
     #[test]
+    fn test_empty_message() {
+        let rule = Scope::default();
+
+        let message = Message {
+            body: None,
+            description: None,
+            footers: None,
+            r#type: None,
+            raw: "".to_string(),
+            scope: None,
+            subject: None,
+        };
+
+        let violation = rule.validate(&message);
+        assert!(violation.is_some());
+        assert_eq!(violation.clone().unwrap().level, Level::Error);
+        assert_eq!(
+            violation.unwrap().message,
+            "scope  is not allowed. Only [] are allowed"
+        );
+    }
+
+    #[test]
     fn test_invalid_scope() {
         let mut rule = Scope::default();
         rule.options = vec!["api".to_string(), "web".to_string()];
@@ -120,29 +143,6 @@ mod tests {
         assert_eq!(
             violation.unwrap().message,
             "scope invalid is not allowed. Only [] are allowed".to_string()
-        );
-    }
-
-    #[test]
-    fn test_without_scope() {
-        let rule = Scope::default();
-
-        let message = Message {
-            body: None,
-            description: None,
-            footers: None,
-            r#type: None,
-            raw: "".to_string(),
-            scope: None,
-            subject: None,
-        };
-
-        let violation = rule.validate(&message);
-        assert!(violation.is_some());
-        assert_eq!(violation.clone().unwrap().level, Level::Error);
-        assert_eq!(
-            violation.unwrap().message,
-            "scope  is not allowed. Only [] are allowed"
         );
     }
 }

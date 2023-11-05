@@ -58,21 +58,23 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_valid_type() {
-        let mut rule = Type::default();
-        rule.options = vec!["doc".to_string(), "feat".to_string()];
+    fn test_empty_message() {
+        let rule = Type::default();
 
         let message = Message {
             body: None,
             description: None,
             footers: None,
-            r#type: Some("feat".to_string()),
-            raw: "feat(scope): broadcast $destroy event on scope destruction".to_string(),
+            r#type: None,
+            raw: "".to_string(),
             scope: None,
             subject: None,
         };
-
-        assert!(rule.validate(&message).is_none());
+        assert_eq!(rule.validate(&message).unwrap().level, Level::Error);
+        assert_eq!(
+            rule.validate(&message).unwrap().message,
+            "type  is not allowed. Only [] are allowed".to_string()
+        );
     }
 
     #[test]
@@ -123,25 +125,6 @@ mod tests {
     }
 
     #[test]
-    fn test_empty_message() {
-        let rule = Type::default();
-
-        let message = Message {
-            body: None,
-            description: None,
-            footers: None,
-            r#type: None,
-            raw: "".to_string(),
-            scope: None,
-            subject: None,
-        };
-        assert_eq!(rule.validate(&message).unwrap().level, Level::Error);
-        assert_eq!(
-            rule.validate(&message).unwrap().message,
-            "type  is not allowed. Only [] are allowed".to_string());
-    }
-
-    #[test]
     fn test_missing_type() {
         let rule = Type::default();
         let input = "test".to_string();
@@ -158,6 +141,25 @@ mod tests {
         assert_eq!(rule.validate(&message).unwrap().level, Level::Error);
         assert_eq!(
             rule.validate(&message).unwrap().message,
-            "type  is not allowed. Only [] are allowed");
+            "type  is not allowed. Only [] are allowed"
+        );
+    }
+
+    #[test]
+    fn test_valid_type() {
+        let mut rule = Type::default();
+        rule.options = vec!["doc".to_string(), "feat".to_string()];
+
+        let message = Message {
+            body: None,
+            description: None,
+            footers: None,
+            r#type: Some("feat".to_string()),
+            raw: "feat(scope): broadcast $destroy event on scope destruction".to_string(),
+            scope: None,
+            subject: None,
+        };
+
+        assert!(rule.validate(&message).is_none());
     }
 }
