@@ -1,0 +1,65 @@
+name: Rust Build and Release
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - os: ubuntu-20.04
+            rust_target: x86_64-unknown-linux-gnu
+            ext: ''
+            args: ''
+          - os: macos-latest
+            rust_target: x86_64-apple-darwin
+            ext: ''
+            args: ''
+          - os: macos-latest
+            rust_target: aarch64-apple-darwin
+            ext: ''
+            args: ''
+          - os: windows-latest
+            rust_target: x86_64-pc-windows-msvc
+            ext: '.exe'
+            args: ''
+          - os: windows-latest
+            rust_target: aarch64-pc-windows-msvc
+            ext: '.exe'
+            args: '--no-default-features --features native-tls-vendored'
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true
+
+    - name: Build
+      run: cargo build --verbose
+
+    - name: Run tests
+      run: cargo test --verbose
+
+    - name: Build release
+      run: cargo build --release
+
+    - name: Create release tarball
+      run: tar czvf commitlint-rs-${{ github.ref_name }}-${{ matrix.os }}.tar.gz -C target/release commitlint-rs
+
+    - name: Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: commitlint-rs-${{ github.ref_name }}-${{ matrix.os }}.tar.gz
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
