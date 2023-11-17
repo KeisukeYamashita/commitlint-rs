@@ -1,4 +1,4 @@
-FROM rust:1.70-alpine as builder
+FROM rust:1.74-alpine as builder
 WORKDIR /app
 
 RUN apk update \
