@@ -34,7 +34,7 @@ jobs:
             args: '--no-default-features --features native-tls-vendored'
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Install Rust
       uses: actions-rs/toolchain@v1
