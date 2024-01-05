@@ -57,6 +57,7 @@ pub fn find_config_file(path: PathBuf) -> Option<PathBuf> {
         if path.exists() {
             return Some(path);
         }
+        path.pop();
     }
 
     None
