@@ -63,6 +63,17 @@ fn extract_commit_messages(input: &str) -> Vec<String> {
 }
 
 /// Parse a commit message and return the subject, body, and footers.
+///
+/// Please refer the official documentation for the commit message format.
+/// See: https://www.conventionalcommits.org/en/v1.0.0/#summary
+///
+/// ```
+/// <type>[optional scope]: <description> <-- Subject
+///
+/// [optional body] <-- Body
+///
+/// [optional footer(s)] <-- Footer
+/// ```
 pub fn parse_commit_message(
     message: &str,
 ) -> (String, Option<String>, Option<HashMap<String, String>>) {
@@ -179,10 +190,7 @@ Name: Keke";
             footer.clone().unwrap().get("Link"),
             Some(&"Hello".to_string())
         );
-        assert_eq!(
-            footer.unwrap().get("Name"),
-            Some(&"Keke".to_string())
-        );
+        assert_eq!(footer.unwrap().get("Name"), Some(&"Keke".to_string()));
     }
 
     #[test]
@@ -231,17 +239,11 @@ Name: Keke";
     #[test]
     fn test_parse_subject_without_message() {
         let input = "";
-        assert_eq!(
-            parse_subject(input),
-            None
-        );
+        assert_eq!(parse_subject(input), None);
     }
-      #[test]
+    #[test]
     fn test_parse_subject_with_error_message() {
         let input = "test";
-        assert_eq!(
-            parse_subject(input),
-            None
-        );
+        assert_eq!(parse_subject(input), None);
     }
 }
