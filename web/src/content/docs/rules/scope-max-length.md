@@ -12,7 +12,7 @@ In this page, we will use the following commit message as an example.
 rules:
   scope-max-length:
     level: error
-    length: 6
+    length: 5
 ```
 
 ## ❌ Bad
@@ -29,11 +29,11 @@ feat(cli): add new flag
 
 ## Example
 
-### Description length should be less than or equal to 72
+### Description length should be less than or equal to 5
 
 ```yaml
 rules:
   scope-max-length:
     level: error
-    length: 72
+    length: 5
 ```

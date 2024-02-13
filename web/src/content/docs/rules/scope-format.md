@@ -11,28 +11,28 @@ In this page, we will use the following commit message as an example.
 rules:
   scope-format:
     level: error
-    format: ^[A-Z].*$
+    format: ^[a-z]*$
 ```
 
 ## ❌ Bad
 
 ```console
-feat(cli): added a new flag
+feat(Cli): added a new flag
 ```
 
 ## ✅ Good
 
 ```console
-feat(cli): Added a new flag
+feat(cli): added a new flag
 ```
 
 ## Example
 
-### Scope must start with a capital letter
+### Scope must start with a lower letter
 
 ```yaml
 rules:
   scope-format:
     level: error
-    format: ^[A-Z].*$
+    format: ^[a-z]*$
 ```
