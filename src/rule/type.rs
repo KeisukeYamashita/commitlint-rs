@@ -125,6 +125,29 @@ mod tests {
     }
 
     #[test]
+    fn test_no_options_with_empty_type() {
+        let rule = Type::default();
+
+        let message = Message {
+            body: None,
+            description: None,
+            footers: None,
+            r#type: None,
+            raw: "invalid(scope): broadcast $destroy event on scope destruction".to_string(),
+            scope: None,
+            subject: None,
+        };
+
+        let violation = rule.validate(&message);
+        assert!(violation.is_some());
+        assert_eq!(violation.clone().unwrap().level, Level::Error);
+        assert_eq!(
+            violation.unwrap().message,
+            "type  is not allowed. Only [] are allowed".to_string()
+        );
+    }
+
+    #[test]
     fn test_missing_type() {
         let rule = Type::default();
         let input = "test".to_string();
