@@ -77,7 +77,7 @@ jobs:
             [A-Z]+
           requireScope: true
           subjectPattern: ^(?![A-Z]).+$
-          scope: |
+          scopes: |
             .github
             cli
             deps
