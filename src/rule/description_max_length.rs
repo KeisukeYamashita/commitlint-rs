@@ -26,20 +26,12 @@ impl Rule for DescriptionMaxLength {
     }
 
     fn validate(&self, message: &Message) -> Option<Violation> {
-        match &message.description {
-            Some(desc) => {
-                if desc.len() >= self.length {
-                    return Some(Violation {
-                        level: self.level.unwrap_or(Self::LEVEL),
-                        message: self.message(message),
-                    });
-                }
-            }
-            None => {
+        if let Some(desc) = &message.description {
+            if desc.len() >= self.length {
                 return Some(Violation {
                     level: self.level.unwrap_or(Self::LEVEL),
                     message: self.message(message),
-                })
+                });
             }
         }
 
@@ -75,6 +67,25 @@ mod tests {
             raw: "feat(scope): desc".to_string(),
             scope: Some("scope".to_string()),
             subject: Some("feat(scope): desc".to_string()),
+        };
+
+        assert!(rule.validate(&message).is_none());
+    }
+
+    #[test]
+    fn test_empty_description() {
+        let rule = DescriptionMaxLength {
+            length: 10, // Short length for testing
+            ..Default::default()
+        };
+        let message = Message {
+            body: None,
+            description: None,
+            footers: None,
+            r#type: Some("feat".to_string()),
+            raw: "feat(scope)".to_string(),
+            scope: Some("scope".to_string()),
+            subject: None,
         };
 
         assert!(rule.validate(&message).is_none());
