@@ -35,7 +35,7 @@ fix(api): fix typo
 
 ```yaml
 rules:
-  scope:
+  type:
     level: error
     options:
       - api
