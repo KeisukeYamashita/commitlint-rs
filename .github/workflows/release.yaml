@@ -20,6 +20,8 @@ jobs:
       fail-fast: true
       matrix:
         config:
+          # See details fore GitHub Actions runners
+          # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners
           - os: ubuntu-20.04
             rust_target: x86_64-unknown-linux-gnu
             ext: ""
@@ -28,7 +30,7 @@ jobs:
             rust_target: x86_64-apple-darwin
             ext: ""
             args: ""
-          - os: macos-latest
+          - os: macos-14 # beta (Apple Silicon)
             rust_target: aarch64-apple-darwin
             ext: ""
             args: ""
@@ -55,7 +57,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: commitlint-${{ matrix.config.os }}
+          name: commitlint-${{ matrix.config.rust_target }}
           path: commitlint-${{ github.ref_name }}-${{ matrix.config.rust_target }}.tar.gz
           if-no-files-found: error
 
