@@ -22,7 +22,7 @@ impl Rule for Type {
     const NAME: &'static str = "type";
     const LEVEL: Level = Level::Error;
     fn message(&self, message: &Message) -> String {
-        if self.options.len() == 0 {
+        if self.options.is_empty() {
             return "types are not allowed".to_string();
         }
 
