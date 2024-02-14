@@ -41,3 +41,14 @@ rules:
       - api
       - web
 ```
+
+### Disallow all types
+
+```yaml
+rules:
+  type:
+    level: error
+    options: [] # or [""]
+  type-empty:
+    level: ignore
+```

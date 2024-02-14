@@ -22,6 +22,10 @@ impl Rule for Type {
     const NAME: &'static str = "type";
     const LEVEL: Level = Level::Error;
     fn message(&self, message: &Message) -> String {
+        if self.options.len() == 0 {
+            return "types are not allowed".to_string();
+        }
+
         format!(
             "type {} is not allowed. Only {:?} are allowed",
             message.r#type.as_ref().unwrap_or(&"".to_string()),
@@ -58,8 +62,9 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_empty_message() {
-        let rule = Type::default();
+    fn test_empty_type() {
+        let mut rule = Type::default();
+        rule.options = vec!["doc".to_string(), "feat".to_string()];
 
         let message = Message {
             body: None,
@@ -73,7 +78,7 @@ mod tests {
         assert_eq!(rule.validate(&message).unwrap().level, Level::Error);
         assert_eq!(
             rule.validate(&message).unwrap().message,
-            "type  is not allowed. Only [] are allowed".to_string()
+            "type  is not allowed. Only [\"doc\", \"feat\"] are allowed".to_string()
         );
     }
 
@@ -120,7 +125,7 @@ mod tests {
         assert_eq!(violation.clone().unwrap().level, Level::Error);
         assert_eq!(
             violation.unwrap().message,
-            "type invalid is not allowed. Only [] are allowed".to_string()
+            "types are not allowed".to_string()
         );
     }
 
@@ -133,7 +138,7 @@ mod tests {
             description: None,
             footers: None,
             r#type: None,
-            raw: "invalid(scope): broadcast $destroy event on scope destruction".to_string(),
+            raw: "(scope): broadcast $destroy event on scope destruction".to_string(),
             scope: None,
             subject: None,
         };
@@ -143,7 +148,7 @@ mod tests {
         assert_eq!(violation.clone().unwrap().level, Level::Error);
         assert_eq!(
             violation.unwrap().message,
-            "type  is not allowed. Only [] are allowed".to_string()
+            "types are not allowed".to_string()
         );
     }
 
@@ -164,7 +169,7 @@ mod tests {
         assert_eq!(rule.validate(&message).unwrap().level, Level::Error);
         assert_eq!(
             rule.validate(&message).unwrap().message,
-            "type  is not allowed. Only [] are allowed"
+            "types are not allowed".to_string()
         );
     }
 
