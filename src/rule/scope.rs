@@ -23,6 +23,10 @@ impl Rule for Scope {
     const LEVEL: Level = Level::Error;
 
     fn message(&self, message: &Message) -> String {
+        if self.options.len() == 0 {
+            return "scopes are not allowed".to_string();
+        }
+
         format!(
             "scope {} is not allowed. Only {:?} are allowed",
             message.scope.as_ref().unwrap_or(&"".to_string()),
@@ -59,26 +63,9 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_valid_scope() {
+    fn test_empty_scope() {
         let mut rule = Scope::default();
         rule.options = vec!["api".to_string(), "web".to_string()];
-
-        let message = Message {
-            body: None,
-            description: None,
-            footers: None,
-            r#type: Some("feat".to_string()),
-            raw: "feat(web): broadcast $destroy event on scope destruction".to_string(),
-            scope: Some("web".to_string()),
-            subject: None,
-        };
-
-        assert!(rule.validate(&message).is_none());
-    }
-
-    #[test]
-    fn test_empty_message() {
-        let rule = Scope::default();
 
         let message = Message {
             body: None,
@@ -95,8 +82,26 @@ mod tests {
         assert_eq!(violation.clone().unwrap().level, Level::Error);
         assert_eq!(
             violation.unwrap().message,
-            "scope  is not allowed. Only [] are allowed"
+            "scope  is not allowed. Only [\"api\", \"web\"] are allowed"
         );
+    }
+
+    #[test]
+    fn test_valid_scope() {
+        let mut rule = Scope::default();
+        rule.options = vec!["api".to_string(), "web".to_string()];
+
+        let message = Message {
+            body: None,
+            description: None,
+            footers: None,
+            r#type: Some("feat".to_string()),
+            raw: "feat(web): broadcast $destroy event on scope destruction".to_string(),
+            scope: Some("web".to_string()),
+            subject: None,
+        };
+
+        assert!(rule.validate(&message).is_none());
     }
 
     #[test]
@@ -142,7 +147,7 @@ mod tests {
         assert_eq!(violation.clone().unwrap().level, Level::Error);
         assert_eq!(
             violation.unwrap().message,
-            "scope invalid is not allowed. Only [] are allowed".to_string()
+            "scopes are not allowed".to_string()
         );
     }
 }
