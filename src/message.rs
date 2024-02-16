@@ -48,10 +48,10 @@ impl Message {
         let (r#type, scope, description) = parse_subject(&subject);
         Self {
             body,
-            description: Some(description),
+            description,
             footers,
             raw,
-            r#type: Some(r#type),
+            r#type,
             scope,
             subject: Some(subject),
         }

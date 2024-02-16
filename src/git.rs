@@ -118,19 +118,19 @@ pub fn parse_commit_message(
 /// Note that exclamation mark is not respected as the existing commitlint
 /// does not have any rules for it.
 /// See: https://commitlint.js.org/#/reference-rules
-pub fn parse_subject(subject: &str) -> (String, Option<String>, String) {
+pub fn parse_subject(subject: &str) -> (Option<String>, Option<String>, Option<String>) {
     let re =
         regex::Regex::new(r"^(?P<type>\w+)(?:\((?P<scope>[^\)]+)\))?(!)?\:\s(?P<description>.+)$")
             .unwrap();
     if let Some(captures) = re.captures(subject) {
-        let r#type = captures.name("type").unwrap().as_str().to_string();
+        let r#type = captures.name("type").map(|m| m.as_str().to_string());
         let scope = captures.name("scope").map(|m| m.as_str().to_string());
-        let description = captures.name("description").unwrap().as_str().to_string();
+        let description = captures.name("description").map(|m| m.as_str().to_string());
 
         return (r#type, scope, description);
     }
     // Fall back to the description.
-    ("".to_string(), None, subject.to_string())
+    (None, None, Some(subject.to_string()))
 }
 
 #[cfg(test)]
@@ -200,9 +200,9 @@ Name: Keke";
         assert_eq!(
             parse_subject(input),
             (
-                "feat".to_string(),
+                Some("feat".to_string()),
                 Some("cli".to_string()),
-                "add dummy option".to_string()
+                Some("add dummy option".to_string())
             )
         );
     }
@@ -213,9 +213,9 @@ Name: Keke";
         assert_eq!(
             parse_subject(input),
             (
-                "feat".to_string(),
+                Some("feat".to_string()),
                 Some("cli".to_string()),
-                "add dummy option".to_string()
+                Some("add dummy option".to_string())
             )
         );
     }
@@ -225,29 +225,35 @@ Name: Keke";
         let input = "feat: add dummy option";
         assert_eq!(
             parse_subject(input),
-            ("feat".to_string(), None, "add dummy option".to_string())
+            (
+                Some("feat".to_string()),
+                None,
+                Some("add dummy option".to_string())
+            )
         );
     }
+    
 
     #[test]
     fn test_parse_subject_with_emphasized_type_without_scope() {
         let input = "feat!: add dummy option";
         assert_eq!(
             parse_subject(input),
-            ("feat".to_string(), None, "add dummy option".to_string())
+            (
+                Some("feat".to_string()),
+                None,
+                Some("add dummy option".to_string())
+            )
         );
     }
     #[test]
     fn test_parse_subject_without_message() {
         let input = "";
-        assert_eq!(parse_subject(input), ("".to_string(), None, "".to_string()));
+        assert_eq!(parse_subject(input), (None, None, Some("".to_string())));
     }
     #[test]
     fn test_parse_subject_with_error_message() {
         let input = "test";
-        assert_eq!(
-            parse_subject(input),
-            ("".to_string(), None, "test".to_string())
-        );
+        assert_eq!(parse_subject(input), (None, None, Some("test".to_string())));
     }
 }
