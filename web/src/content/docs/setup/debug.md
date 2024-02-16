@@ -1,5 +1,5 @@
 ---
-title: Motivation
+title: Debug
 description: Debug your configurations
 ---
 
