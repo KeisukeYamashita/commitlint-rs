@@ -1,0 +1,25 @@
+name: Bump
+on:
+  release:
+    types:
+      - published
+
+permissions:
+  contents: write # To checkout and create PRs
+  pull-requests: write # To comment to PRs
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: bump
+        uses: tj-actions/cargo-bump@v2
+
+      - uses: peter-evans/create-pull-request@v6
+        with:
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          branch: "bump-${{ steps.bump.outputs.new_version }}"
+          commit-message: "bump(cli): bump version to ${{ steps.bump.outputs.new_version }}"
+          title: "bump(cli): bump version to ${{ steps.bump.outputs.new_version }}"
