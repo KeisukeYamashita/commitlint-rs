@@ -63,6 +63,17 @@ fn extract_commit_messages(input: &str) -> Vec<String> {
 }
 
 /// Parse a commit message and return the subject, body, and footers.
+///
+/// Please refer the official documentation for the commit message format.
+/// See: https://www.conventionalcommits.org/en/v1.0.0/#summary
+///
+/// ```
+/// <type>[optional scope]: <description> <-- Subject
+///
+/// [optional body] <-- Body
+///
+/// [optional footer(s)] <-- Footer
+/// ```
 pub fn parse_commit_message(
     message: &str,
 ) -> (String, Option<String>, Option<HashMap<String, String>>) {
@@ -107,18 +118,19 @@ pub fn parse_commit_message(
 /// Note that exclamation mark is not respected as the existing commitlint
 /// does not have any rules for it.
 /// See: https://commitlint.js.org/#/reference-rules
-pub fn parse_subject(subject: &str) -> Option<(String, Option<String>, String)> {
+pub fn parse_subject(subject: &str) -> (Option<String>, Option<String>, Option<String>) {
     let re =
         regex::Regex::new(r"^(?P<type>\w+)(?:\((?P<scope>[^\)]+)\))?(!)?\:\s(?P<description>.+)$")
             .unwrap();
     if let Some(captures) = re.captures(subject) {
-        let r#type = captures.name("type").unwrap().as_str().to_string();
+        let r#type = captures.name("type").map(|m| m.as_str().to_string());
         let scope = captures.name("scope").map(|m| m.as_str().to_string());
-        let description = captures.name("description").unwrap().as_str().to_string();
+        let description = captures.name("description").map(|m| m.as_str().to_string());
 
-        return Some((r#type, scope, description));
+        return (r#type, scope, description);
     }
-    None
+    // Fall back to the description.
+    (None, None, Some(subject.to_string()))
 }
 
 #[cfg(test)]
@@ -179,10 +191,7 @@ Name: Keke";
             footer.clone().unwrap().get("Link"),
             Some(&"Hello".to_string())
         );
-        assert_eq!(
-            footer.unwrap().get("Name"),
-            Some(&"Keke".to_string())
-        );
+        assert_eq!(footer.unwrap().get("Name"), Some(&"Keke".to_string()));
     }
 
     #[test]
@@ -190,11 +199,11 @@ Name: Keke";
         let input = "feat(cli): add dummy option";
         assert_eq!(
             parse_subject(input),
-            Some((
-                "feat".to_string(),
+            (
+                Some("feat".to_string()),
                 Some("cli".to_string()),
-                "add dummy option".to_string()
-            ))
+                Some("add dummy option".to_string())
+            )
         );
     }
 
@@ -203,11 +212,11 @@ Name: Keke";
         let input = "feat(cli)!: add dummy option";
         assert_eq!(
             parse_subject(input),
-            Some((
-                "feat".to_string(),
+            (
+                Some("feat".to_string()),
                 Some("cli".to_string()),
-                "add dummy option".to_string()
-            ))
+                Some("add dummy option".to_string())
+            )
         );
     }
 
@@ -216,32 +225,35 @@ Name: Keke";
         let input = "feat: add dummy option";
         assert_eq!(
             parse_subject(input),
-            Some(("feat".to_string(), None, "add dummy option".to_string()))
+            (
+                Some("feat".to_string()),
+                None,
+                Some("add dummy option".to_string())
+            )
         );
     }
+    
 
     #[test]
     fn test_parse_subject_with_emphasized_type_without_scope() {
         let input = "feat!: add dummy option";
         assert_eq!(
             parse_subject(input),
-            Some(("feat".to_string(), None, "add dummy option".to_string()))
+            (
+                Some("feat".to_string()),
+                None,
+                Some("add dummy option".to_string())
+            )
         );
     }
     #[test]
     fn test_parse_subject_without_message() {
         let input = "";
-        assert_eq!(
-            parse_subject(input),
-            None
-        );
+        assert_eq!(parse_subject(input), (None, None, Some("".to_string())));
     }
-      #[test]
+    #[test]
     fn test_parse_subject_with_error_message() {
         let input = "test";
-        assert_eq!(
-            parse_subject(input),
-            None
-        );
+        assert_eq!(parse_subject(input), (None, None, Some("test".to_string())));
     }
 }
