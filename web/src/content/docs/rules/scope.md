@@ -41,3 +41,14 @@ rules:
       - api
       - web
 ```
+
+### Disallow all scopes
+
+```yaml
+rules:
+  scope:
+    level: error
+    options: [] # or [""]
+  scope-empty:
+    level: ignore
+```

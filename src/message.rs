@@ -45,25 +45,15 @@ impl Message {
     /// Create a new Message.
     pub fn new(raw: String) -> Self {
         let (subject, body, footers) = parse_commit_message(&raw);
-        match parse_subject(&subject) {
-            Some((r#type, scope, description)) => Self {
-                body,
-                description: Some(description),
-                footers,
-                raw,
-                r#type: Some(r#type),
-                scope,
-                subject: Some(subject),
-            },
-            None => Self {
-                raw,
-                description: None,
-                r#type: None,
-                scope: None,
-                body,
-                footers,
-                subject: Some(subject),
-            },
+        let (r#type, scope, description) = parse_subject(&subject);
+        Self {
+            body,
+            description,
+            footers,
+            raw,
+            r#type,
+            scope,
+            subject: Some(subject),
         }
     }
 }
