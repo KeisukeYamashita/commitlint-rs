@@ -11,13 +11,13 @@ In this page, we will use the following commit message as an example.
 rules:
   type-format:
     level: error
-    format: ^[A-Z].*$
+    format: ^[a-z].*$
 ```
 
 ## ❌ Bad
 
 ```console
-feat(cli): added a new flag
+Feat(cli): added a new flag
 ```
 
 ## ✅ Good
@@ -34,5 +34,5 @@ feat(cli): Added a new flag
 rules:
   type-format:
     level: error
-    format: ^[A-Z].*$
+    format: ^[a-z].*$
 ```
