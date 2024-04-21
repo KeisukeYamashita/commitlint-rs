@@ -14,7 +14,7 @@ You can also check the default values on the page of each rule.
 ```yaml
 rules:
   description-empty: # Description must not be empty
-    level: warn
+    level: warning
   scope-empty: # Scope must not be empty
     level: error
   subject-empty: # Subject line should exist
