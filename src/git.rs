@@ -261,6 +261,19 @@ Name: Keke";
     }
 
     #[test]
+    fn test_parse_subject_with_empty_scope() {
+        let input = "feat: add dummy commit";
+        assert_eq!(
+            parse_subject(input),
+            (
+                Some("feat".to_string()),
+                None,
+                Some("add dummy commit".to_string())
+            )
+        );
+    }
+
+    #[test]
     fn test_parse_subject_without_message() {
         let input = "";
         assert_eq!(parse_subject(input), (None, None, Some("".to_string())));
