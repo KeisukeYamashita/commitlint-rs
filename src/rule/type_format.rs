@@ -30,7 +30,16 @@ impl Rule for TypeFormat {
 
     fn validate(&self, message: &Message) -> Option<Violation> {
         if let Some(format) = &self.format {
-            let regex = regex::Regex::new(format).unwrap();
+            let regex = match regex::Regex::new(format) {
+                Ok(regex) => regex,
+                Err(err) => {
+                    return Some(Violation {
+                        level: self.level.unwrap_or(Self::LEVEL),
+                        message: err.to_string(),
+                    });
+                }
+            };
+
             if !regex.is_match(&message.r#type.as_ref().unwrap()) {
                 return Some(Violation {
                     level: self.level.unwrap_or(Self::LEVEL),
@@ -97,5 +106,26 @@ mod tests {
             violation.unwrap().message,
             "type format does not match format: ^[a-z].*".to_string()
         );
+    }
+
+    #[test]
+    fn test_invalid_regex() {
+        let mut rule = TypeFormat::default();
+        rule.format = Some(r"(".to_string());
+
+        let message = Message {
+            body: None,
+            description: Some("Invalid regex".to_string()),
+            footers: None,
+            r#type: Some("feat".to_string()),
+            raw: "feat(scope): Invalid regex".to_string(),
+            scope: Some("scope".to_string()),
+            subject: None,
+        };
+
+        let violation = rule.validate(&message);
+        assert!(violation.is_some());
+        assert_eq!(violation.clone().unwrap().level, Level::Error);
+        assert!(violation.unwrap().message.contains("regex parse error"));
     }
 }
