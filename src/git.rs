@@ -119,9 +119,10 @@ pub fn parse_commit_message(
 /// does not have any rules for it.
 /// See: https://commitlint.js.org/#/reference-rules
 pub fn parse_subject(subject: &str) -> (Option<String>, Option<String>, Option<String>) {
-    let re =
-        regex::Regex::new(r"^(?P<type>\w+)(?:\((?P<scope>[^\)]+)\))?(!)?\:\s(?P<description>.+)$")
-            .unwrap();
+    let re = regex::Regex::new(
+        r"^(?P<type>\w+)(?:\((?P<scope>[^\)]+)\))?(?:!)?\:\s?(?P<description>.*)$",
+    )
+    .unwrap();
     if let Some(captures) = re.captures(subject) {
         let r#type = captures.name("type").map(|m| m.as_str().to_string());
         let scope = captures.name("scope").map(|m| m.as_str().to_string());
@@ -232,7 +233,6 @@ Name: Keke";
             )
         );
     }
-    
 
     #[test]
     fn test_parse_subject_with_emphasized_type_without_scope() {
@@ -246,11 +246,26 @@ Name: Keke";
             )
         );
     }
+
+    #[test]
+    fn test_parse_subject_with_empty_description() {
+        let input = "feat(cli): ";
+        assert_eq!(
+            parse_subject(input),
+            (
+                Some("feat".to_string()),
+                Some("cli".to_string()),
+                Some("".to_string())
+            )
+        );
+    }
+
     #[test]
     fn test_parse_subject_without_message() {
         let input = "";
         assert_eq!(parse_subject(input), (None, None, Some("".to_string())));
     }
+
     #[test]
     fn test_parse_subject_with_error_message() {
         let input = "test";
