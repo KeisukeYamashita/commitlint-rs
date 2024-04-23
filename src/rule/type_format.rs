@@ -40,11 +40,21 @@ impl Rule for TypeFormat {
                 }
             };
 
-            if !regex.is_match(&message.r#type.as_ref().unwrap()) {
-                return Some(Violation {
-                    level: self.level.unwrap_or(Self::LEVEL),
-                    message: self.message(message),
-                });
+            match &message.r#type {
+                None => {
+                    return Some(Violation {
+                        level: self.level.unwrap_or(Self::LEVEL),
+                        message: "found no type".to_string(),
+                    });
+                }
+                Some(description) => {
+                    if !regex.is_match(description) {
+                        return Some(Violation {
+                            level: self.level.unwrap_or(Self::LEVEL),
+                            message: self.message(message),
+                        });
+                    }
+                }
             }
         }
 

@@ -40,11 +40,21 @@ impl Rule for DescriptionFormat {
                 }
             };
 
-            if !regex.is_match(&message.description.as_ref().unwrap()) {
-                return Some(Violation {
-                    level: self.level.unwrap_or(Self::LEVEL),
-                    message: self.message(message),
-                });
+            match &message.description {
+                None => {
+                    return Some(Violation {
+                        level: self.level.unwrap_or(Self::LEVEL),
+                        message: "found no description".to_string(),
+                    });
+                }
+                Some(description) => {
+                    if !regex.is_match(description) {
+                        return Some(Violation {
+                            level: self.level.unwrap_or(Self::LEVEL),
+                            message: self.message(message),
+                        });
+                    }
+                }
             }
         }
 
