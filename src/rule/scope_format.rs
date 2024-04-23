@@ -40,11 +40,21 @@ impl Rule for ScopeFormat {
                 }
             };
 
-            if !regex.is_match(&message.scope.as_ref().unwrap()) {
-                return Some(Violation {
-                    level: self.level.unwrap_or(Self::LEVEL),
-                    message: self.message(message),
-                });
+            match &message.scope {
+                None => {
+                    return Some(Violation {
+                        level: self.level.unwrap_or(Self::LEVEL),
+                        message: "found no description".to_string(),
+                    });
+                }
+                Some(description) => {
+                    if !regex.is_match(description) {
+                        return Some(Violation {
+                            level: self.level.unwrap_or(Self::LEVEL),
+                            message: self.message(message),
+                        });
+                    }
+                }
             }
         }
 
