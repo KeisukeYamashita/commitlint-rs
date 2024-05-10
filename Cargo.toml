@@ -27,3 +27,6 @@ tokio = { version = "1.37.0", features = ["full"] }
 [[bin]]
 name = "commitlint"
 path = "src/main.rs"
+
+[package.metadata.binstall]
+pkg-url = "{ repo }/releases/download/v{ version }/commitlint-v{ version }-{ target }{ archive-suffix }"
