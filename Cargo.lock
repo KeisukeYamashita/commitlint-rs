@@ -167,7 +167,7 @@ checksum = "acbf1af155f9b9ef647e42cdc158db4b64a1b61f743629225fde6f3e0be2a7c7"
 
 [[package]]
 name = "commitlint-rs"
-version = "0.1.10"
+version = "0.1.11"
 dependencies = [
  "clap",
  "futures",
