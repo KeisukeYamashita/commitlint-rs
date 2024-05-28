@@ -12,13 +12,13 @@ docs: fix typo
 ```
 
 ```console
-docs(): fix typo
+(web): fix typo
 ```
 
 ## ✅ Good
 
 ```console
-docs(scope): fix typo
+docs(web): fix typo
 ```
 
 ## Example

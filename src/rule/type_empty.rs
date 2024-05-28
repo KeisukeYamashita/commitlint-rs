@@ -23,7 +23,7 @@ impl Rule for TypeEmpty {
     }
 
     fn validate(&self, message: &Message) -> Option<Violation> {
-        if message.r#type.is_none() {
+        if message.r#type.is_none() || message.r#type.as_ref().unwrap().is_empty() {
             return Some(Violation {
                 level: self.level.unwrap_or(Self::LEVEL),
                 message: self.message(message),
@@ -79,9 +79,6 @@ mod tests {
         let violation = rule.validate(&message);
         assert!(violation.is_some());
         assert_eq!(violation.clone().unwrap().level, Level::Error);
-        assert_eq!(
-            violation.unwrap().message,
-            "type is empty".to_string()
-        );
+        assert_eq!(violation.unwrap().message, "type is empty".to_string());
     }
 }

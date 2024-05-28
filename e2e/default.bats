@@ -31,6 +31,11 @@ Make it smart. But we should not be opinionated so the default is ignored.\" | c
     [ "$status" -eq 0 ]
 }
 
+@test "empty" {
+    run bash -c 'echo "" | commitlint'
+    [ "$status" -eq 1 ]
+}
+
 # bats test_tags=default
 @test "scope" {
     run bash -c 'echo "feat(other): add script" | commitlint'
