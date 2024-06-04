@@ -141,4 +141,4 @@ jobs:
         with:
           path: ./web
       - id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
