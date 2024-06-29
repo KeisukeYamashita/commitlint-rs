@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - id: bump
-        uses: tj-actions/cargo-bump@v2
+        uses: tj-actions/cargo-bump@v3
 
       - uses: peter-evans/create-pull-request@v6
         with:
