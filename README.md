@@ -17,9 +17,14 @@ Documents are available [here](https://keisukeyamashita.github.io/commitlint-rs)
 </br>
 
 ## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FKeisukeYamashita%2Fcommitlint-rs.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FKeisukeYamashita%2Fcommitlint-rs?ref=badge_shield)
+
 
 Commitlint source code is licensed either [MIT](LICENSE-MIT) or [Apache-2.0](./LICENSE-APACHE).
 
 <a  href="https://www.flaticon.com/free-icons/chinese-checkers" style="font-size: 12px;font-style: italic;"> Chinese-checkers icons created by Freepik - Flaticon</a>
 
 </div>
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FKeisukeYamashita%2Fcommitlint-rs.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FKeisukeYamashita%2Fcommitlint-rs?ref=badge_large)
