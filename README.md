@@ -13,6 +13,7 @@ Documents are available [here](https://keisukeyamashita.github.io/commitlint-rs)
 [![](https://img.shields.io/badge/Docker-Supported-%232496ED?logo=docker)](https://hub.docker.com/repository/docker/1915keke/commitlint)
 [![](https://img.shields.io/badge/Dependency-Dependabot-%230361cd?logo=dependabot)](https://github.com/KeisukeYamashita/commitlint-rs)
 [![](https://img.shields.io/badge/Security-Snyk-%2321204b?logo=snyk)](https://github.com/KeisukeYamashita/commitlint-rs)
+[![](https://app.fossa.com/api/projects/git%2Bgithub.com%2FKeisukeYamashita%2Fcommitlint-rs.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FKeisukeYamashita%2Fcommitlint-rs?ref=badge_shield)
 
 </br>
 
