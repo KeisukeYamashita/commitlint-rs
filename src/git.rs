@@ -176,6 +176,25 @@ Link: Hello";
     }
 
     #[test]
+    fn test_footer_with_multiline_body_parse_commit_message() {
+        let input = "feat(cli): add dummy option
+
+Hello, there!
+I'm from Japan!
+
+Link: Hello";
+        let (subject, body, footer) = parse_commit_message(input);
+
+        let mut f = HashMap::new();
+        f.insert("Link".to_string(), "Hello".to_string());
+        assert_eq!(subject, "feat(cli): add dummy option");
+        assert_eq!(body, Some("Hello, there!
+I'm from Japan!".to_string()));
+        assert!(footer.is_some());
+        assert_eq!(f.get("Link"), Some(&"Hello".to_string()));
+    }
+
+    #[test]
     fn test_multiple_footers_parse_commit_message() {
         let input = "feat(cli): add dummy option
 
