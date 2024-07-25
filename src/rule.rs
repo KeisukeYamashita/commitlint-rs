@@ -6,9 +6,9 @@ use serde::{Deserialize, Serialize};
 use self::{
     body_empty::BodyEmpty, body_max_length::BodyMaxLength, description_empty::DescriptionEmpty,
     description_format::DescriptionFormat, description_max_length::DescriptionMaxLength,
-    r#type::Type, scope::Scope, scope_empty::ScopeEmpty, scope_format::ScopeFormat,
-    scope_max_length::ScopeMaxLength, subject_empty::SubjectEmpty, type_empty::TypeEmpty,
-    type_format::TypeFormat, type_max_length::TypeMaxLength,
+    footers_empty::FootersEmpty, r#type::Type, scope::Scope, scope_empty::ScopeEmpty,
+    scope_format::ScopeFormat, scope_max_length::ScopeMaxLength, subject_empty::SubjectEmpty,
+    type_empty::TypeEmpty, type_format::TypeFormat, type_max_length::TypeMaxLength,
 };
 
 pub mod body_empty;
@@ -16,6 +16,7 @@ pub mod body_max_length;
 pub mod description_empty;
 pub mod description_format;
 pub mod description_max_length;
+pub mod footers_empty;
 pub mod scope;
 pub mod scope_empty;
 pub mod scope_format;
@@ -49,6 +50,10 @@ pub struct Rules {
     #[serde(rename = "description-max-length")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description_max_length: Option<DescriptionMaxLength>,
+
+    #[serde(rename = "footers-empty")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub footers_empty: Option<FootersEmpty>,
 
     #[serde(rename = "scope")]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -190,6 +195,7 @@ impl Default for Rules {
             description_empty: DescriptionEmpty::default().into(),
             description_format: None,
             description_max_length: None,
+            footers_empty: None,
             scope: None,
             scope_empty: None,
             scope_format: None,
