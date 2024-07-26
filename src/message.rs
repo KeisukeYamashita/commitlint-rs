@@ -23,8 +23,6 @@ pub struct Message {
 
     /// Description part of the commit message.
     pub description: Option<String>,
-
-    #[allow(dead_code)]
     /// Footers part of the commit message.
     pub footers: Option<HashMap<String, String>>,
 
