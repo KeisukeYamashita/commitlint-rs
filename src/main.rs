@@ -24,7 +24,7 @@ async fn main() {
     };
 
     if args.print_config {
-        println!("{}", config.to_string());
+        println!("{}", config);
     }
 
     let messages = match args.read() {
@@ -39,7 +39,6 @@ async fn main() {
         .into_iter()
         .map(|message| {
             let config = config.clone();
-
             tokio::spawn(async move { validate(&message, &config).await })
         })
         .collect::<Vec<_>>();

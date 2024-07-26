@@ -30,12 +30,31 @@ impl Rule for ScopeFormat {
 
     fn validate(&self, message: &Message) -> Option<Violation> {
         if let Some(format) = &self.format {
-            let regex = regex::Regex::new(format).unwrap();
-            if !regex.is_match(&message.scope.as_ref().unwrap()) {
-                return Some(Violation {
-                    level: self.level.unwrap_or(Self::LEVEL),
-                    message: self.message(message),
-                });
+            let regex = match regex::Regex::new(format) {
+                Ok(regex) => regex,
+                Err(err) => {
+                    return Some(Violation {
+                        level: self.level.unwrap_or(Self::LEVEL),
+                        message: err.to_string(),
+                    });
+                }
+            };
+
+            match &message.scope {
+                None => {
+                    return Some(Violation {
+                        level: self.level.unwrap_or(Self::LEVEL),
+                        message: "found no description".to_string(),
+                    });
+                }
+                Some(description) => {
+                    if !regex.is_match(description) {
+                        return Some(Violation {
+                            level: self.level.unwrap_or(Self::LEVEL),
+                            message: self.message(message),
+                        });
+                    }
+                }
             }
         }
 
@@ -59,8 +78,10 @@ mod tests {
 
     #[test]
     fn test_invalid_description_format() {
-        let mut rule = ScopeFormat::default();
-        rule.format = Some(r"^[a-z].*".to_string());
+        let rule = ScopeFormat {
+            format: Some(r"^[a-z].*".to_string()),
+            ..Default::default()
+        };
 
         let message = Message {
             body: None,
@@ -77,8 +98,10 @@ mod tests {
 
     #[test]
     fn test_valid_description_format() {
-        let mut rule = ScopeFormat::default();
-        rule.format = Some(r"^[a-z].*".to_string());
+        let rule = ScopeFormat {
+            format: Some(r"^[a-z].*".to_string()),
+            ..Default::default()
+        };
 
         let message = Message {
             body: None,
@@ -97,5 +120,28 @@ mod tests {
             violation.unwrap().message,
             "scope format does not match format: ^[a-z].*".to_string()
         );
+    }
+
+    #[test]
+    fn test_invalid_regex() {
+        let rule = ScopeFormat {
+            format: Some(r"(".to_string()),
+            ..Default::default()
+        };
+
+        let message = Message {
+            body: None,
+            description: Some("Add regex".to_string()),
+            footers: None,
+            r#type: Some("feat".to_string()),
+            raw: "feat(scope): Add regex".to_string(),
+            scope: Some("scope".to_string()),
+            subject: None,
+        };
+
+        let violation = rule.validate(&message);
+        assert!(violation.is_some());
+        assert_eq!(violation.clone().unwrap().level, Level::Error);
+        assert!(violation.unwrap().message.contains("regex parse error"));
     }
 }

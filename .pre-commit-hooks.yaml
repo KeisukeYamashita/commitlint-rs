@@ -1,0 +1,9 @@
+- id: commitlint
+  name: Assert Conventional Commit Messages
+  description: 'Asserts that Conventional Commits have been used for all commit messages according to the rules for this repo.'
+  entry: commitlint --edit
+  language: rust
+  stages: [prepare-commit-msg]
+  pass_filenames: false
+  require_serial: true
+  verbose: true

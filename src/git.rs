@@ -63,6 +63,17 @@ fn extract_commit_messages(input: &str) -> Vec<String> {
 }
 
 /// Parse a commit message and return the subject, body, and footers.
+///
+/// Please refer the official documentation for the commit message format.
+/// See: https://www.conventionalcommits.org/en/v1.0.0/#summary
+///
+/// ```
+/// <type>[optional scope]: <description> <-- Subject
+///
+/// [optional body] <-- Body
+///
+/// [optional footer(s)] <-- Footer
+/// ```
 pub fn parse_commit_message(
     message: &str,
 ) -> (String, Option<String>, Option<HashMap<String, String>>) {
@@ -107,18 +118,20 @@ pub fn parse_commit_message(
 /// Note that exclamation mark is not respected as the existing commitlint
 /// does not have any rules for it.
 /// See: https://commitlint.js.org/#/reference-rules
-pub fn parse_subject(subject: &str) -> Option<(String, Option<String>, String)> {
-    let re =
-        regex::Regex::new(r"^(?P<type>\w+)(?:\((?P<scope>[^\)]+)\))?(!)?\:\s(?P<description>.+)$")
-            .unwrap();
+pub fn parse_subject(subject: &str) -> (Option<String>, Option<String>, Option<String>) {
+    let re = regex::Regex::new(
+        r"^(?P<type>\w+)(?:\((?P<scope>[^\)]+)\))?(?:!)?\:\s?(?P<description>.*)$",
+    )
+    .unwrap();
     if let Some(captures) = re.captures(subject) {
-        let r#type = captures.name("type").unwrap().as_str().to_string();
+        let r#type = captures.name("type").map(|m| m.as_str().to_string());
         let scope = captures.name("scope").map(|m| m.as_str().to_string());
-        let description = captures.name("description").unwrap().as_str().to_string();
+        let description = captures.name("description").map(|m| m.as_str().to_string());
 
-        return Some((r#type, scope, description));
+        return (r#type, scope, description);
     }
-    None
+    // Fall back to the description.
+    (None, None, Some(subject.to_string()))
 }
 
 #[cfg(test)]
@@ -163,6 +176,25 @@ Link: Hello";
     }
 
     #[test]
+    fn test_footer_with_multiline_body_parse_commit_message() {
+        let input = "feat(cli): add dummy option
+
+Hello, there!
+I'm from Japan!
+
+Link: Hello";
+        let (subject, body, footer) = parse_commit_message(input);
+
+        let mut f = HashMap::new();
+        f.insert("Link".to_string(), "Hello".to_string());
+        assert_eq!(subject, "feat(cli): add dummy option");
+        assert_eq!(body, Some("Hello, there!
+I'm from Japan!".to_string()));
+        assert!(footer.is_some());
+        assert_eq!(f.get("Link"), Some(&"Hello".to_string()));
+    }
+
+    #[test]
     fn test_multiple_footers_parse_commit_message() {
         let input = "feat(cli): add dummy option
 
@@ -179,10 +211,7 @@ Name: Keke";
             footer.clone().unwrap().get("Link"),
             Some(&"Hello".to_string())
         );
-        assert_eq!(
-            footer.unwrap().get("Name"),
-            Some(&"Keke".to_string())
-        );
+        assert_eq!(footer.unwrap().get("Name"), Some(&"Keke".to_string()));
     }
 
     #[test]
@@ -190,11 +219,11 @@ Name: Keke";
         let input = "feat(cli): add dummy option";
         assert_eq!(
             parse_subject(input),
-            Some((
-                "feat".to_string(),
+            (
+                Some("feat".to_string()),
                 Some("cli".to_string()),
-                "add dummy option".to_string()
-            ))
+                Some("add dummy option".to_string())
+            )
         );
     }
 
@@ -203,11 +232,11 @@ Name: Keke";
         let input = "feat(cli)!: add dummy option";
         assert_eq!(
             parse_subject(input),
-            Some((
-                "feat".to_string(),
+            (
+                Some("feat".to_string()),
                 Some("cli".to_string()),
-                "add dummy option".to_string()
-            ))
+                Some("add dummy option".to_string())
+            )
         );
     }
 
@@ -216,7 +245,11 @@ Name: Keke";
         let input = "feat: add dummy option";
         assert_eq!(
             parse_subject(input),
-            Some(("feat".to_string(), None, "add dummy option".to_string()))
+            (
+                Some("feat".to_string()),
+                None,
+                Some("add dummy option".to_string())
+            )
         );
     }
 
@@ -225,7 +258,49 @@ Name: Keke";
         let input = "feat!: add dummy option";
         assert_eq!(
             parse_subject(input),
-            Some(("feat".to_string(), None, "add dummy option".to_string()))
+            (
+                Some("feat".to_string()),
+                None,
+                Some("add dummy option".to_string())
+            )
         );
+    }
+
+    #[test]
+    fn test_parse_subject_with_empty_description() {
+        let input = "feat(cli): ";
+        assert_eq!(
+            parse_subject(input),
+            (
+                Some("feat".to_string()),
+                Some("cli".to_string()),
+                Some("".to_string())
+            )
+        );
+    }
+
+    #[test]
+    fn test_parse_subject_with_empty_scope() {
+        let input = "feat: add dummy commit";
+        assert_eq!(
+            parse_subject(input),
+            (
+                Some("feat".to_string()),
+                None,
+                Some("add dummy commit".to_string())
+            )
+        );
+    }
+
+    #[test]
+    fn test_parse_subject_without_message() {
+        let input = "";
+        assert_eq!(parse_subject(input), (None, None, Some("".to_string())));
+    }
+
+    #[test]
+    fn test_parse_subject_with_error_message() {
+        let input = "test";
+        assert_eq!(parse_subject(input), (None, None, Some("test".to_string())));
     }
 }

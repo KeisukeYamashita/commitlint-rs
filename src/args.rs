@@ -51,6 +51,15 @@ impl Args {
 
     /// Read commit messages from stdin.
     pub fn read(&self) -> Result<Vec<Message>, Error> {
+        // Check first whether or not the --edit option was supplied. When running from tooling such as
+        // `pre-commit`, stdin exists, so this needs to come first.
+        if self.edit {
+            let msg = std::fs::read_to_string("./.git/COMMIT_EDITMSG")
+                .expect("Failed to read './.git/COMMIT_EDITMSG'");
+            return Ok(vec![Message::new(msg)]);
+        }
+
+        // Otherwise, check for stdin and use the incoming text buffer from there if so.
         if self.has_stdin() {
             let mut buffer = String::new();
             stdin()
@@ -59,11 +68,13 @@ impl Args {
             return Ok(vec![Message::new(buffer)]);
         }
 
+        // And if none of the above, we're expecting to be reading directly from Git...
         let config = ReadCommitMessageOptions {
             from: self.from.clone(),
             path: self.cwd.clone(),
             to: self.to.clone(),
         };
+
         let messages = git::read(config)
             .iter()
             .map(|s| Message::new(s.to_string()))
