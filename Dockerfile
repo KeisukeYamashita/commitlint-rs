@@ -3,8 +3,8 @@ WORKDIR /app
 
 RUN apk update \
     && apk add --no-cache musl-dev
-COPY . .
-RUN cargo install --path .
+
+RUN --mount=type=bind,target=. cargo install --path .
 
 FROM alpine
 LABEL maintainer="KeisukeYamashita <19yamashita15@gmail.com>"
