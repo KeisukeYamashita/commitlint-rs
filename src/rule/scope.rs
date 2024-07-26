@@ -140,8 +140,10 @@ mod tests {
         use super::*;
         #[test]
         fn test_empty_scope() {
-            let mut rule = Scope::default();
-            rule.options = vec!["api".to_string(), "web".to_string()];
+            let rule = Scope {
+                options: vec!["api".to_string(), "web".to_string()],
+                ..Default::default()
+            };
 
             let message = Message {
                 body: None,
@@ -164,8 +166,10 @@ mod tests {
 
         #[test]
         fn test_none_scope() {
-            let mut rule = Scope::default();
-            rule.options = vec!["api".to_string(), "web".to_string()];
+            let rule = Scope {
+                options: vec!["api".to_string(), "web".to_string()],
+                ..Default::default()
+            };
 
             let message = Message {
                 body: None,
@@ -188,8 +192,10 @@ mod tests {
 
         #[test]
         fn test_valid_scope() {
-            let mut rule = Scope::default();
-            rule.options = vec!["api".to_string(), "web".to_string()];
+            let rule = Scope {
+                options: vec!["api".to_string(), "web".to_string()],
+                ..Default::default()
+            };
 
             let message = Message {
                 body: None,
@@ -206,8 +212,10 @@ mod tests {
 
         #[test]
         fn test_invalid_scope() {
-            let mut rule = Scope::default();
-            rule.options = vec!["api".to_string(), "web".to_string()];
+            let rule = Scope {
+                options: vec!["api".to_string(), "web".to_string()],
+                ..Default::default()
+            };
 
             let message = Message {
                 body: None,
