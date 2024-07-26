@@ -24,9 +24,11 @@ pub struct Message {
     /// Description part of the commit message.
     pub description: Option<String>,
 
+    #[allow(dead_code)]
     /// Footers part of the commit message.
     pub footers: Option<HashMap<String, String>>,
 
+    #[allow(dead_code)]
     /// Raw commit message (or any input from stdin) including the body and footers.
     pub raw: String,
 

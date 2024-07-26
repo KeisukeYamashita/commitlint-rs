@@ -78,8 +78,10 @@ mod tests {
 
     #[test]
     fn test_invalid_description_format() {
-        let mut rule = DescriptionFormat::default();
-        rule.format = Some(r"^[a-z].*".to_string());
+        let rule = DescriptionFormat {
+            format: Some(r"^[a-z].*".to_string()),
+            ..Default::default()
+        };
 
         let message = Message {
             body: None,
@@ -96,8 +98,10 @@ mod tests {
 
     #[test]
     fn test_valid_description_format() {
-        let mut rule = DescriptionFormat::default();
-        rule.format = Some(r"^[a-z].*".to_string());
+        let rule = DescriptionFormat {
+            format: Some(r"^[a-z].*".to_string()),
+            ..Default::default()
+        };
 
         let message = Message {
             body: None,
@@ -120,8 +124,10 @@ mod tests {
 
     #[test]
     fn test_invalid_regex() {
-        let mut rule = DescriptionFormat::default();
-        rule.format = Some(r"(".to_string());
+        let rule = DescriptionFormat {
+            format: Some(r"(".to_string()),
+            ..Default::default()
+        };
 
         let message = Message {
             body: None,
