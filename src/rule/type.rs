@@ -139,8 +139,10 @@ mod tests {
         use super::*;
         #[test]
         fn test_empty_type() {
-            let mut rule = Type::default();
-            rule.options = vec!["feat".to_string(), "chore".to_string()];
+            let rule = Type {
+                options: vec!["feat".to_string(), "chore".to_string()],
+                ..Default::default()
+            };
 
             let message = Message {
                 body: None,
@@ -163,8 +165,10 @@ mod tests {
 
         #[test]
         fn test_none_type() {
-            let mut rule = Type::default();
-            rule.options = vec!["feat".to_string(), "chore".to_string()];
+            let rule = Type {
+                options: vec!["feat".to_string(), "chore".to_string()],
+                ..Default::default()
+            };
 
             let message = Message {
                 body: None,
@@ -187,8 +191,10 @@ mod tests {
 
         #[test]
         fn test_valid_type() {
-            let mut rule = Type::default();
-            rule.options = vec!["feat".to_string(), "chore".to_string()];
+            let rule = Type {
+                options: vec!["feat".to_string(), "chore".to_string()],
+                ..Default::default()
+            };
 
             let message = Message {
                 body: None,
@@ -205,8 +211,10 @@ mod tests {
 
         #[test]
         fn test_invalid_type() {
-            let mut rule = Type::default();
-            rule.options = vec!["feat".to_string(), "chore".to_string()];
+            let rule = Type {
+                options: vec!["feat".to_string(), "chore".to_string()],
+                ..Default::default()
+            };
 
             let message = Message {
                 body: None,
