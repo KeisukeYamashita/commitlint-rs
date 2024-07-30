@@ -9,7 +9,7 @@ Commitlint can be configured in many ways. You can use the default configuration
 
 If you don't specify any configuration file and you don't have any commitlint configuration files in your environment, the CLI will use the default configurations of each rules.
 
-See the [default rules](/rules/default) page for details.
+See the [default rules](/commitlint-rs/config/default) page for details.
 
 ## Location
 
