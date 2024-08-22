@@ -1,4 +1,4 @@
-FROM rust:1.77-alpine as builder
+FROM rust:1.80-alpine as builder
 WORKDIR /app
 
 RUN  --mount=type=cache,target=/var/cache/apk,sharing=locked \
@@ -6,7 +6,6 @@ RUN  --mount=type=cache,target=/var/cache/apk,sharing=locked \
     && apk add --no-cache musl-dev
 
 COPY . .
-
 RUN cargo install --path .
 
 FROM alpine
