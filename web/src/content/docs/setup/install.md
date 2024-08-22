@@ -17,6 +17,14 @@ After that, you will be able to run the `commitlint` command.
 commitlint --help
 ```
 
+## Using Cargo Binary Install
+
+You can also use Binstall ([cargo-bins/cargo-binstal](https://github.com/cargo-bins/cargo-binstall)) to install the CLI
+
+```console
+cargo binstall commitlint-rs
+```
+
 ## Using Docker
 
 Commitlint is also available as a Docker image.
