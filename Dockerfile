@@ -1,15 +1,19 @@
 FROM rust:1.77-alpine as builder
 WORKDIR /app
 
-RUN apk update \
+RUN  --mount=type=cache,target=/var/cache/apk,sharing=locked \
+    apk update \
     && apk add --no-cache musl-dev
 
-RUN --mount=type=bind,target=. cargo install --path .
+COPY . .
+
+RUN cargo install --path .
 
 FROM alpine
 LABEL maintainer="KeisukeYamashita <19yamashita15@gmail.com>"
 
-RUN apk update \
+RUN  --mount=type=cache,target=/var/cache/apk,sharing=locked \
+    apk update \
     && apk add --no-cache musl-dev
 
 COPY --from=builder /usr/local/cargo/bin/commitlint /usr/local/bin/commitlint
