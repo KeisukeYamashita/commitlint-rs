@@ -19,7 +19,7 @@ commitlint --help
 
 ## Using Cargo Binary Install
 
-You can also use Binstall ([cargo-bins/cargo-binstal](https://github.com/cargo-bins/cargo-binstall)) to install the CLI
+You can also use Binstall ([cargo-bins/cargo-binstall](https://github.com/cargo-bins/cargo-binstall)) to install the CLI
 
 ```console
 cargo binstall commitlint-rs
