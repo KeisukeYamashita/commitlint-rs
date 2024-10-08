@@ -100,7 +100,7 @@ jobs:
       - uses: docker/metadata-action@v5
         id: meta
         with:
-          images: 1915keke/commitlint-rs
+          images: 1915keke/commitlint
           tags: |
             type=raw,value=latest
             type=semver,pattern={{version}}
