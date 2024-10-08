@@ -44,7 +44,7 @@ impl Rule for ScopeFormat {
                 None => {
                     return Some(Violation {
                         level: self.level.unwrap_or(Self::LEVEL),
-                        message: "found no description".to_string(),
+                        message: "found no scope".to_string(),
                     });
                 }
                 Some(description) => {
