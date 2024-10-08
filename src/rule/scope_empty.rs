@@ -16,7 +16,7 @@ pub struct ScopeEmpty {
 /// ScopeEmpty represents the scope-empty rule.
 impl Rule for ScopeEmpty {
     const NAME: &'static str = "scope-empty";
-    const LEVEL: Level = Level::Error;
+    const LEVEL: Level = Level::Ignore;
 
     fn message(&self, _message: &Message) -> String {
         "scope is empty".to_string()
@@ -79,10 +79,7 @@ mod tests {
         let violation = rule.validate(&message);
         assert!(violation.is_some());
         assert_eq!(violation.clone().unwrap().level, Level::Error);
-        assert_eq!(
-            violation.unwrap().message,
-            "scope is empty".to_string()
-        );
+        assert_eq!(violation.unwrap().message, "scope is empty".to_string());
     }
 
     #[test]
@@ -101,9 +98,6 @@ mod tests {
         let violation = rule.validate(&message);
         assert!(violation.is_some());
         assert_eq!(violation.clone().unwrap().level, Level::Error);
-        assert_eq!(
-            violation.unwrap().message,
-            "scope is empty".to_string()
-        );
+        assert_eq!(violation.unwrap().message, "scope is empty".to_string());
     }
 }
