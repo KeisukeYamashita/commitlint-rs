@@ -13,10 +13,8 @@ You can also check the default values on the page of each rule.
 
 ```yaml
 rules:
-  description-empty: # Description must not be empty
+  description-empty: # Description shouldn't be empty
     level: warning
-  scope-empty: # Scope must not be empty
-    level: error
   subject-empty: # Subject line should exist
     level: error
   type-empty: # Type must not be empty

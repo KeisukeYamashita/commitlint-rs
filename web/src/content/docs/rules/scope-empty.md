@@ -3,7 +3,7 @@ title: Scope Empty
 description: Check if the scope exists
 ---
 
-* Default: `error`
+* Default: `ignore`
 
 ## ❌ Bad
 
