@@ -3,7 +3,9 @@ title: Scope
 description: Allowlist for scopes
 ---
 
-* Default: `ignore`
+* Default:
+  * Level: `ignore`
+  * Optional: `false`
 
 In this example, we assumed that you have a project with the following scopes:
 
@@ -41,6 +43,19 @@ rules:
       - api
       - web
 ```
+
+### Optional scopes `api` and `web`
+
+```yaml
+rules:
+  scope:
+    level: error
+    optional: true
+    options:
+      - api
+```
+
+With this configuration, `feat(api): xxx` and `feat: xxx` are valid commits.
 
 ### Disallow all scopes
 

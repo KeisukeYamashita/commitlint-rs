@@ -15,6 +15,10 @@ pub struct Scope {
     /// Options represents the options of the rule.
     /// If the option is empty, it means that no scope is allowed.
     options: Vec<String>,
+
+    /// Optional scope.
+    /// If true, even if the scope is not present, it is allowed.
+    optional: bool,
 }
 
 /// Scope represents the scope rule.
@@ -37,7 +41,7 @@ impl Rule for Scope {
     fn validate(&self, message: &Message) -> Option<Violation> {
         match &message.scope {
             None => {
-                if self.options.is_empty() {
+                if self.options.is_empty() || self.optional {
                     return None;
                 }
             }
@@ -64,6 +68,7 @@ impl Default for Scope {
     fn default() -> Self {
         Self {
             level: Some(Self::LEVEL),
+            optional: false,
             options: vec![],
         }
     }
@@ -234,6 +239,55 @@ mod tests {
                 violation.unwrap().message,
                 "scope invalid is not allowed. Only [\"api\", \"web\"] are allowed".to_string()
             );
+        }
+
+        #[test]
+        fn test_optional_scope_with_non_empty_scope() {
+            let rule = Scope {
+                options: vec!["api".to_string(), "web".to_string()],
+                optional: true,
+                ..Default::default()
+            };
+
+            let message = Message {
+                body: None,
+                description: None,
+                footers: None,
+                r#type: Some("feat".to_string()),
+                raw: "feat(invalid): broadcast $destroy event on scope destruction".to_string(),
+                scope: Some("invalid".to_string()),
+                subject: None,
+            };
+
+            let violation = rule.validate(&message);
+            assert!(violation.is_some());
+            assert_eq!(violation.clone().unwrap().level, Level::Error);
+            assert_eq!(
+                violation.unwrap().message,
+                "scope invalid is not allowed. Only [\"api\", \"web\"] are allowed".to_string()
+            );
+        }
+
+        #[test]
+        fn test_optional_scope_with_empty_scope() {
+            let rule = Scope {
+                options: vec!["api".to_string(), "web".to_string()],
+                optional: true,
+                ..Default::default()
+            };
+
+            let message = Message {
+                body: None,
+                description: None,
+                footers: None,
+                r#type: Some("feat".to_string()),
+                raw: "feat: broadcast $destroy event on scope destruction".to_string(),
+                scope: None,
+                subject: None,
+            };
+
+            let violation = rule.validate(&message);
+            assert!(violation.is_none());
         }
     }
 }
