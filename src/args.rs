@@ -26,7 +26,7 @@ pub struct Args {
 
     /// Read last commit from the specified file or fallbacks to ./.git/COMMIT_EDITMSG
     #[arg(short = 'e', long)]
-    pub edit: bool,
+    pub edit: Option<String>,
 
     /// Lower end of the commit range to lint
     #[arg(short = 'f', long)]
@@ -53,10 +53,12 @@ impl Args {
     pub fn read(&self) -> Result<Vec<Message>, Error> {
         // Check first whether or not the --edit option was supplied. When running from tooling such as
         // `pre-commit`, stdin exists, so this needs to come first.
-        if self.edit {
-            let msg = std::fs::read_to_string("./.git/COMMIT_EDITMSG")
-                .expect("Failed to read './.git/COMMIT_EDITMSG'");
-            return Ok(vec![Message::new(msg)]);
+        if let Some(edit) = self.edit.clone() {
+            if edit != "false" {
+                let msg = std::fs::read_to_string(edit.clone())
+                    .expect(format!("Failed to read commit message from {}", edit).as_str());
+                return Ok(vec![Message::new(msg)]);
+            }
         }
 
         // Otherwise, check for stdin and use the incoming text buffer from there if so.
@@ -68,18 +70,24 @@ impl Args {
             return Ok(vec![Message::new(buffer)]);
         }
 
-        // And if none of the above, we're expecting to be reading directly from Git...
-        let config = ReadCommitMessageOptions {
-            from: self.from.clone(),
-            path: self.cwd.clone(),
-            to: self.to.clone(),
-        };
+        if self.from.is_some() || self.from.is_some() {
+            // Reading directly from Git if from or to is specified.
+            let config = ReadCommitMessageOptions {
+                from: self.from.clone(),
+                path: self.cwd.clone(),
+                to: self.to.clone(),
+            };
 
-        let messages = git::read(config)
-            .iter()
-            .map(|s| Message::new(s.to_string()))
-            .collect();
+            let messages = git::read(config)
+                .iter()
+                .map(|s| Message::new(s.to_string()))
+                .collect();
 
-        Ok(messages)
+            return Ok(messages);
+        }
+
+        let msg = std::fs::read_to_string("./.git/COMMIT_EDITMSG")
+            .expect("Failed to read commit message from ./.git/COMMIT_EDITMSG");
+        return Ok(vec![Message::new(msg)]);
     }
 }
