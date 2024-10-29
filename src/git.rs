@@ -29,14 +29,21 @@ pub fn read(options: ReadCommitMessageOptions) -> Vec<String> {
         (None, None) => "HEAD".to_string(),
     };
 
+    let opt_target = if let "HEAD" = range.as_str() {
+        "^FETCH_HEAD".to_string()
+    } else {
+        String::new()
+    };
+
     // See https://git-scm.com/docs/git-log
     let stdout = Command::new("git")
         .arg("log")
-        .arg("--pretty=%B")
+        .arg("--pretty=%B%n|%n%nAuthor: %aN <%aE>%nDate: %ad%ncommit %H")
         .arg("--no-merges")
         .arg("--no-decorate")
         .arg("--reverse")
         .arg(range)
+        .arg(opt_target)
         .arg("--") // Explicitly specify the end of options as described https://git-scm.com/docs/git-log#Documentation/git-log.txt---ltpathgt82308203
         .arg(options.path)
         .output()
@@ -55,8 +62,10 @@ fn extract_commit_messages(input: &str) -> Vec<String> {
 
     for commit in commits {
         let message_lines: Vec<&str> = commit.trim().lines().collect();
-        let message = message_lines.join("\n");
-        messages.push(message);
+        if !message_lines.is_empty() {
+            let message = message_lines.join("\n");
+            messages.push(message);
+        }
     }
 
     messages
@@ -89,7 +98,7 @@ pub fn parse_commit_message(
 
     for line in lines_iter {
         if line.trim().is_empty() {
-            if in_body {
+            if in_body || line.trim() == "|" {
                 in_body = false;
                 in_footer = true;
             }
