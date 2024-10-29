@@ -88,6 +88,6 @@ impl Args {
 
         let msg = std::fs::read_to_string("./.git/COMMIT_EDITMSG")
             .expect("Failed to read commit message from ./.git/COMMIT_EDITMSG");
-        return Ok(vec![Message::new(msg)]);
+        Ok(vec![Message::new(msg)])
     }
 }
