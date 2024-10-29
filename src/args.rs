@@ -53,9 +53,9 @@ impl Args {
     pub fn read(&self) -> Result<Vec<Message>, Error> {
         // Check first whether or not the --edit option was supplied. When running from tooling such as
         // `pre-commit`, stdin exists, so this needs to come first.
-        if let Some(edit) = self.edit.clone() {
+        if let Some(edit) = self.edit.as_deref() {
             if edit != "false" {
-                let msg = std::fs::read_to_string(edit.clone())
+                let msg = std::fs::read_to_string(edit)
                     .expect(format!("Failed to read commit message from {}", edit).as_str());
                 return Ok(vec![Message::new(msg)]);
             }
@@ -70,7 +70,7 @@ impl Args {
             return Ok(vec![Message::new(buffer)]);
         }
 
-        if self.from.is_some() || self.from.is_some() {
+        if self.from.is_some() || self.to.is_some() {
             // Reading directly from Git if from or to is specified.
             let config = ReadCommitMessageOptions {
                 from: self.from.clone(),
@@ -86,8 +86,14 @@ impl Args {
             return Ok(messages);
         }
 
-        let msg = std::fs::read_to_string("./.git/COMMIT_EDITMSG")
-            .expect("Failed to read commit message from ./.git/COMMIT_EDITMSG");
+        let default_path = std::path::PathBuf::from(".git").join("COMMIT_EDITMSG");
+        let msg = std::fs::read_to_string(&default_path).expect(
+            format!(
+                "Failed to read commit message from {}",
+                default_path.display()
+            )
+            .as_str(),
+        );
         Ok(vec![Message::new(msg)])
     }
 }
