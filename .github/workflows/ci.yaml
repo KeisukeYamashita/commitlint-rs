@@ -45,7 +45,7 @@ jobs:
       - uses: mig4/setup-bats@v1
         with:
           bats-version: 1.9.0
-      - run: bats e2e --filter-tags ${{ matrix.tag }}
+      - run: bats cli/e2e --filter-tags ${{ matrix.tag }}
 
   test:
     runs-on: ubuntu-latest
