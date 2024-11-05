@@ -8,7 +8,7 @@ use crate::rule::Rules;
 const DEFAULT_CONFIG_ROOT: &str = ".";
 
 /// Default commitlintrc configuration files
-/// If the user didn't specify a configuration file with -g or --config argument,
+/// If the user didn't specify a configuration file with -c or --config argument,
 /// we will try to find one of these files in the current directory.
 const DEFAULT_CONFIG_FILE: [&str; 4] = [
     ".commitlintrc",

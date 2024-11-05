@@ -32,14 +32,14 @@ Note that it is searched in the order written above and the first one found is l
 
 ### Using the flag
 
-Configuration file can be specified by using the `--config` flag or the short `-g` flag.
+Configuration file can be specified by using the `--config` flag or the short `-c` flag.
 
 ```console
 # Using --config flag
 $ commitlint --config path/to/.commitlintrc.yml
 
-# Using -g flag
-$ commitlint -g path/to/.commitlintrc.yml
+# Using -c flag
+$ commitlint -c path/to/.commitlintrc.yml
 ```
 
 If you specify a file and the file is not found, Commitlint will throw an error.
