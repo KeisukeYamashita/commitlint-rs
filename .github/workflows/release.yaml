@@ -8,6 +8,10 @@ concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: false
 
+defaults:
+  run:
+    working-directory: ./cli
+
 permissions:
   contents: write # To write to release
   id-token: write # To deploy to GitHub Pages
@@ -109,6 +113,7 @@ jobs:
 
       - uses: docker/build-push-action@v6
         with:
+          context: ./cli
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
