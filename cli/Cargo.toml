@@ -32,3 +32,4 @@ path = "src/main.rs"
 pkg-url = "{ repo }/releases/download/v{ version }/commitlint-v{ version }-{ target }{ archive-suffix }"
 [features]
 schemars = ["dep:schemars"]
+default = []
