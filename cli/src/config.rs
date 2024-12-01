@@ -19,6 +19,7 @@ const DEFAULT_CONFIG_FILE: [&str; 4] = [
 
 /// Config represents the configuration of commitlint.
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub struct Config {
     /// Rules represents the rules of commitlint.
     pub rules: Rules,

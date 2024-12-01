@@ -5,6 +5,7 @@ use super::Level;
 
 /// SubjectEmpty represents the subject-empty rule.
 #[derive(Clone, Debug, Deserialize, Serialize)]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub struct SubjectEmpty {
     /// Level represents the level of the rule.
     ///
@@ -85,9 +86,6 @@ Hello world"
         let violation = rule.validate(&message);
         assert!(violation.is_some());
         assert_eq!(violation.clone().unwrap().level, Level::Error);
-        assert_eq!(
-            violation.unwrap().message,
-            "subject is empty".to_string()
-        );
+        assert_eq!(violation.unwrap().message, "subject is empty".to_string());
     }
 }

@@ -5,6 +5,7 @@ use super::Level;
 
 /// BodyEmpty represents the body-empty rule.
 #[derive(Clone, Debug, Deserialize, Serialize)]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub struct BodyEmpty {
     /// Level represents the level of the rule.
     ///

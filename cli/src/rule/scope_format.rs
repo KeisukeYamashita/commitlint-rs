@@ -5,6 +5,7 @@ use super::Level;
 
 /// ScopeFormat represents the scope-format rule.
 #[derive(Clone, Debug, Deserialize, Serialize)]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub struct ScopeFormat {
     /// Level represents the level of the rule.
     ///

@@ -5,6 +5,7 @@ use super::Level;
 
 /// DescriptionEmpty represents the subject-empty rule.
 #[derive(Clone, Debug, Deserialize, Serialize)]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub struct DescriptionEmpty {
     /// Level represents the level of the rule.
     ///

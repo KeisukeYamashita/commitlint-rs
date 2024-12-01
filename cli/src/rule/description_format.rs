@@ -5,6 +5,7 @@ use super::Level;
 
 /// DescriptionFormat represents the description-format rule.
 #[derive(Clone, Debug, Deserialize, Serialize)]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub struct DescriptionFormat {
     /// Level represents the level of the rule.
     ///
