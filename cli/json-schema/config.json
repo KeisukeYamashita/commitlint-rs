@@ -154,7 +154,7 @@
       ]
     },
     "Rules": {
-      "description": "Rules represents the rules of commitlint. See: https://commitlint.js.org/#/reference-rules",
+      "description": "Rules represents the rules of commitlint. See: https://commitlint.js.org/reference/rules.html",
       "type": "object",
       "properties": {
         "body-empty": {

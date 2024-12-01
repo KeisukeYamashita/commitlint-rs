@@ -28,7 +28,7 @@ pub mod type_format;
 pub mod type_max_length;
 
 /// Rules represents the rules of commitlint.
-/// See: https://commitlint.js.org/#/reference-rules
+/// See: https://commitlint.js.org/reference/rules.html
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub struct Rules {
