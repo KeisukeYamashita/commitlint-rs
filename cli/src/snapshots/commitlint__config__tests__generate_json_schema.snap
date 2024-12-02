@@ -15,7 +15,7 @@ required:
   - rules
 $defs:
   BodyEmpty:
-    description: BodyEmpty represents the body-empty rule.
+    description: BodyEmpty represents the body_empty rule.
     type: object
     properties:
       level:
@@ -24,7 +24,7 @@ $defs:
           - $ref: "#/$defs/Level"
           - type: "null"
   BodyMaxLength:
-    description: BodyMaxLength represents the body-max-length rule.
+    description: BodyMaxLength represents the body_max_length rule.
     type: object
     properties:
       length:
@@ -40,7 +40,7 @@ $defs:
     required:
       - length
   DescriptionEmpty:
-    description: DescriptionEmpty represents the description-empty rule
+    description: DescriptionEmpty represents the description_empty rule.
     type: object
     properties:
       level:
@@ -49,7 +49,7 @@ $defs:
           - $ref: "#/$defs/Level"
           - type: "null"
   DescriptionFormat:
-    description: DescriptionFormat represents the description-format rule.
+    description: DescriptionFormat represents the description_format rule.
     type: object
     properties:
       format:
@@ -63,7 +63,7 @@ $defs:
           - $ref: "#/$defs/Level"
           - type: "null"
   DescriptionMaxLength:
-    description: DescriptionMaxLength represents the description-max-length rule.
+    description: DescriptionMaxLength represents the description_max_length rule.
     type: object
     properties:
       length:
@@ -79,7 +79,7 @@ $defs:
     required:
       - length
   FootersEmpty:
-    description: FootersEmpty represents the footer-empty rule
+    description: FootersEmpty represents the footers_empty rule.
     type: object
     properties:
       level:
@@ -159,7 +159,7 @@ $defs:
           - $ref: "#/$defs/TypeMaxLength"
           - type: "null"
   Scope:
-    description: Scope represents the subject rule.
+    description: Scope represents the scope rule.
     type: object
     properties:
       level:
@@ -179,7 +179,7 @@ $defs:
       - optional
       - options
   ScopeEmpty:
-    description: FootersEmpty represents the subject-empty rule
+    description: ScopeEmpty represents the scope_empty rule.
     type: object
     properties:
       level:
@@ -188,7 +188,7 @@ $defs:
           - $ref: "#/$defs/Level"
           - type: "null"
   ScopeFormat:
-    description: ScopeFormat represents the scope-format rule.
+    description: ScopeFormat represents the scope_format rule.
     type: object
     properties:
       format:
@@ -202,7 +202,7 @@ $defs:
           - $ref: "#/$defs/Level"
           - type: "null"
   ScopeMaxLength:
-    description: ScopeMaxLength represents the scope-max-length rule.
+    description: ScopeMaxLength represents the scope_max_length rule.
     type: object
     properties:
       length:
@@ -218,7 +218,7 @@ $defs:
     required:
       - length
   SubjectEmpty:
-    description: SubjectEmpty represents the subject-empty rule.
+    description: SubjectEmpty represents the subject_empty rule.
     type: object
     properties:
       level:
@@ -243,7 +243,7 @@ $defs:
     required:
       - options
   TypeEmpty:
-    description: TypeEmpty represents the type-empty rule.
+    description: TypeEmpty represents the type_empty rule.
     type: object
     properties:
       level:
@@ -252,7 +252,7 @@ $defs:
           - $ref: "#/$defs/Level"
           - type: "null"
   TypeFormat:
-    description: TypeFormat represents the type-format rule.
+    description: TypeFormat represents the type_format rule.
     type: object
     properties:
       format:
@@ -266,7 +266,7 @@ $defs:
           - $ref: "#/$defs/Level"
           - type: "null"
   TypeMaxLength:
-    description: TypeMaxLength represents the type-max-length rule.
+    description: TypeMaxLength represents the type_max_length rule.
     type: object
     properties:
       length:

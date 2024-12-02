@@ -238,6 +238,7 @@ pub enum Level {
     #[serde(rename = "warning")]
     Warning,
 }
+/// Create a struct with length field that should impl [Rule]
 #[macro_export]
 macro_rules! make_length_rule {
     (
@@ -251,7 +252,7 @@ macro_rules! make_length_rule {
         }
     };
 }
-
+/// Create a struct with format field that should impl [Rule]
 #[macro_export]
 macro_rules! make_format_rule {
     (
@@ -265,7 +266,7 @@ macro_rules! make_format_rule {
         }
     };
 }
-
+/// Create a struct with options field that should impl [Rule]
 #[macro_export]
 macro_rules! make_options_rule {
     (
@@ -292,6 +293,7 @@ macro_rules! make_options_rule {
         };
 }
 
+/// Create a struct that should impl [Rule]
 #[macro_export]
 macro_rules! make_rule {
     (
@@ -303,7 +305,7 @@ macro_rules! make_rule {
             $field_name:ident: $field_type:ty
         ),*) => { paste::paste! {
 
-        #[doc = concat!(stringify!($ident), "represents the ", stringify!([<$ident:snake>])," rule.")]
+        #[doc = concat!(stringify!($ident), " represents the ", stringify!([<$ident:snake>])," rule.")]
         #[derive(Clone, Debug, serde::Deserialize, serde::Serialize)]
         #[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
         pub struct $ident {
