@@ -1,22 +1,18 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Config",
   "description": "Config represents the configuration of commitlint.",
   "type": "object",
-  "required": [
-    "rules"
-  ],
   "properties": {
     "rules": {
       "description": "Rules represents the rules of commitlint.",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Rules"
-        }
-      ]
+      "$ref": "#/$defs/Rules"
     }
   },
-  "definitions": {
+  "required": [
+    "rules"
+  ],
+  "$defs": {
     "BodyEmpty": {
       "description": "BodyEmpty represents the body-empty rule.",
       "type": "object",
@@ -25,7 +21,7 @@
           "description": "Level represents the level of the rule.",
           "anyOf": [
             {
-              "$ref": "#/definitions/Level"
+              "$ref": "#/$defs/Level"
             },
             {
               "type": "null"
@@ -37,27 +33,28 @@
     "BodyMaxLength": {
       "description": "BodyMaxLength represents the body-max-length rule.",
       "type": "object",
-      "required": [
-        "length"
-      ],
       "properties": {
         "length": {
+          "description": "Length represents the maximum length of the length_of_what.",
           "type": "integer",
           "format": "uint",
-          "minimum": 0.0
+          "minimum": 0
         },
         "level": {
           "description": "Level represents the level of the rule.",
           "anyOf": [
             {
-              "$ref": "#/definitions/Level"
+              "$ref": "#/$defs/Level"
             },
             {
               "type": "null"
             }
           ]
         }
-      }
+      },
+      "required": [
+        "length"
+      ]
     },
     "DescriptionEmpty": {
       "description": "DescriptionEmpty represents the description-empty rule",
@@ -67,7 +64,7 @@
           "description": "Level represents the level of the rule.",
           "anyOf": [
             {
-              "$ref": "#/definitions/Level"
+              "$ref": "#/$defs/Level"
             },
             {
               "type": "null"
@@ -81,6 +78,7 @@
       "type": "object",
       "properties": {
         "format": {
+          "description": "Format represents the format of the length_of_what.",
           "type": [
             "string",
             "null"
@@ -90,7 +88,7 @@
           "description": "Level represents the level of the rule.",
           "anyOf": [
             {
-              "$ref": "#/definitions/Level"
+              "$ref": "#/$defs/Level"
             },
             {
               "type": "null"
@@ -102,27 +100,28 @@
     "DescriptionMaxLength": {
       "description": "DescriptionMaxLength represents the description-max-length rule.",
       "type": "object",
-      "required": [
-        "length"
-      ],
       "properties": {
         "length": {
+          "description": "Length represents the maximum length of the length_of_what.",
           "type": "integer",
           "format": "uint",
-          "minimum": 0.0
+          "minimum": 0
         },
         "level": {
           "description": "Level represents the level of the rule.",
           "anyOf": [
             {
-              "$ref": "#/definitions/Level"
+              "$ref": "#/$defs/Level"
             },
             {
               "type": "null"
             }
           ]
         }
-      }
+      },
+      "required": [
+        "length"
+      ]
     },
     "FootersEmpty": {
       "description": "FootersEmpty represents the footer-empty rule",
@@ -132,7 +131,7 @@
           "description": "Level represents the level of the rule.",
           "anyOf": [
             {
-              "$ref": "#/definitions/Level"
+              "$ref": "#/$defs/Level"
             },
             {
               "type": "null"
@@ -151,13 +150,23 @@
       ]
     },
     "Rules": {
-      "description": "Rules represents the rules of commitlint. See: https://commitlint.js.org/reference/rules.html",
+      "description": "Rules represents the rules of commitlint.\n See: https://commitlint.js.org/reference/rules.html",
       "type": "object",
       "properties": {
+        "type": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Type"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "body-empty": {
           "anyOf": [
             {
-              "$ref": "#/definitions/BodyEmpty"
+              "$ref": "#/$defs/BodyEmpty"
             },
             {
               "type": "null"
@@ -167,7 +176,7 @@
         "body-max-length": {
           "anyOf": [
             {
-              "$ref": "#/definitions/BodyMaxLength"
+              "$ref": "#/$defs/BodyMaxLength"
             },
             {
               "type": "null"
@@ -177,7 +186,7 @@
         "description-empty": {
           "anyOf": [
             {
-              "$ref": "#/definitions/DescriptionEmpty"
+              "$ref": "#/$defs/DescriptionEmpty"
             },
             {
               "type": "null"
@@ -187,7 +196,7 @@
         "description-format": {
           "anyOf": [
             {
-              "$ref": "#/definitions/DescriptionFormat"
+              "$ref": "#/$defs/DescriptionFormat"
             },
             {
               "type": "null"
@@ -197,7 +206,7 @@
         "description-max-length": {
           "anyOf": [
             {
-              "$ref": "#/definitions/DescriptionMaxLength"
+              "$ref": "#/$defs/DescriptionMaxLength"
             },
             {
               "type": "null"
@@ -207,7 +216,7 @@
         "footers-empty": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FootersEmpty"
+              "$ref": "#/$defs/FootersEmpty"
             },
             {
               "type": "null"
@@ -217,7 +226,7 @@
         "scope": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Scope"
+              "$ref": "#/$defs/Scope"
             },
             {
               "type": "null"
@@ -227,7 +236,7 @@
         "scope-empty": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ScopeEmpty"
+              "$ref": "#/$defs/ScopeEmpty"
             },
             {
               "type": "null"
@@ -237,7 +246,7 @@
         "scope-format": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ScopeFormat"
+              "$ref": "#/$defs/ScopeFormat"
             },
             {
               "type": "null"
@@ -247,7 +256,7 @@
         "scope-max-length": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ScopeMaxLength"
+              "$ref": "#/$defs/ScopeMaxLength"
             },
             {
               "type": "null"
@@ -257,17 +266,7 @@
         "subject-empty": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SubjectEmpty"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "type": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Type"
+              "$ref": "#/$defs/SubjectEmpty"
             },
             {
               "type": "null"
@@ -277,7 +276,7 @@
         "type-empty": {
           "anyOf": [
             {
-              "$ref": "#/definitions/TypeEmpty"
+              "$ref": "#/$defs/TypeEmpty"
             },
             {
               "type": "null"
@@ -287,7 +286,7 @@
         "type-format": {
           "anyOf": [
             {
-              "$ref": "#/definitions/TypeFormat"
+              "$ref": "#/$defs/TypeFormat"
             },
             {
               "type": "null"
@@ -297,7 +296,7 @@
         "type-max-length": {
           "anyOf": [
             {
-              "$ref": "#/definitions/TypeMaxLength"
+              "$ref": "#/$defs/TypeMaxLength"
             },
             {
               "type": "null"
@@ -309,16 +308,12 @@
     "Scope": {
       "description": "Scope represents the subject rule.",
       "type": "object",
-      "required": [
-        "optional",
-        "options"
-      ],
       "properties": {
         "level": {
           "description": "Level represents the level of the rule.",
           "anyOf": [
             {
-              "$ref": "#/definitions/Level"
+              "$ref": "#/$defs/Level"
             },
             {
               "type": "null"
@@ -330,12 +325,17 @@
           "type": "boolean"
         },
         "options": {
+          "description": "Options represents the options of the rule. If the option is empty, it means that no options_what is allowed.",
           "type": "array",
           "items": {
             "type": "string"
           }
         }
-      }
+      },
+      "required": [
+        "optional",
+        "options"
+      ]
     },
     "ScopeEmpty": {
       "description": "FootersEmpty represents the subject-empty rule",
@@ -345,7 +345,7 @@
           "description": "Level represents the level of the rule.",
           "anyOf": [
             {
-              "$ref": "#/definitions/Level"
+              "$ref": "#/$defs/Level"
             },
             {
               "type": "null"
@@ -359,6 +359,7 @@
       "type": "object",
       "properties": {
         "format": {
+          "description": "Format represents the format of the length_of_what.",
           "type": [
             "string",
             "null"
@@ -368,7 +369,7 @@
           "description": "Level represents the level of the rule.",
           "anyOf": [
             {
-              "$ref": "#/definitions/Level"
+              "$ref": "#/$defs/Level"
             },
             {
               "type": "null"
@@ -380,27 +381,28 @@
     "ScopeMaxLength": {
       "description": "ScopeMaxLength represents the scope-max-length rule.",
       "type": "object",
-      "required": [
-        "length"
-      ],
       "properties": {
         "length": {
+          "description": "Length represents the maximum length of the length_of_what.",
           "type": "integer",
           "format": "uint",
-          "minimum": 0.0
+          "minimum": 0
         },
         "level": {
           "description": "Level represents the level of the rule.",
           "anyOf": [
             {
-              "$ref": "#/definitions/Level"
+              "$ref": "#/$defs/Level"
             },
             {
               "type": "null"
             }
           ]
         }
-      }
+      },
+      "required": [
+        "length"
+      ]
     },
     "SubjectEmpty": {
       "description": "SubjectEmpty represents the subject-empty rule.",
@@ -410,7 +412,7 @@
           "description": "Level represents the level of the rule.",
           "anyOf": [
             {
-              "$ref": "#/definitions/Level"
+              "$ref": "#/$defs/Level"
             },
             {
               "type": "null"
@@ -422,15 +424,12 @@
     "Type": {
       "description": "Type represents the type rule.",
       "type": "object",
-      "required": [
-        "options"
-      ],
       "properties": {
         "level": {
           "description": "Level represents the level of the rule.",
           "anyOf": [
             {
-              "$ref": "#/definitions/Level"
+              "$ref": "#/$defs/Level"
             },
             {
               "type": "null"
@@ -438,12 +437,16 @@
           ]
         },
         "options": {
+          "description": "Options represents the options of the rule. If the option is empty, it means that no options_what is allowed.",
           "type": "array",
           "items": {
             "type": "string"
           }
         }
-      }
+      },
+      "required": [
+        "options"
+      ]
     },
     "TypeEmpty": {
       "description": "TypeEmpty represents the type-empty rule.",
@@ -453,7 +456,7 @@
           "description": "Level represents the level of the rule.",
           "anyOf": [
             {
-              "$ref": "#/definitions/Level"
+              "$ref": "#/$defs/Level"
             },
             {
               "type": "null"
@@ -467,6 +470,7 @@
       "type": "object",
       "properties": {
         "format": {
+          "description": "Format represents the format of the length_of_what.",
           "type": [
             "string",
             "null"
@@ -476,7 +480,7 @@
           "description": "Level represents the level of the rule.",
           "anyOf": [
             {
-              "$ref": "#/definitions/Level"
+              "$ref": "#/$defs/Level"
             },
             {
               "type": "null"
@@ -488,27 +492,28 @@
     "TypeMaxLength": {
       "description": "TypeMaxLength represents the type-max-length rule.",
       "type": "object",
-      "required": [
-        "length"
-      ],
       "properties": {
         "length": {
+          "description": "Length represents the maximum length of the length_of_what.",
           "type": "integer",
           "format": "uint",
-          "minimum": 0.0
+          "minimum": 0
         },
         "level": {
           "description": "Level represents the level of the rule.",
           "anyOf": [
             {
-              "$ref": "#/definitions/Level"
+              "$ref": "#/$defs/Level"
             },
             {
               "type": "null"
             }
           ]
         }
-      }
+      },
+      "required": [
+        "length"
+      ]
     }
   }
 }
