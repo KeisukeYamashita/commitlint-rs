@@ -42,7 +42,6 @@
       ],
       "properties": {
         "length": {
-          "description": "Length represents the maximum length of the body.",
           "type": "integer",
           "format": "uint",
           "minimum": 0.0
@@ -61,7 +60,7 @@
       }
     },
     "DescriptionEmpty": {
-      "description": "DescriptionEmpty represents the subject-empty rule.",
+      "description": "DescriptionEmpty represents the description-empty rule",
       "type": "object",
       "properties": {
         "level": {
@@ -82,7 +81,6 @@
       "type": "object",
       "properties": {
         "format": {
-          "description": "Format represents the format of the description.",
           "type": [
             "string",
             "null"
@@ -109,7 +107,6 @@
       ],
       "properties": {
         "length": {
-          "description": "Length represents the maximum length of the description.",
           "type": "integer",
           "format": "uint",
           "minimum": 0.0
@@ -128,7 +125,7 @@
       }
     },
     "FootersEmpty": {
-      "description": "FootersEmpty represents the footer-empty rule.",
+      "description": "FootersEmpty represents the footer-empty rule",
       "type": "object",
       "properties": {
         "level": {
@@ -310,7 +307,7 @@
       }
     },
     "Scope": {
-      "description": "Scope represents the subject-empty rule.",
+      "description": "Scope represents the subject rule.",
       "type": "object",
       "required": [
         "optional",
@@ -333,7 +330,6 @@
           "type": "boolean"
         },
         "options": {
-          "description": "Options represents the options of the rule. If the option is empty, it means that no scope is allowed.",
           "type": "array",
           "items": {
             "type": "string"
@@ -342,7 +338,7 @@
       }
     },
     "ScopeEmpty": {
-      "description": "ScopeEmpty represents the subject-empty rule.",
+      "description": "FootersEmpty represents the subject-empty rule",
       "type": "object",
       "properties": {
         "level": {
@@ -363,7 +359,6 @@
       "type": "object",
       "properties": {
         "format": {
-          "description": "Format represents the format of the scope.",
           "type": [
             "string",
             "null"
@@ -383,14 +378,13 @@
       }
     },
     "ScopeMaxLength": {
-      "description": "ScopeMaxLength represents the description-max-length rule.",
+      "description": "ScopeMaxLength represents the scope-max-length rule.",
       "type": "object",
       "required": [
         "length"
       ],
       "properties": {
         "length": {
-          "description": "Length represents the maximum length of the scope.",
           "type": "integer",
           "format": "uint",
           "minimum": 0.0
@@ -426,7 +420,7 @@
       }
     },
     "Type": {
-      "description": "Type represents the subject-empty rule.",
+      "description": "Type represents the type rule.",
       "type": "object",
       "required": [
         "options"
@@ -444,7 +438,6 @@
           ]
         },
         "options": {
-          "description": "Options represents the options of the rule. If the option is empty, it means that no Type is allowed.",
           "type": "array",
           "items": {
             "type": "string"
@@ -474,7 +467,6 @@
       "type": "object",
       "properties": {
         "format": {
-          "description": "Format represents the format of the type.",
           "type": [
             "string",
             "null"
@@ -494,14 +486,13 @@
       }
     },
     "TypeMaxLength": {
-      "description": "TypeMaxLength represents the description-max-length rule.",
+      "description": "TypeMaxLength represents the type-max-length rule.",
       "type": "object",
       "required": [
         "length"
       ],
       "properties": {
         "length": {
-          "description": "Length represents the maximum length of the type.",
           "type": "integer",
           "format": "uint",
           "minimum": 0.0

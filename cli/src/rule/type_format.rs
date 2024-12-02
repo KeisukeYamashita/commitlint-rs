@@ -1,20 +1,10 @@
-use crate::{message::Message, result::Violation, rule::Rule};
-use serde::{Deserialize, Serialize};
+use crate::{make_format_rule, message::Message, result::Violation, rule::Rule};
 
 use super::Level;
-
-/// TypeFormat represents the type-format rule.
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
-pub struct TypeFormat {
-    /// Level represents the level of the rule.
-    ///
-    // Note that currently the default literal is not supported.
-    // See: https://github.com/serde-rs/serde/issues/368
-    level: Option<Level>,
-
-    /// Format represents the format of the type.
-    format: Option<String>,
+make_format_rule! {
+    TypeFormat,
+    "TypeFormat represents the type-format rule.",
+    "type"
 }
 
 /// TypeFormat represents the type-format rule.

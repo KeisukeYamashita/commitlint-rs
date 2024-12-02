@@ -1,21 +1,10 @@
-use crate::{message::Message, result::Violation, rule::Rule};
-use serde::{Deserialize, Serialize};
+use crate::{make_options_rule, message::Message, result::Violation, rule::Rule};
 
 use super::Level;
-
-/// Type represents the subject-empty rule.
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
-pub struct Type {
-    /// Level represents the level of the rule.
-    ///
-    // Note that currently the default literal is not supported.
-    // See: https://github.com/serde-rs/serde/issues/368
-    level: Option<Level>,
-
-    /// Options represents the options of the rule.
-    /// If the option is empty, it means that no Type is allowed.
-    options: Vec<String>,
+make_options_rule! {
+    Type,
+    "Type represents the type rule.",
+    "type",
 }
 
 /// Type represents the type rule.

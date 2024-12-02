@@ -1,11 +1,10 @@
-use crate::{make_rule, message::Message, result::Violation, rule::Rule};
-
 use super::Level;
-make_rule! {
+use crate::{make_format_rule, message::Message, result::Violation, rule::Rule};
+
+make_format_rule! {
     DescriptionFormat,
     "DescriptionFormat represents the description-format rule.",
-    #[doc = "Format represents the format of the description."]
-    format: Option<String>
+    "description"
 }
 
 /// DescriptionFormat represents the description-format rule.

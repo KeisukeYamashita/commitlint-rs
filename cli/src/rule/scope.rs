@@ -1,25 +1,12 @@
-use crate::{message::Message, result::Violation, rule::Rule};
-use serde::{Deserialize, Serialize};
-
 use super::Level;
+use crate::{make_options_rule, message::Message, result::Violation, rule::Rule};
 
-/// Scope represents the subject-empty rule.
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
-pub struct Scope {
-    /// Level represents the level of the rule.
-    ///
-    // Note that currently the default literal is not supported.
-    // See: https://github.com/serde-rs/serde/issues/368
-    level: Option<Level>,
-
-    /// Options represents the options of the rule.
-    /// If the option is empty, it means that no scope is allowed.
-    options: Vec<String>,
-
-    /// Optional scope.
-    /// If true, even if the scope is not present, it is allowed.
-    optional: bool,
+make_options_rule! {
+    Scope,
+    "Scope represents the subject rule.",
+    "scope",
+    #[doc ="Optional scope. If true, even if the scope is not present, it is allowed."]
+    optional: bool
 }
 
 /// Scope represents the scope rule.

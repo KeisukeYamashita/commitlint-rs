@@ -1,20 +1,10 @@
-use crate::{message::Message, result::Violation, rule::Rule};
-use serde::{Deserialize, Serialize};
+use crate::{make_format_rule, message::Message, result::Violation, rule::Rule};
 
 use super::Level;
-
-/// ScopeFormat represents the scope-format rule.
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
-pub struct ScopeFormat {
-    /// Level represents the level of the rule.
-    ///
-    // Note that currently the default literal is not supported.
-    // See: https://github.com/serde-rs/serde/issues/368
-    level: Option<Level>,
-
-    /// Format represents the format of the scope.
-    format: Option<String>,
+make_format_rule! {
+    ScopeFormat,
+    "ScopeFormat represents the scope-format rule.",
+    "scope"
 }
 
 /// ScopeFormat represents the scope-format rule.
