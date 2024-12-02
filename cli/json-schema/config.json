@@ -14,7 +14,7 @@
   ],
   "$defs": {
     "BodyEmpty": {
-      "description": "BodyEmpty represents the body_empty rule.",
+      "description": "[BodyEmpty] represents the `body-empty` rule.",
       "type": "object",
       "properties": {
         "level": {
@@ -31,7 +31,7 @@
       }
     },
     "BodyMaxLength": {
-      "description": "BodyMaxLength represents the body_max_length rule.",
+      "description": "[BodyMaxLength] represents the `body-max-length` rule.",
       "type": "object",
       "properties": {
         "length": {
@@ -57,7 +57,7 @@
       ]
     },
     "DescriptionEmpty": {
-      "description": "DescriptionEmpty represents the description_empty rule.",
+      "description": "[DescriptionEmpty] represents the `description-empty` rule.",
       "type": "object",
       "properties": {
         "level": {
@@ -74,7 +74,7 @@
       }
     },
     "DescriptionFormat": {
-      "description": "DescriptionFormat represents the description_format rule.",
+      "description": "[DescriptionFormat] represents the `description-format` rule.",
       "type": "object",
       "properties": {
         "format": {
@@ -98,7 +98,7 @@
       }
     },
     "DescriptionMaxLength": {
-      "description": "DescriptionMaxLength represents the description_max_length rule.",
+      "description": "[DescriptionMaxLength] represents the `description-max-length` rule.",
       "type": "object",
       "properties": {
         "length": {
@@ -124,7 +124,7 @@
       ]
     },
     "FootersEmpty": {
-      "description": "FootersEmpty represents the footers_empty rule.",
+      "description": "[FootersEmpty] represents the `footers-empty` rule.",
       "type": "object",
       "properties": {
         "level": {
@@ -306,7 +306,7 @@
       }
     },
     "Scope": {
-      "description": "Scope represents the scope rule.",
+      "description": "[Scope] represents the `scope` rule.",
       "type": "object",
       "properties": {
         "level": {
@@ -338,7 +338,7 @@
       ]
     },
     "ScopeEmpty": {
-      "description": "ScopeEmpty represents the scope_empty rule.",
+      "description": "[ScopeEmpty] represents the `scope-empty` rule.",
       "type": "object",
       "properties": {
         "level": {
@@ -355,7 +355,7 @@
       }
     },
     "ScopeFormat": {
-      "description": "ScopeFormat represents the scope_format rule.",
+      "description": "[ScopeFormat] represents the `scope-format` rule.",
       "type": "object",
       "properties": {
         "format": {
@@ -379,7 +379,7 @@
       }
     },
     "ScopeMaxLength": {
-      "description": "ScopeMaxLength represents the scope_max_length rule.",
+      "description": "[ScopeMaxLength] represents the `scope-max-length` rule.",
       "type": "object",
       "properties": {
         "length": {
@@ -405,7 +405,7 @@
       ]
     },
     "SubjectEmpty": {
-      "description": "SubjectEmpty represents the subject_empty rule.",
+      "description": "[SubjectEmpty] represents the `subject-empty` rule.",
       "type": "object",
       "properties": {
         "level": {
@@ -422,7 +422,7 @@
       }
     },
     "Type": {
-      "description": "Type represents the type rule.",
+      "description": "[Type] represents the `type` rule.",
       "type": "object",
       "properties": {
         "level": {
@@ -449,7 +449,7 @@
       ]
     },
     "TypeEmpty": {
-      "description": "TypeEmpty represents the type_empty rule.",
+      "description": "[TypeEmpty] represents the `type-empty` rule.",
       "type": "object",
       "properties": {
         "level": {
@@ -466,7 +466,7 @@
       }
     },
     "TypeFormat": {
-      "description": "TypeFormat represents the type_format rule.",
+      "description": "[TypeFormat] represents the `type-format` rule.",
       "type": "object",
       "properties": {
         "format": {
@@ -490,7 +490,7 @@
       }
     },
     "TypeMaxLength": {
-      "description": "TypeMaxLength represents the type_max_length rule.",
+      "description": "[TypeMaxLength] represents the `type-max-length` rule.",
       "type": "object",
       "properties": {
         "length": {
