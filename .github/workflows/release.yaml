@@ -126,6 +126,7 @@ jobs:
       - build
       - crate
       - docker
+      - schema
       - web
     steps:
       - uses: actions/download-artifact@v4
@@ -135,8 +136,24 @@ jobs:
           merge-multiple: true
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: commitlint/commitlint-*.tar.gz
+          artifacts: commitlint/commitlint-*.tar.gz,schema.json
           generateReleaseNotes: true
+
+  schema:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      - run: cargo run --package schema -- --path schema.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: schema.json
+          path: schema/schema.json
+          if-no-files-found: error
 
   web:
     runs-on: ubuntu-latest
