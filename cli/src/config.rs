@@ -125,17 +125,3 @@ async fn load_unknown_config_file(path: PathBuf) -> Result<Config, String> {
         path.display()
     ))
 }
-#[cfg(test)]
-mod tests {
-    #[cfg(feature = "schemars")]
-    #[test]
-    // TODO assert insta snapshot
-    fn generate_json_schema() {
-        use crate::config::Config;
-        use std::fs;
-
-        let config_schema = schemars::schema_for!(Config);
-        let config_schema_json = serde_json::to_string_pretty(&config_schema).unwrap();
-        fs::write("json-schema/config.json", config_schema_json).unwrap();
-    }
-}
