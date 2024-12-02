@@ -5,6 +5,7 @@ use super::Level;
 
 /// TypeMaxLength represents the description-max-length rule.
 #[derive(Clone, Debug, Deserialize, Serialize)]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub struct TypeMaxLength {
     /// Level represents the level of the rule.
     ///

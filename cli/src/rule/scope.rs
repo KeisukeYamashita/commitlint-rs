@@ -5,6 +5,7 @@ use super::Level;
 
 /// Scope represents the subject-empty rule.
 #[derive(Clone, Debug, Deserialize, Serialize)]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub struct Scope {
     /// Level represents the level of the rule.
     ///

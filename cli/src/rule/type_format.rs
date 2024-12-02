@@ -5,6 +5,7 @@ use super::Level;
 
 /// TypeFormat represents the type-format rule.
 #[derive(Clone, Debug, Deserialize, Serialize)]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub struct TypeFormat {
     /// Level represents the level of the rule.
     ///

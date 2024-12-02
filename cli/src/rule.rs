@@ -28,8 +28,9 @@ pub mod type_format;
 pub mod type_max_length;
 
 /// Rules represents the rules of commitlint.
-/// See: https://commitlint.js.org/#/reference-rules
+/// See: https://commitlint.js.org/reference/rules.html
 #[derive(Clone, Debug, Deserialize, Serialize)]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub struct Rules {
     #[serde(rename = "body-empty")]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -227,6 +228,7 @@ pub trait Rule: Default {
 
 /// Level represents the level of a rule.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub enum Level {
     #[serde(rename = "error")]
     Error,

@@ -5,6 +5,7 @@ use super::Level;
 
 /// ScopeMaxLength represents the description-max-length rule.
 #[derive(Clone, Debug, Deserialize, Serialize)]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub struct ScopeMaxLength {
     /// Level represents the level of the rule.
     ///

@@ -5,6 +5,7 @@ use super::Level;
 
 /// ScopeEmpty represents the subject-empty rule.
 #[derive(Clone, Debug, Deserialize, Serialize)]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub struct ScopeEmpty {
     /// Level represents the level of the rule.
     ///
@@ -79,10 +80,7 @@ mod tests {
         let violation = rule.validate(&message);
         assert!(violation.is_some());
         assert_eq!(violation.clone().unwrap().level, Level::Error);
-        assert_eq!(
-            violation.unwrap().message,
-            "scope is empty".to_string()
-        );
+        assert_eq!(violation.unwrap().message, "scope is empty".to_string());
     }
 
     #[test]
@@ -101,9 +99,6 @@ mod tests {
         let violation = rule.validate(&message);
         assert!(violation.is_some());
         assert_eq!(violation.clone().unwrap().level, Level::Error);
-        assert_eq!(
-            violation.unwrap().message,
-            "scope is empty".to_string()
-        );
+        assert_eq!(violation.unwrap().message, "scope is empty".to_string());
     }
 }

@@ -117,7 +117,7 @@ pub fn parse_commit_message(
 ///
 /// Note that exclamation mark is not respected as the existing commitlint
 /// does not have any rules for it.
-/// See: https://commitlint.js.org/#/reference-rules
+/// See: https://commitlint.js.org/reference/rules.html
 pub fn parse_subject(subject: &str) -> (Option<String>, Option<String>, Option<String>) {
     let re = regex::Regex::new(
         r"^(?P<type>\w+)(?:\((?P<scope>[^\)]+)\))?(?:!)?\:\s?(?P<description>.*)$",
@@ -188,8 +188,14 @@ Link: Hello";
         let mut f = HashMap::new();
         f.insert("Link".to_string(), "Hello".to_string());
         assert_eq!(subject, "feat(cli): add dummy option");
-        assert_eq!(body, Some("Hello, there!
-I'm from Japan!".to_string()));
+        assert_eq!(
+            body,
+            Some(
+                "Hello, there!
+I'm from Japan!"
+                    .to_string()
+            )
+        );
         assert!(footer.is_some());
         assert_eq!(f.get("Link"), Some(&"Hello".to_string()));
     }

@@ -5,6 +5,7 @@ use super::Level;
 
 /// BodyMaxLength represents the body-max-length rule.
 #[derive(Clone, Debug, Deserialize, Serialize)]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub struct BodyMaxLength {
     /// Level represents the level of the rule.
     ///
