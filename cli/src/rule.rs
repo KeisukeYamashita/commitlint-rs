@@ -247,7 +247,7 @@ macro_rules! make_length_rule {
     ) => {
         crate::make_rule! {
             $ident,
-            #[doc = concat!("Length represents the maximum length of the ", stringify!(length_of_what), ".")]
+            #[doc = concat!("Length represents the maximum length of the ",stringify!($length_of_what),".")]
             length: usize
         }
     };
@@ -261,7 +261,7 @@ macro_rules! make_format_rule {
     ) => {
         crate::make_rule! {
             $ident,
-            #[doc = concat!("Format represents the format of the ", stringify!(length_of_what), ".")]
+            #[doc = concat!("Format represents the format of the ",stringify!($format_of_what),".")]
             format: Option<String>
         }
     };
@@ -287,7 +287,7 @@ macro_rules! make_options_rule {
                     $field_name: $field_type,
 
                 ),*
-                #[doc = concat!("Options represents the options of the rule. If the option is empty, it means that no ",stringify!(options_what)," is allowed.")]
+                #[doc = concat!("Options represents the options of the rule. If the option is empty, it means that no ",stringify!($options_what)," is allowed.")]
                 options: Vec<String>
         }
         };

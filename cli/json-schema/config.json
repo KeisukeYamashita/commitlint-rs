@@ -35,7 +35,7 @@
       "type": "object",
       "properties": {
         "length": {
-          "description": "Length represents the maximum length of the length_of_what.",
+          "description": "Length represents the maximum length of the \"body\".",
           "type": "integer",
           "format": "uint",
           "minimum": 0
@@ -78,7 +78,7 @@
       "type": "object",
       "properties": {
         "format": {
-          "description": "Format represents the format of the length_of_what.",
+          "description": "Format represents the format of the \"description\".",
           "type": [
             "string",
             "null"
@@ -102,7 +102,7 @@
       "type": "object",
       "properties": {
         "length": {
-          "description": "Length represents the maximum length of the length_of_what.",
+          "description": "Length represents the maximum length of the \"description\".",
           "type": "integer",
           "format": "uint",
           "minimum": 0
@@ -325,7 +325,7 @@
           "type": "boolean"
         },
         "options": {
-          "description": "Options represents the options of the rule. If the option is empty, it means that no options_what is allowed.",
+          "description": "Options represents the options of the rule. If the option is empty, it means that no \"scope\" is allowed.",
           "type": "array",
           "items": {
             "type": "string"
@@ -359,7 +359,7 @@
       "type": "object",
       "properties": {
         "format": {
-          "description": "Format represents the format of the length_of_what.",
+          "description": "Format represents the format of the \"scope\".",
           "type": [
             "string",
             "null"
@@ -383,7 +383,7 @@
       "type": "object",
       "properties": {
         "length": {
-          "description": "Length represents the maximum length of the length_of_what.",
+          "description": "Length represents the maximum length of the \"scope\".",
           "type": "integer",
           "format": "uint",
           "minimum": 0
@@ -437,7 +437,7 @@
           ]
         },
         "options": {
-          "description": "Options represents the options of the rule. If the option is empty, it means that no options_what is allowed.",
+          "description": "Options represents the options of the rule. If the option is empty, it means that no \"type\" is allowed.",
           "type": "array",
           "items": {
             "type": "string"
@@ -470,7 +470,7 @@
       "type": "object",
       "properties": {
         "format": {
-          "description": "Format represents the format of the length_of_what.",
+          "description": "Format represents the format of the \"type\".",
           "type": [
             "string",
             "null"
@@ -494,7 +494,7 @@
       "type": "object",
       "properties": {
         "length": {
-          "description": "Length represents the maximum length of the length_of_what.",
+          "description": "Length represents the maximum length of the \"type\".",
           "type": "integer",
           "format": "uint",
           "minimum": 0
