@@ -239,3 +239,48 @@ pub enum Level {
     #[serde(rename = "warning")]
     Warning,
 }
+#[macro_export]
+macro_rules! make_length_rule {
+    (
+        $ident:ident,
+        $doc:expr,
+        $length_of_what:literal
+    ) => {
+        crate::make_rule! {
+            $ident,
+            $doc,
+            #[doc = concat!("Length represents the maximum length of the ", stringify!(length_of_what), ".")]
+            length: usize
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! make_rule {
+    (
+        $ident:ident,
+        $doc:expr,
+        $(
+            $(
+                #[$field_meta:meta]
+            )*
+            $field_name:ident: $field_type:ty
+        ),*) => {
+        #[doc = $doc]
+        #[derive(Clone, Debug, serde::Deserialize, serde::Serialize)]
+        #[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
+        pub struct $ident {
+            /// Level represents the level of the rule.
+            ///
+            // Note that currently the default literal is not supported.
+            // See: https://github.com/serde-rs/serde/issues/368
+            level: Option<Level>,
+            $(
+                $(
+                    #[$field_meta]
+                )*
+                $field_name: $field_type
+            ),*
+        }
+    };
+}
