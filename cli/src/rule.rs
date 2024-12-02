@@ -304,8 +304,7 @@ macro_rules! make_rule {
             )*
             $field_name:ident: $field_type:ty
         ),*) => { paste::paste! {
-
-        #[doc = "[" $ident "] represents the `"[<$ident:dash>]"` rule."]
+        #[doc = "[" $ident "] represents the [`"[<$ident:dash>]"`](https://keisukeyamashita.github.io/commitlint-rs/rules/"[<$ident:dash>]") rule."]
         #[derive(Clone, Debug, serde::Deserialize, serde::Serialize)]
         #[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
         pub struct $ident {
