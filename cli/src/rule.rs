@@ -256,6 +256,50 @@ macro_rules! make_length_rule {
 }
 
 #[macro_export]
+macro_rules! make_format_rule {
+    (
+        $ident:ident,
+        $doc:expr,
+        $format_of_what:literal
+    ) => {
+        crate::make_rule! {
+            $ident,
+            $doc,
+            #[doc = concat!("Format represents the format of the ", stringify!(length_of_what), ".")]
+            format: Option<String>
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! make_options_rule {
+    (
+        $ident:ident,
+        $doc:expr,
+        $options_what: literal,
+        $(
+            $(
+                #[$field_meta:meta]
+            )*
+            $field_name:ident: $field_type:ty
+        ),*) => {
+            crate::make_rule! {
+                $ident,
+                $doc,
+                $(
+                    $(
+                        #[$field_meta]
+                    )*
+                    $field_name: $field_type,
+
+                ),*
+                #[doc = concat!("Options represents the options of the rule. If the option is empty, it means that no ",stringify!(options_what)," is allowed.")]
+                options: Vec<String>
+        }
+        };
+}
+
+#[macro_export]
 macro_rules! make_rule {
     (
         $ident:ident,
