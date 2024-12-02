@@ -3,7 +3,6 @@ use crate::{make_rule, message::Message, result::Violation, rule::Rule};
 use super::Level;
 make_rule! {
     FootersEmpty,
-    "FootersEmpty represents the footer-empty rule",
 }
 
 /// FooterEmpty represents the footer-empty rule.

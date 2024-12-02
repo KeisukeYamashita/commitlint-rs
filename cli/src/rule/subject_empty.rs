@@ -4,7 +4,6 @@ use super::Level;
 
 make_rule! {
     SubjectEmpty,
-    "SubjectEmpty represents the subject-empty rule.",
 }
 
 /// SubjectEmpty represents the subject-empty rule.

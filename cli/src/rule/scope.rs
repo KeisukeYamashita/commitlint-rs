@@ -3,7 +3,6 @@ use crate::{make_options_rule, message::Message, result::Violation, rule::Rule};
 
 make_options_rule! {
     Scope,
-    "Scope represents the subject rule.",
     "scope",
     #[doc ="Optional scope. If true, even if the scope is not present, it is allowed."]
     optional: bool

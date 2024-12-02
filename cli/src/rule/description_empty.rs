@@ -3,7 +3,6 @@ use crate::{make_rule, message::Message, result::Violation, rule::Rule};
 use super::Level;
 make_rule! {
     DescriptionEmpty,
-    "DescriptionEmpty represents the description-empty rule",
 }
 
 /// DescriptionEmpty represents the description-empty rule.

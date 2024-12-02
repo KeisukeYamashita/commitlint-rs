@@ -3,7 +3,6 @@ use crate::{make_rule, message::Message, result::Violation, rule::Rule};
 
 make_rule! {
     BodyEmpty,
-    "BodyEmpty represents the body-empty rule.",
 }
 
 /// BodyEmpty represents the body-empty rule.

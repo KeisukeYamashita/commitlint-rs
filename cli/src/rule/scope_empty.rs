@@ -3,7 +3,6 @@ use crate::{make_rule, message::Message, result::Violation, rule::Rule};
 
 make_rule! {
     ScopeEmpty,
-    "FootersEmpty represents the subject-empty rule",
 }
 
 /// ScopeEmpty represents the scope-empty rule.

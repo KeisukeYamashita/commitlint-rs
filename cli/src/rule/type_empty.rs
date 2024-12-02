@@ -3,7 +3,6 @@ use crate::{make_rule, message::Message, result::Violation, rule::Rule};
 use super::Level;
 make_rule! {
     TypeEmpty,
-    "TypeEmpty represents the type-empty rule.",
 }
 
 /// TypeEmpty represents the type-empty rule.

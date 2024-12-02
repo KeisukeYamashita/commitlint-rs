@@ -3,7 +3,6 @@ use crate::{make_length_rule, message::Message, result::Violation, rule::Rule};
 
 make_length_rule! {
     ScopeMaxLength,
-    "ScopeMaxLength represents the scope-max-length rule.",
     "scope"
 }
 /// ScopeMaxLength represents the description-max-length rule.

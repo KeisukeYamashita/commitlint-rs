@@ -1,7 +1,6 @@
-use std::fmt::Debug;
-
 use crate::{message::Message, result::Violation};
 use serde::{Deserialize, Serialize};
+use std::fmt::Debug;
 
 use self::{
     body_empty::BodyEmpty, body_max_length::BodyMaxLength, description_empty::DescriptionEmpty,
@@ -243,12 +242,10 @@ pub enum Level {
 macro_rules! make_length_rule {
     (
         $ident:ident,
-        $doc:expr,
         $length_of_what:literal
     ) => {
         crate::make_rule! {
             $ident,
-            $doc,
             #[doc = concat!("Length represents the maximum length of the ", stringify!(length_of_what), ".")]
             length: usize
         }
@@ -259,12 +256,10 @@ macro_rules! make_length_rule {
 macro_rules! make_format_rule {
     (
         $ident:ident,
-        $doc:expr,
         $format_of_what:literal
     ) => {
         crate::make_rule! {
             $ident,
-            $doc,
             #[doc = concat!("Format represents the format of the ", stringify!(length_of_what), ".")]
             format: Option<String>
         }
@@ -275,7 +270,6 @@ macro_rules! make_format_rule {
 macro_rules! make_options_rule {
     (
         $ident:ident,
-        $doc:expr,
         $options_what: literal,
         $(
             $(
@@ -285,7 +279,6 @@ macro_rules! make_options_rule {
         ),*) => {
             crate::make_rule! {
                 $ident,
-                $doc,
                 $(
                     $(
                         #[$field_meta]
@@ -303,14 +296,14 @@ macro_rules! make_options_rule {
 macro_rules! make_rule {
     (
         $ident:ident,
-        $doc:expr,
         $(
             $(
                 #[$field_meta:meta]
             )*
             $field_name:ident: $field_type:ty
-        ),*) => {
-        #[doc = $doc]
+        ),*) => { paste::paste! {
+
+        #[doc = concat!(stringify!($ident), "represents the ", stringify!([<$ident:snake>])," rule.")]
         #[derive(Clone, Debug, serde::Deserialize, serde::Serialize)]
         #[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
         pub struct $ident {
@@ -326,5 +319,6 @@ macro_rules! make_rule {
                 $field_name: $field_type
             ),*
         }
-    };
+    }
+};
 }

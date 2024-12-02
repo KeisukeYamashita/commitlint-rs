@@ -4,7 +4,6 @@ use super::Level;
 
 make_length_rule! {
     DescriptionMaxLength,
-    "DescriptionMaxLength represents the description-max-length rule.",
     "description"
 }
 

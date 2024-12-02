@@ -3,7 +3,6 @@ use crate::{make_format_rule, message::Message, result::Violation, rule::Rule};
 
 make_format_rule! {
     DescriptionFormat,
-    "DescriptionFormat represents the description-format rule.",
     "description"
 }
 

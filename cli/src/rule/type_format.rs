@@ -3,7 +3,6 @@ use crate::{make_format_rule, message::Message, result::Violation, rule::Rule};
 use super::Level;
 make_format_rule! {
     TypeFormat,
-    "TypeFormat represents the type-format rule.",
     "type"
 }
 

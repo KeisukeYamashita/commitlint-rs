@@ -3,7 +3,6 @@ use crate::{make_options_rule, message::Message, result::Violation, rule::Rule};
 use super::Level;
 make_options_rule! {
     Type,
-    "Type represents the type rule.",
     "type",
 }
 

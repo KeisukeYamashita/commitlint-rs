@@ -3,7 +3,6 @@ use crate::{make_length_rule, message::Message, result::Violation, rule::Rule};
 use super::Level;
 make_length_rule! {
     BodyMaxLength,
-    "BodyMaxLength represents the body-max-length rule.",
     "body"
 }
 

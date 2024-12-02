@@ -3,7 +3,6 @@ use crate::{make_format_rule, message::Message, result::Violation, rule::Rule};
 use super::Level;
 make_format_rule! {
     ScopeFormat,
-    "ScopeFormat represents the scope-format rule.",
     "scope"
 }
 

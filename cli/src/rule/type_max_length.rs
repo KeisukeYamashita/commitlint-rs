@@ -4,7 +4,6 @@ use super::Level;
 
 make_length_rule! {
     TypeMaxLength,
-    "TypeMaxLength represents the type-max-length rule.",
     "type"
 }
 
