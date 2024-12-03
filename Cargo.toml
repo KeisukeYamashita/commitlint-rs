@@ -1,9 +1,9 @@
 [workspace]
-members = ["cli"]
+members = ["cli", "schema"]
 resolver = "2"
 
 [workspace.package]
-version = "0.2.0"
+version = "0.2.2"
 authors = ["KeisukeYamashita <19yamashita15@gmail.com>"]
 license = "MIT OR Apache-2.0"
 documentation = "https://keisukeyamashita.github.io/commitlint-rs"

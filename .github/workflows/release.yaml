@@ -8,10 +8,6 @@ concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: false
 
-defaults:
-  run:
-    working-directory: ./cli
-
 permissions:
   contents: write # To write to release
   id-token: write # To deploy to GitHub Pages
@@ -30,11 +26,11 @@ jobs:
             rust_target: x86_64-unknown-linux-gnu
             ext: ""
             args: ""
-          - os: macos-latest
+          - os: macos-13 # (Intel x86)
             rust_target: x86_64-apple-darwin
             ext: ""
             args: ""
-          - os: macos-14 # beta (Apple Silicon)
+          - os: macos-latest # (Apple Silicon)
             rust_target: aarch64-apple-darwin
             ext: ""
             args: ""
@@ -55,7 +51,7 @@ jobs:
           toolchain: stable
           override: true
 
-      - run: cargo build --release
+      - run: cargo build --package commitlint-rs --release
 
       - run: tar czvf commitlint-${{ github.ref_name }}-${{ matrix.config.rust_target }}.tar.gz -C target/release commitlint${{ matrix.config.ext }}
 
@@ -84,7 +80,7 @@ jobs:
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-cargo-
-      - run: cargo publish
+      - run: cargo publish --package commitlint-rs
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
 
@@ -113,7 +109,6 @@ jobs:
 
       - uses: docker/build-push-action@v6
         with:
-          context: ./cli
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
@@ -126,6 +121,7 @@ jobs:
       - build
       - crate
       - docker
+      - schema
       - web
     steps:
       - uses: actions/download-artifact@v4
@@ -135,8 +131,24 @@ jobs:
           merge-multiple: true
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: commitlint/commitlint-*.tar.gz
+          artifacts: commitlint/commitlint-*.tar.gz,schema.json
           generateReleaseNotes: true
+
+  schema:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      - run: cargo run --package schema -- --path schema.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: schema.json
+          path: schema.json
+          if-no-files-found: error
 
   web:
     runs-on: ubuntu-latest
