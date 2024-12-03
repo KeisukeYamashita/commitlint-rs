@@ -55,7 +55,7 @@ jobs:
           toolchain: stable
           override: true
 
-      - run: cargo build --package cli --release
+      - run: cargo build --package commitlint-rs --release
 
       - run: tar czvf commitlint-${{ github.ref_name }}-${{ matrix.config.rust_target }}.tar.gz -C target/release commitlint${{ matrix.config.ext }}
 
