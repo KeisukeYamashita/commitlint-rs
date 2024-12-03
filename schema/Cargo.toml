@@ -14,6 +14,8 @@ edition.workspace = true
 [dependencies]
 clap = { version = "4.5.21", features = ["derive"] }
 cli = { path = "../cli", features = ["schemars"], package = "commitlint-rs" }
-schemars = { version = "0.8.21" }
+schemars = { version = "1.0.0-alpha.16" }
 serde = { version = "1.0.215", features = ["derive"] }
 serde_json = "1.0.133"
+[dev-dependencies]
+insta = { version = "1.41.1", features = ["yaml"] }

@@ -11,17 +11,16 @@ repository.workspace = true
 license.workspace = true
 edition.workspace = true
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [[bin]]
 name = "commitlint"
 path = "src/main.rs"
 
 [dependencies]
+paste = { git = "https://github.com/elcoosp/paste", branch = "feat/dash" }
 clap = { version = "4.5.4", features = ["derive", "env", "string"] }
 futures = "0.3.30"
 regex = "1.10.5"
-schemars = { version = "0.8.21", optional = true }
+schemars = { version = "1.0.0-alpha.16", optional = true }
 serde = { version = "1.0.201", features = ["derive"] }
 serde_json = "1.0.121"
 serde_yaml = "0.9.34"

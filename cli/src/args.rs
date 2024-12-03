@@ -56,7 +56,7 @@ impl Args {
         if let Some(edit) = self.edit.as_deref() {
             if edit != "false" {
                 let msg = std::fs::read_to_string(edit)
-                    .expect(format!("Failed to read commit message from {}", edit).as_str());
+                    .unwrap_or_else(|_| panic!("Failed to read commit message from {}", edit));
                 return Ok(vec![Message::new(msg)]);
             }
         }
@@ -87,13 +87,8 @@ impl Args {
         }
 
         let default_path = std::path::PathBuf::from(".git").join("COMMIT_EDITMSG");
-        let msg = std::fs::read_to_string(&default_path).expect(
-            format!(
-                "Failed to read commit message from {}",
-                default_path.display()
-            )
-            .as_str(),
-        );
+        let msg = std::fs::read_to_string(&default_path).unwrap_or_else(|_| panic!("Failed to read commit message from {}",
+                default_path.display()));
         Ok(vec![Message::new(msg)])
     }
 }
