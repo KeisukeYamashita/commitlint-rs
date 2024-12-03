@@ -67,7 +67,7 @@ fn extract_commit_messages(input: &str) -> Vec<String> {
 /// Please refer the official documentation for the commit message format.
 /// See: https://www.conventionalcommits.org/en/v1.0.0/#summary
 ///
-/// ```
+/// ```ignore
 /// <type>[optional scope]: <description> <-- Subject
 ///
 /// [optional body] <-- Body
