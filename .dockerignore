@@ -4,7 +4,8 @@
 
 !/Cargo.lock
 !/Cargo.toml
-!/src
+!/cli
+!/schema
 !/LICENSE-APACHE
 !/LICENSE-MIT
 !/README.md
