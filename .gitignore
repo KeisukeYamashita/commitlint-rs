@@ -20,4 +20,8 @@ Cargo.lock
 commitlint
 
 # Commitlint config file
+.commitlintrc
 .commitlintrc.*
+
+# JSON schema
+schema.json
