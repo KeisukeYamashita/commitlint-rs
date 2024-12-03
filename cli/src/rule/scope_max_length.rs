@@ -5,8 +5,6 @@ make_length_rule! {
     ScopeMaxLength,
     "scope"
 }
-/// ScopeMaxLength represents the description-max-length rule.
-
 /// ScopeMaxLength represents the scope-max-length rule.
 impl Rule for ScopeMaxLength {
     const NAME: &'static str = "scope-max-length";
