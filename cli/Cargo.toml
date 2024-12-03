@@ -1,5 +1,5 @@
 [package]
-name = "cli"
+name = "commitlint-rs"
 description = "CLI tool to lint commits by Conventional Commits"
 documentation.workspace = true
 authors.workspace = true

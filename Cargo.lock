@@ -155,7 +155,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1462739cb27611015575c0c11df5df7601141071f07518d56fcc1be504cbec97"
 
 [[package]]
-name = "cli"
+name = "colorchoice"
+version = "1.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5b63caa9aa9397e2d9480a9b13673856c78d8ac123288526c37d7839f2a86990"
+
+[[package]]
+name = "commitlint-rs"
 version = "0.2.0"
 dependencies = [
  "clap",
@@ -167,12 +173,6 @@ dependencies = [
  "serde_yaml",
  "tokio",
 ]
-
-[[package]]
-name = "colorchoice"
-version = "1.0.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5b63caa9aa9397e2d9480a9b13673856c78d8ac123288526c37d7839f2a86990"
 
 [[package]]
 name = "dyn-clone"
@@ -481,7 +481,7 @@ name = "schema"
 version = "0.2.0"
 dependencies = [
  "clap",
- "cli",
+ "commitlint-rs",
  "schemars",
  "serde",
  "serde_json",
