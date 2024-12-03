@@ -7,7 +7,8 @@ RUN  --mount=type=cache,target=/var/cache/apk,sharing=locked \
     && apk add --no-cache musl-dev
 
 COPY . .
-RUN cargo install --path .
+RUN cargo install --path ./cli && \
+    commitlint --version
 
 FROM alpine
 LABEL maintainer="KeisukeYamashita <19yamashita15@gmail.com>"
