@@ -47,6 +47,17 @@ jobs:
           bats-version: 1.9.0
       - run: bats cli/e2e --filter-tags ${{ matrix.tag }}
 
+  schema:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - uses: actions-rs/toolchain@v1
+          with:
+            profile: minimal
+            toolchain: stable
+            override: true
+        - run: cargo run --package schema -- --path schema.json
+
   test:
     runs-on: ubuntu-latest
     steps:
