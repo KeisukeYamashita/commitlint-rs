@@ -8,10 +8,6 @@ concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: false
 
-defaults:
-  run:
-    working-directory: ./cli
-
 permissions:
   contents: write # To write to release
   id-token: write # To deploy to GitHub Pages
