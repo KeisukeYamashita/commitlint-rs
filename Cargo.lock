@@ -166,7 +166,6 @@ version = "0.2.2"
 dependencies = [
  "clap",
  "futures",
- "insta",
  "paste",
  "regex",
  "schemars",
@@ -444,7 +443,7 @@ dependencies = [
 [[package]]
 name = "paste"
 version = "1.0.15"
-source = "git+https://github.com/elcoosp/paste?branch=feat/dash#4efa1dd157f1a9bc8994fffd653bb2e1c744828a"
+source = "git+https://github.com/elcoosp/paste?branch=feat%2Fdash#4efa1dd157f1a9bc8994fffd653bb2e1c744828a"
 
 [[package]]
 name = "pin-project-lite"
@@ -552,6 +551,7 @@ version = "0.2.2"
 dependencies = [
  "clap",
  "commitlint-rs",
+ "insta",
  "schemars",
  "serde",
  "serde_json",
