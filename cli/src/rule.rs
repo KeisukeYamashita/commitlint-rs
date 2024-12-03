@@ -245,7 +245,7 @@ macro_rules! make_length_rule {
         $ident:ident,
         $length_of_what:literal
     ) => {
-        crate::make_rule! {
+        $crate::make_rule! {
             $ident,
             #[doc = concat!("Length represents the maximum length of the ",stringify!($length_of_what),".")]
             length: usize
@@ -259,7 +259,7 @@ macro_rules! make_format_rule {
         $ident:ident,
         $format_of_what:literal
     ) => {
-        crate::make_rule! {
+        $crate::make_rule! {
             $ident,
             #[doc = concat!("Format represents the format of the ",stringify!($format_of_what),".")]
             format: Option<String>
@@ -278,7 +278,7 @@ macro_rules! make_options_rule {
             )*
             $field_name:ident: $field_type:ty
         ),*) => {
-            crate::make_rule! {
+            $crate::make_rule! {
                 $ident,
                 $(
                     $(
