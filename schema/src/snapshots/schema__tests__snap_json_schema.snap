@@ -1,0 +1,283 @@
+---
+source: schema/src/main.rs
+expression: config_schema
+snapshot_kind: text
+---
+$schema: "https://json-schema.org/draft/2020-12/schema"
+title: Config
+description: Config represents the configuration of commitlint.
+type: object
+properties:
+  rules:
+    description: Rules represents the rules of commitlint.
+    $ref: "#/$defs/Rules"
+required:
+  - rules
+$defs:
+  BodyEmpty:
+    description: "[BodyEmpty] represents the [`body-empty`](https://keisukeyamashita.github.io/commitlint-rs/rules/body-empty) rule."
+    type: object
+    properties:
+      level:
+        description: Level represents the level of the rule.
+        anyOf:
+          - $ref: "#/$defs/Level"
+          - type: "null"
+  BodyMaxLength:
+    description: "[BodyMaxLength] represents the [`body-max-length`](https://keisukeyamashita.github.io/commitlint-rs/rules/body-max-length) rule."
+    type: object
+    properties:
+      length:
+        description: "Length represents the maximum length of the \"body\"."
+        type: integer
+        format: uint
+        minimum: 0
+      level:
+        description: Level represents the level of the rule.
+        anyOf:
+          - $ref: "#/$defs/Level"
+          - type: "null"
+    required:
+      - length
+  DescriptionEmpty:
+    description: "[DescriptionEmpty] represents the [`description-empty`](https://keisukeyamashita.github.io/commitlint-rs/rules/description-empty) rule."
+    type: object
+    properties:
+      level:
+        description: Level represents the level of the rule.
+        anyOf:
+          - $ref: "#/$defs/Level"
+          - type: "null"
+  DescriptionFormat:
+    description: "[DescriptionFormat] represents the [`description-format`](https://keisukeyamashita.github.io/commitlint-rs/rules/description-format) rule."
+    type: object
+    properties:
+      format:
+        description: "Format represents the format of the \"description\"."
+        type:
+          - string
+          - "null"
+      level:
+        description: Level represents the level of the rule.
+        anyOf:
+          - $ref: "#/$defs/Level"
+          - type: "null"
+  DescriptionMaxLength:
+    description: "[DescriptionMaxLength] represents the [`description-max-length`](https://keisukeyamashita.github.io/commitlint-rs/rules/description-max-length) rule."
+    type: object
+    properties:
+      length:
+        description: "Length represents the maximum length of the \"description\"."
+        type: integer
+        format: uint
+        minimum: 0
+      level:
+        description: Level represents the level of the rule.
+        anyOf:
+          - $ref: "#/$defs/Level"
+          - type: "null"
+    required:
+      - length
+  FootersEmpty:
+    description: "[FootersEmpty] represents the [`footers-empty`](https://keisukeyamashita.github.io/commitlint-rs/rules/footers-empty) rule."
+    type: object
+    properties:
+      level:
+        description: Level represents the level of the rule.
+        anyOf:
+          - $ref: "#/$defs/Level"
+          - type: "null"
+  Level:
+    description: Level represents the level of a rule.
+    type: string
+    enum:
+      - error
+      - ignore
+      - warning
+  Rules:
+    description: "Rules represents the rules of commitlint.\n See: https://commitlint.js.org/reference/rules.html"
+    type: object
+    properties:
+      type:
+        anyOf:
+          - $ref: "#/$defs/Type"
+          - type: "null"
+      body-empty:
+        anyOf:
+          - $ref: "#/$defs/BodyEmpty"
+          - type: "null"
+      body-max-length:
+        anyOf:
+          - $ref: "#/$defs/BodyMaxLength"
+          - type: "null"
+      description-empty:
+        anyOf:
+          - $ref: "#/$defs/DescriptionEmpty"
+          - type: "null"
+      description-format:
+        anyOf:
+          - $ref: "#/$defs/DescriptionFormat"
+          - type: "null"
+      description-max-length:
+        anyOf:
+          - $ref: "#/$defs/DescriptionMaxLength"
+          - type: "null"
+      footers-empty:
+        anyOf:
+          - $ref: "#/$defs/FootersEmpty"
+          - type: "null"
+      scope:
+        anyOf:
+          - $ref: "#/$defs/Scope"
+          - type: "null"
+      scope-empty:
+        anyOf:
+          - $ref: "#/$defs/ScopeEmpty"
+          - type: "null"
+      scope-format:
+        anyOf:
+          - $ref: "#/$defs/ScopeFormat"
+          - type: "null"
+      scope-max-length:
+        anyOf:
+          - $ref: "#/$defs/ScopeMaxLength"
+          - type: "null"
+      subject-empty:
+        anyOf:
+          - $ref: "#/$defs/SubjectEmpty"
+          - type: "null"
+      type-empty:
+        anyOf:
+          - $ref: "#/$defs/TypeEmpty"
+          - type: "null"
+      type-format:
+        anyOf:
+          - $ref: "#/$defs/TypeFormat"
+          - type: "null"
+      type-max-length:
+        anyOf:
+          - $ref: "#/$defs/TypeMaxLength"
+          - type: "null"
+  Scope:
+    description: "[Scope] represents the [`scope`](https://keisukeyamashita.github.io/commitlint-rs/rules/scope) rule."
+    type: object
+    properties:
+      level:
+        description: Level represents the level of the rule.
+        anyOf:
+          - $ref: "#/$defs/Level"
+          - type: "null"
+      optional:
+        description: "Optional scope. If true, even if the scope is not present, it is allowed."
+        type: boolean
+      options:
+        description: "Options represents the options of the rule. If the option is empty, it means that no \"scope\" is allowed."
+        type: array
+        items:
+          type: string
+    required:
+      - optional
+      - options
+  ScopeEmpty:
+    description: "[ScopeEmpty] represents the [`scope-empty`](https://keisukeyamashita.github.io/commitlint-rs/rules/scope-empty) rule."
+    type: object
+    properties:
+      level:
+        description: Level represents the level of the rule.
+        anyOf:
+          - $ref: "#/$defs/Level"
+          - type: "null"
+  ScopeFormat:
+    description: "[ScopeFormat] represents the [`scope-format`](https://keisukeyamashita.github.io/commitlint-rs/rules/scope-format) rule."
+    type: object
+    properties:
+      format:
+        description: "Format represents the format of the \"scope\"."
+        type:
+          - string
+          - "null"
+      level:
+        description: Level represents the level of the rule.
+        anyOf:
+          - $ref: "#/$defs/Level"
+          - type: "null"
+  ScopeMaxLength:
+    description: "[ScopeMaxLength] represents the [`scope-max-length`](https://keisukeyamashita.github.io/commitlint-rs/rules/scope-max-length) rule."
+    type: object
+    properties:
+      length:
+        description: "Length represents the maximum length of the \"scope\"."
+        type: integer
+        format: uint
+        minimum: 0
+      level:
+        description: Level represents the level of the rule.
+        anyOf:
+          - $ref: "#/$defs/Level"
+          - type: "null"
+    required:
+      - length
+  SubjectEmpty:
+    description: "[SubjectEmpty] represents the [`subject-empty`](https://keisukeyamashita.github.io/commitlint-rs/rules/subject-empty) rule."
+    type: object
+    properties:
+      level:
+        description: Level represents the level of the rule.
+        anyOf:
+          - $ref: "#/$defs/Level"
+          - type: "null"
+  Type:
+    description: "[Type] represents the [`type`](https://keisukeyamashita.github.io/commitlint-rs/rules/type) rule."
+    type: object
+    properties:
+      level:
+        description: Level represents the level of the rule.
+        anyOf:
+          - $ref: "#/$defs/Level"
+          - type: "null"
+      options:
+        description: "Options represents the options of the rule. If the option is empty, it means that no \"type\" is allowed."
+        type: array
+        items:
+          type: string
+    required:
+      - options
+  TypeEmpty:
+    description: "[TypeEmpty] represents the [`type-empty`](https://keisukeyamashita.github.io/commitlint-rs/rules/type-empty) rule."
+    type: object
+    properties:
+      level:
+        description: Level represents the level of the rule.
+        anyOf:
+          - $ref: "#/$defs/Level"
+          - type: "null"
+  TypeFormat:
+    description: "[TypeFormat] represents the [`type-format`](https://keisukeyamashita.github.io/commitlint-rs/rules/type-format) rule."
+    type: object
+    properties:
+      format:
+        description: "Format represents the format of the \"type\"."
+        type:
+          - string
+          - "null"
+      level:
+        description: Level represents the level of the rule.
+        anyOf:
+          - $ref: "#/$defs/Level"
+          - type: "null"
+  TypeMaxLength:
+    description: "[TypeMaxLength] represents the [`type-max-length`](https://keisukeyamashita.github.io/commitlint-rs/rules/type-max-length) rule."
+    type: object
+    properties:
+      length:
+        description: "Length represents the maximum length of the \"type\"."
+        type: integer
+        format: uint
+        minimum: 0
+      level:
+        description: Level represents the level of the rule.
+        anyOf:
+          - $ref: "#/$defs/Level"
+          - type: "null"
+    required:
+      - length

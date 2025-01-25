@@ -1,7 +1,6 @@
-use std::fmt::Debug;
-
 use crate::{message::Message, result::Violation};
 use serde::{Deserialize, Serialize};
+use std::fmt::Debug;
 
 use self::{
     body_empty::BodyEmpty, body_max_length::BodyMaxLength, description_empty::DescriptionEmpty,
@@ -238,4 +237,89 @@ pub enum Level {
 
     #[serde(rename = "warning")]
     Warning,
+}
+/// Create a struct with length field that should impl [Rule]
+#[macro_export]
+macro_rules! make_length_rule {
+    (
+        $ident:ident,
+        $length_of_what:literal
+    ) => {
+        $crate::make_rule! {
+            $ident,
+            #[doc = concat!("Length represents the maximum length of the ",stringify!($length_of_what),".")]
+            length: usize
+        }
+    };
+}
+/// Create a struct with format field that should impl [Rule]
+#[macro_export]
+macro_rules! make_format_rule {
+    (
+        $ident:ident,
+        $format_of_what:literal
+    ) => {
+        $crate::make_rule! {
+            $ident,
+            #[doc = concat!("Format represents the format of the ",stringify!($format_of_what),".")]
+            format: Option<String>
+        }
+    };
+}
+/// Create a struct with options field that should impl [Rule]
+#[macro_export]
+macro_rules! make_options_rule {
+    (
+        $ident:ident,
+        $options_what: literal,
+        $(
+            $(
+                #[$field_meta:meta]
+            )*
+            $field_name:ident: $field_type:ty
+        ),*) => {
+            $crate::make_rule! {
+                $ident,
+                $(
+                    $(
+                        #[$field_meta]
+                    )*
+                    $field_name: $field_type,
+
+                ),*
+                #[doc = concat!("Options represents the options of the rule. If the option is empty, it means that no ",stringify!($options_what)," is allowed.")]
+                options: Vec<String>
+        }
+        };
+}
+
+/// Create a struct that should impl [Rule]
+#[macro_export]
+macro_rules! make_rule {
+    (
+        $ident:ident,
+        $(
+            $(
+                #[$field_meta:meta]
+            )*
+            $field_name:ident: $field_type:ty
+        ),*) => { paste::paste! {
+        #[doc = "[" $ident "] represents the [`"[<$ident:dash>]"`](https://keisukeyamashita.github.io/commitlint-rs/rules/"[<$ident:dash>]") rule."]
+        #[derive(Clone, Debug, serde::Deserialize, serde::Serialize)]
+        #[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
+        pub struct $ident {
+            /// Level represents the level of the rule.
+            ///
+            // Note that currently the default literal is not supported.
+            // See: https://github.com/serde-rs/serde/issues/368
+            level: Option<Level>,
+            $(
+                $(
+                    #[$field_meta]
+                )*
+                $field_name: $field_type
+            ),*
+        }
+    }
+};
 }
