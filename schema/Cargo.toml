@@ -12,7 +12,7 @@ exclude.workspace = true
 edition.workspace = true
 
 [dependencies]
-clap = { version = "4.5.21", features = ["derive"] }
+clap = { version = "4.5.37", features = ["derive"] }
 cli = { path = "../cli", features = ["schemars"], package = "commitlint-rs" }
 schemars = { version = "0.8.21" }
 serde = { version = "1.0.215", features = ["derive"] }
