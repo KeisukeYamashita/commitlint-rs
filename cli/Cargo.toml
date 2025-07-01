@@ -18,7 +18,7 @@ name = "commitlint"
 path = "src/main.rs"
 
 [dependencies]
-clap = { version = "4.5.4", features = ["derive", "env", "string"] }
+clap = { version = "4.5.40", features = ["derive", "env", "string"] }
 futures = "0.3.30"
 regex = "1.10.5"
 schemars = { version = "0.8.21", optional = true }
