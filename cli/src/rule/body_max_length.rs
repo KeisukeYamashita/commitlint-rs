@@ -27,20 +27,12 @@ impl Rule for BodyMaxLength {
     }
 
     fn validate(&self, message: &Message) -> Option<Violation> {
-        match &message.body {
-            Some(body) => {
-                if body.len() >= self.length {
-                    return Some(Violation {
-                        level: self.level.unwrap_or(Self::LEVEL),
-                        message: self.message(message),
-                    });
-                }
-            }
-            None => {
+        if let Some(body) = &message.body {
+            if body.len() >= self.length {
                 return Some(Violation {
                     level: self.level.unwrap_or(Self::LEVEL),
                     message: self.message(message),
-                })
+                });
             }
         }
 

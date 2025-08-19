@@ -27,20 +27,12 @@ impl Rule for TypeMaxLength {
     }
 
     fn validate(&self, message: &Message) -> Option<Violation> {
-        match &message.r#type {
-            Some(t) => {
-                if t.len() >= self.length {
-                    return Some(Violation {
-                        level: self.level.unwrap_or(Self::LEVEL),
-                        message: self.message(message),
-                    });
-                }
-            }
-            None => {
+        if let Some(t) = &message.r#type {
+            if t.len() >= self.length {
                 return Some(Violation {
                     level: self.level.unwrap_or(Self::LEVEL),
                     message: self.message(message),
-                })
+                });
             }
         }
 
