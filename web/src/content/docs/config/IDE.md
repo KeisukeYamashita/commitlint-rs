@@ -55,12 +55,7 @@ Associating schemas with YAMLs are supported by the [YAML language server](https
 
 ### Specify schema in the configuration file
 
-```json
-{
-  "$schema": "https://github.com/KeisukeYamashita/commitlint-rs/releases/download/v0.2.0/schema.json",
-  "rules": {}
-}
-```
+You can also specify the schema in the configuration file directly.
 
 #### JSON
 
