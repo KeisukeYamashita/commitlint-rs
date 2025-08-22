@@ -82,6 +82,25 @@ mod tests {
     }
 
     #[test]
+    fn test_no_scope() {
+        let rule = ScopeMaxLength {
+            length: usize::MAX, // Long length for testing
+            ..Default::default()
+        };
+        let message = Message {
+            body: None,
+            description: Some("desc".to_string()),
+            footers: None,
+            r#type: Some("feat".to_string()),
+            raw: "feat(scope): desc".to_string(),
+            scope: None,
+            subject: Some("feat(scope): desc".to_string()),
+        };
+
+        assert!(rule.validate(&message).is_none());
+    }
+
+    #[test]
     fn test_short_scope() {
         let rule = ScopeMaxLength {
             length: 3, // Short length for testing
