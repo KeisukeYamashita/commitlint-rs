@@ -77,6 +77,25 @@ Hey!"
     }
 
     #[test]
+    fn test_no_body() {
+        let rule = BodyMaxLength {
+            length: usize::MAX, // Long length for testing
+            ..Default::default()
+        };
+        let message = Message {
+            body: None,
+            description: Some("broadcast $destroy event on scope destruction".to_string()),
+            footers: None,
+            r#type: Some("feat".to_string()),
+            raw: "feat(scope): broadcast $destroy event on scope destruction".to_string(),
+            scope: Some("scope".to_string()),
+            subject: Some("feat(scope): broadcast $destroy event on scope destruction".to_string()),
+        };
+
+        assert!(rule.validate(&message).is_none());
+    }
+
+    #[test]
     fn test_short_body() {
         let rule = BodyMaxLength {
             length: 10, // Short length for testing

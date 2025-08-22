@@ -74,6 +74,25 @@ mod tests {
     }
 
     #[test]
+    fn test_no_type() {
+        let rule = TypeMaxLength {
+            length: usize::MAX, // Long length for testing
+            ..Default::default()
+        };
+        let message = Message {
+            body: None,
+            description: Some("broadcast $destroy event on scope destruction".to_string()),
+            footers: None,
+            r#type: None,
+            raw: "feat(scope): broadcast $destroy event on scope destruction".to_string(),
+            scope: Some("scope".to_string()),
+            subject: Some("feat(scope): broadcast $destroy event on scope destruction".to_string()),
+        };
+
+        assert!(rule.validate(&message).is_none());
+    }
+
+    #[test]
     fn test_short_type() {
         let rule = TypeMaxLength {
             length: 3, // Short length for testing
