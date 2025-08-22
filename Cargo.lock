@@ -162,7 +162,7 @@ checksum = "5b63caa9aa9397e2d9480a9b13673856c78d8ac123288526c37d7839f2a86990"
 
 [[package]]
 name = "commitlint-rs"
-version = "0.2.1"
+version = "0.2.3"
 dependencies = [
  "clap",
  "futures",
@@ -478,7 +478,7 @@ checksum = "f3cb5ba0dc43242ce17de99c180e96db90b235b8a9fdc9543c96d2209116bd9f"
 
 [[package]]
 name = "schema"
-version = "0.2.1"
+version = "0.2.3"
 dependencies = [
  "clap",
  "commitlint-rs",
