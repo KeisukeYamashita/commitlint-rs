@@ -27,20 +27,12 @@ impl Rule for ScopeMaxLength {
     }
 
     fn validate(&self, message: &Message) -> Option<Violation> {
-        match &message.scope {
-            Some(scope) => {
-                if scope.len() >= self.length {
-                    return Some(Violation {
-                        level: self.level.unwrap_or(Self::LEVEL),
-                        message: self.message(message),
-                    });
-                }
-            }
-            None => {
+        if let Some(scope) = &message.scope {
+            if scope.len() >= self.length {
                 return Some(Violation {
                     level: self.level.unwrap_or(Self::LEVEL),
                     message: self.message(message),
-                })
+                });
             }
         }
 
