@@ -27,20 +27,12 @@ impl Rule for TypeMaxLength {
     }
 
     fn validate(&self, message: &Message) -> Option<Violation> {
-        match &message.r#type {
-            Some(t) => {
-                if t.len() >= self.length {
-                    return Some(Violation {
-                        level: self.level.unwrap_or(Self::LEVEL),
-                        message: self.message(message),
-                    });
-                }
-            }
-            None => {
+        if let Some(t) = &message.r#type {
+            if t.len() >= self.length {
                 return Some(Violation {
                     level: self.level.unwrap_or(Self::LEVEL),
                     message: self.message(message),
-                })
+                });
             }
         }
 
@@ -76,6 +68,25 @@ mod tests {
             raw: "feat(scope): desc".to_string(),
             scope: Some("scope".to_string()),
             subject: Some("feat(scope): desc".to_string()),
+        };
+
+        assert!(rule.validate(&message).is_none());
+    }
+
+    #[test]
+    fn test_no_type() {
+        let rule = TypeMaxLength {
+            length: usize::MAX, // Long length for testing
+            ..Default::default()
+        };
+        let message = Message {
+            body: None,
+            description: Some("broadcast $destroy event on scope destruction".to_string()),
+            footers: None,
+            r#type: None,
+            raw: "feat(scope): broadcast $destroy event on scope destruction".to_string(),
+            scope: Some("scope".to_string()),
+            subject: Some("feat(scope): broadcast $destroy event on scope destruction".to_string()),
         };
 
         assert!(rule.validate(&message).is_none());

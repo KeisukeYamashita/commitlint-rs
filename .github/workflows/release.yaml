@@ -26,11 +26,11 @@ jobs:
             rust_target: x86_64-unknown-linux-gnu
             ext: ""
             args: ""
-          - os: macos-13 (Intel x86)
+          - os: macos-13 # (Intel x86)
             rust_target: x86_64-apple-darwin
             ext: ""
             args: ""
-          - os: macos-latest (Apple Silicon)
+          - os: macos-latest # (Apple Silicon)
             rust_target: aarch64-apple-darwin
             ext: ""
             args: ""

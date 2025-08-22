@@ -27,20 +27,12 @@ impl Rule for ScopeMaxLength {
     }
 
     fn validate(&self, message: &Message) -> Option<Violation> {
-        match &message.scope {
-            Some(scope) => {
-                if scope.len() >= self.length {
-                    return Some(Violation {
-                        level: self.level.unwrap_or(Self::LEVEL),
-                        message: self.message(message),
-                    });
-                }
-            }
-            None => {
+        if let Some(scope) = &message.scope {
+            if scope.len() >= self.length {
                 return Some(Violation {
                     level: self.level.unwrap_or(Self::LEVEL),
                     message: self.message(message),
-                })
+                });
             }
         }
 
@@ -75,6 +67,25 @@ mod tests {
             r#type: Some("feat".to_string()),
             raw: "feat(scope): desc".to_string(),
             scope: Some("scope".to_string()),
+            subject: Some("feat(scope): desc".to_string()),
+        };
+
+        assert!(rule.validate(&message).is_none());
+    }
+
+    #[test]
+    fn test_no_scope() {
+        let rule = ScopeMaxLength {
+            length: usize::MAX, // Long length for testing
+            ..Default::default()
+        };
+        let message = Message {
+            body: None,
+            description: Some("desc".to_string()),
+            footers: None,
+            r#type: Some("feat".to_string()),
+            raw: "feat(scope): desc".to_string(),
+            scope: None,
             subject: Some("feat(scope): desc".to_string()),
         };
 
