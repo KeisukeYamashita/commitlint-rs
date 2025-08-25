@@ -22,7 +22,7 @@ jobs:
         config:
           # See details fore GitHub Actions runners
           # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners
-          - os: ubuntu-20.04
+          - os: ubuntu-latest
             rust_target: x86_64-unknown-linux-gnu
             ext: ""
             args: ""
