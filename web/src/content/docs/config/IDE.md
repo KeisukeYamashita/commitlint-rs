@@ -10,10 +10,10 @@ Commitlint offers schema by supporting [JSON schema](https://json-schema.org/) s
 If you want to pin the schema to a specific version, you can configure the version in the URL.
 
 ```console
-https://github.com/KeisukeYamashita/commitlint-rs/releases/download/v0.2.0/schema.json
+https://github.com/KeisukeYamashita/commitlint-rs/releases/download/v0.2.2/schema.json
 ```
 
-In this case, the schema is pinned to version `0.2.0`.
+In this case, the schema is pinned to version `0.2.2`.
 
 :::
 
