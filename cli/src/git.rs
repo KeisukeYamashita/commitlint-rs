@@ -1,4 +1,5 @@
 use regex::Regex;
+use std::path::PathBuf;
 use std::{collections::HashMap, process::Command};
 /// ReadCommitMessageOptions represents the options for reading commit messages.
 /// Transparently, it is defined to be similar to the behavior of the git log command.
@@ -12,6 +13,34 @@ pub struct ReadCommitMessageOptions {
 
     /// To is the ending commit hash to read to.
     pub to: Option<String>,
+}
+
+/// Get the path to the COMMIT_EDITMSG file.
+///
+/// Note that we use `git rev-parse --git-path COMMIT_EDITMSG` to resolve the path correctly.
+/// This is necessary because in a git worktree, `.git` is a file rather than a directory,
+/// and the actual git directory is stored elsewhere.
+pub fn edit_msg_path(cwd: &str) -> PathBuf {
+    let output = Command::new("git")
+        .current_dir(cwd)
+        .arg("rev-parse")
+        .arg("--git-path")
+        .arg("COMMIT_EDITMSG")
+        .output();
+
+    let git_path = match output {
+        Ok(output) if output.status.success() => {
+            let path_str = String::from_utf8_lossy(&output.stdout).trim().to_string();
+            PathBuf::from(path_str)
+        }
+        _ => PathBuf::from(".git").join("COMMIT_EDITMSG"),
+    };
+
+    if git_path.is_absolute() {
+        git_path
+    } else {
+        PathBuf::from(cwd).join(git_path)
+    }
 }
 
 /// Get commit messages from git.
@@ -137,6 +166,12 @@ pub fn parse_subject(subject: &str) -> (Option<String>, Option<String>, Option<S
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_edit_msg_path() {
+        let path = edit_msg_path(".");
+        assert!(path.to_str().unwrap().contains("COMMIT_EDITMSG"));
+    }
 
     #[test]
     fn test_single_line_parse_commit_message() {

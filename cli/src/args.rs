@@ -86,7 +86,8 @@ impl Args {
             return Ok(messages);
         }
 
-        let default_path = std::path::PathBuf::from(".git").join("COMMIT_EDITMSG");
+        // Use git::edit_msg_path to correctly resolve COMMIT_EDITMSG, supporting git worktrees.
+        let default_path = git::edit_msg_path(&self.cwd);
         let msg = std::fs::read_to_string(&default_path).expect(
             format!(
                 "Failed to read commit message from {}",
