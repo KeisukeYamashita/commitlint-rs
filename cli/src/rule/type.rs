@@ -36,15 +36,11 @@ impl Rule for Type {
 
     fn validate(&self, message: &Message) -> Option<Violation> {
         match &message.r#type {
-            None => {
-                if self.options.is_empty() {
-                    return None;
-                }
+            None if self.options.is_empty() => {
+                return None;
             }
-            Some(r#type) if r#type.is_empty() => {
-                if self.options.is_empty() {
-                    return None;
-                }
+            Some(r#type) if r#type.is_empty() && self.options.is_empty() => {
+                return None;
             }
             Some(r#type) if self.options.contains(r#type) => {
                 return None;

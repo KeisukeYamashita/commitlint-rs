@@ -41,15 +41,11 @@ impl Rule for Scope {
 
     fn validate(&self, message: &Message) -> Option<Violation> {
         match &message.scope {
-            None => {
-                if self.options.is_empty() || self.optional {
-                    return None;
-                }
+            None if self.options.is_empty() || self.optional => {
+                return None;
             }
-            Some(scope) if scope.is_empty() => {
-                if self.options.is_empty() {
-                    return None;
-                }
+            Some(scope) if scope.is_empty() && self.options.is_empty() => {
+                return None;
             }
             Some(scope) if self.options.contains(scope) => {
                 return None;

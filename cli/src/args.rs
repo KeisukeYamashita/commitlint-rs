@@ -56,7 +56,7 @@ impl Args {
         if let Some(edit) = self.edit.as_deref() {
             if edit != "false" {
                 let msg = std::fs::read_to_string(edit)
-                    .expect(format!("Failed to read commit message from {}", edit).as_str());
+                    .unwrap_or_else(|_| panic!("Failed to read commit message from {}", edit));
                 return Ok(vec![Message::new(msg)]);
             }
         }
@@ -88,13 +88,12 @@ impl Args {
 
         // Use git::edit_msg_path to correctly resolve COMMIT_EDITMSG, supporting git worktrees.
         let default_path = git::edit_msg_path(&self.cwd);
-        let msg = std::fs::read_to_string(&default_path).expect(
-            format!(
+        let msg = std::fs::read_to_string(&default_path).unwrap_or_else(|_| {
+            panic!(
                 "Failed to read commit message from {}",
                 default_path.display()
             )
-            .as_str(),
-        );
+        });
         Ok(vec![Message::new(msg)])
     }
 }
