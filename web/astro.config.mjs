@@ -11,9 +11,13 @@ export default defineConfig({
       logo: {
         src: '/src/assets/checker.png',
       },
-      social: {
-        github: 'https://github.com/KeisukeYamashita/commitlint-rs',
-      },
+      social: [
+        {
+          icon: 'github',
+          label: 'GitHub',
+          href: 'https://github.com/KeisukeYamashita/commitlint-rs',
+        },
+      ],
       sidebar: [
         {
           label: '🚀 Get Started',
