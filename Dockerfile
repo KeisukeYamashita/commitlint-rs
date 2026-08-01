@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM rust:1.95-alpine3.23 AS builder
+FROM rust:1.97-alpine3.23 AS builder
 WORKDIR /app
 
 RUN  --mount=type=cache,target=/var/cache/apk,sharing=locked \
