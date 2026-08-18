@@ -11,11 +11,10 @@ use message::validate;
 
 use std::process::exit;
 
-#[tokio::main]
-async fn main() {
+fn main() {
     let args = Args::parse();
 
-    let config = match config::load(args.config.clone()).await {
+    let config = match config::load(args.config.clone()) {
         Ok(c) => c,
         Err(err) => {
             eprintln!("Failed to load config: {}", err);
@@ -35,15 +34,10 @@ async fn main() {
         }
     };
 
-    let threads = messages
-        .into_iter()
-        .map(|message| {
-            let config = config.clone();
-            tokio::spawn(async move { validate(&message, &config).await })
-        })
+    let results = messages
+        .iter()
+        .map(|message| validate(message, &config))
         .collect::<Vec<_>>();
-
-    let results = futures::future::join_all(threads).await;
 
     let mut has_error: bool = false;
     for result in &results {
@@ -51,7 +45,7 @@ async fn main() {
             eprintln!("{}", err);
         }
 
-        if let Ok(Ok(h)) = result {
+        if let Ok(h) = result {
             if !h.violations.is_empty() {
                 for violation in &h.violations {
                     match violation.level {

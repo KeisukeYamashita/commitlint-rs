@@ -1,5 +1,6 @@
 use regex::Regex;
 use std::path::PathBuf;
+use std::sync::LazyLock;
 use std::{collections::HashMap, process::Command};
 /// ReadCommitMessageOptions represents the options for reading commit messages.
 /// Transparently, it is defined to be similar to the behavior of the git log command.
@@ -77,8 +78,9 @@ pub fn read(options: ReadCommitMessageOptions) -> Vec<String> {
 }
 
 fn extract_commit_messages(input: &str) -> Vec<String> {
-    let commit_delimiter = Regex::new(r"(?m)^commit [0-9a-f]{40}$").unwrap();
-    let commits: Vec<&str> = commit_delimiter.split(input).collect();
+    static COMMIT_DELIMITER: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r"(?m)^commit [0-9a-f]{40}$").unwrap());
+    let commits: Vec<&str> = COMMIT_DELIMITER.split(input).collect();
 
     let mut messages: Vec<String> = Vec::new();
 
@@ -148,11 +150,11 @@ pub fn parse_commit_message(
 /// does not have any rules for it.
 /// See: https://commitlint.js.org/reference/rules.html
 pub fn parse_subject(subject: &str) -> (Option<String>, Option<String>, Option<String>) {
-    let re = regex::Regex::new(
-        r"^(?P<type>\w+)(?:\((?P<scope>[^\)]+)\))?(?:!)?\:\s?(?P<description>.*)$",
-    )
-    .unwrap();
-    if let Some(captures) = re.captures(subject) {
+    static SUBJECT_REGEX: LazyLock<Regex> = LazyLock::new(|| {
+        Regex::new(r"^(?P<type>\w+)(?:\((?P<scope>[^\)]+)\))?(?:!)?\:\s?(?P<description>.*)$")
+            .unwrap()
+    });
+    if let Some(captures) = SUBJECT_REGEX.captures(subject) {
         let r#type = captures.name("type").map(|m| m.as_str().to_string());
         let scope = captures.name("scope").map(|m| m.as_str().to_string());
         let description = captures.name("description").map(|m| m.as_str().to_string());

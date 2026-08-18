@@ -2,6 +2,12 @@
 members = ["cli", "schema"]
 resolver = "2"
 
+# Optimize release binaries for runtime speed, startup time, and size.
+[profile.release]
+codegen-units = 1
+lto = true
+strip = true
+
 [workspace.package]
 version = "0.2.5"
 authors = ["KeisukeYamashita <19yamashita15@gmail.com>"]

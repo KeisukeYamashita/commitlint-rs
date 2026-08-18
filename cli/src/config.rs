@@ -33,7 +33,7 @@ impl fmt::Display for Config {
 }
 
 /// Load configuration from the specified path.
-pub async fn load(path: Option<PathBuf>) -> Result<Config, String> {
+pub fn load(path: Option<PathBuf>) -> Result<Config, String> {
     let config_file = match &path {
         Some(p) => Some(p.clone()),
         None => find_config_file(PathBuf::from(DEFAULT_CONFIG_ROOT)),
@@ -41,7 +41,7 @@ pub async fn load(path: Option<PathBuf>) -> Result<Config, String> {
 
     match (config_file, path) {
         // If the file was specified and found, load it.
-        (Some(p), _) => load_config_file(p).await,
+        (Some(p), _) => load_config_file(p),
         // If the file was not specified and not found, return default config.
         (None, None) => Ok(Config::default()),
         // If the was explicitly specified but not found, return an error.
@@ -65,7 +65,7 @@ pub fn find_config_file(path: PathBuf) -> Option<PathBuf> {
 }
 
 /// Load config file from the specified path.
-pub async fn load_config_file(path: PathBuf) -> Result<Config, String> {
+pub fn load_config_file(path: PathBuf) -> Result<Config, String> {
     if !path.exists() {
         return Err(format!(
             "Configuration file not found in {}",
@@ -75,9 +75,9 @@ pub async fn load_config_file(path: PathBuf) -> Result<Config, String> {
 
     match path.extension() {
         Some(ext) => match ext.to_str() {
-            Some("json") => load_json_config_file(path).await,
-            Some("yaml") | Some("yml") => load_yaml_config_file(path).await,
-            _ => load_unknown_config_file(path).await,
+            Some("json") => load_json_config_file(path),
+            Some("yaml") | Some("yml") => load_yaml_config_file(path),
+            _ => load_unknown_config_file(path),
         },
         None => Err(format!(
             "Unsupported configuration file format: {}",
@@ -87,7 +87,7 @@ pub async fn load_config_file(path: PathBuf) -> Result<Config, String> {
 }
 
 /// Load JSON config file from the specified path.
-async fn load_json_config_file(path: PathBuf) -> Result<Config, String> {
+fn load_json_config_file(path: PathBuf) -> Result<Config, String> {
     let text = fs::read_to_string(path).unwrap();
 
     match serde_json::from_str::<Config>(&text) {
@@ -97,7 +97,7 @@ async fn load_json_config_file(path: PathBuf) -> Result<Config, String> {
 }
 
 /// Load YAML config file from the specified path.
-async fn load_yaml_config_file(path: PathBuf) -> Result<Config, String> {
+fn load_yaml_config_file(path: PathBuf) -> Result<Config, String> {
     let text = fs::read_to_string(path).unwrap();
 
     match serde_yaml::from_str::<Config>(&text) {
@@ -109,7 +109,7 @@ async fn load_yaml_config_file(path: PathBuf) -> Result<Config, String> {
 /// Try to load configuration file from the specified path.
 /// First try to load it as JSON, then as YAML.
 /// If both fail, return an error.
-async fn load_unknown_config_file(path: PathBuf) -> Result<Config, String> {
+fn load_unknown_config_file(path: PathBuf) -> Result<Config, String> {
     let text = fs::read_to_string(path.clone()).unwrap();
 
     if let Ok(config) = serde_json::from_str::<Config>(&text) {
