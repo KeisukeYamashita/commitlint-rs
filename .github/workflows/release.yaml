@@ -25,31 +25,28 @@ jobs:
           - os: ubuntu-latest
             rust_target: x86_64-unknown-linux-gnu
             ext: ""
-            args: ""
-          - os: macos-13 # (Intel x86)
+          - os: macos-latest # Cross compile from Apple Silicon
             rust_target: x86_64-apple-darwin
             ext: ""
-            args: ""
           - os: macos-latest # (Apple Silicon)
             rust_target: aarch64-apple-darwin
             ext: ""
-            args: ""
           - os: windows-latest
             rust_target: x86_64-pc-windows-msvc
             ext: ".exe"
-            args: ""
-          - os: windows-latest
+          - os: windows-latest # Cross compile from x64
             rust_target: aarch64-pc-windows-msvc
             ext: ".exe"
-            args: "--no-default-features --features native-tls-vendored"
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
+        with:
+          targets: ${{ matrix.config.rust_target }}
 
-      - run: cargo build --package commitlint-rs --release
+      - run: cargo build --package commitlint-rs --release --target ${{ matrix.config.rust_target }}
 
-      - run: tar czvf commitlint-${{ github.ref_name }}-${{ matrix.config.rust_target }}.tar.gz -C target/release commitlint${{ matrix.config.ext }}
+      - run: tar czvf commitlint-${{ github.ref_name }}-${{ matrix.config.rust_target }}.tar.gz -C target/${{ matrix.config.rust_target }}/release commitlint${{ matrix.config.ext }}
 
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -63,25 +60,69 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
-      - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
-        with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: ${{ runner.os }}-cargo-
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
       - run: cargo publish --package commitlint-rs
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
 
+  # Build each platform natively (no QEMU emulation) and push by digest,
+  # then the docker-merge job assembles the multi-arch manifest.
   docker:
+    runs-on: ${{ matrix.os }}
+    environment: docker
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux/amd64
+          - os: ubuntu-24.04-arm
+            platform: linux/arm64
+    steps:
+      - id: platform
+        run: echo "pair=${PLATFORM//\//-}" >> "$GITHUB_OUTPUT"
+        env:
+          PLATFORM: ${{ matrix.platform }}
+
+      - uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4.1.0
+
+      - uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - id: build
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          platforms: ${{ matrix.platform }}
+          outputs: type=image,name=1915keke/commitlint,push-by-digest=true,name-canonical=true,push=true
+          cache-from: type=gha,scope=${{ matrix.platform }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.platform }}
+
+      - run: |
+          mkdir -p /tmp/digests
+          touch "/tmp/digests/${DIGEST#sha256:}"
+        env:
+          DIGEST: ${{ steps.build.outputs.digest }}
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: digests-${{ steps.platform.outputs.pair }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  docker-merge:
     runs-on: ubuntu-latest
     environment: docker
+    needs:
+      - docker
     steps:
-      - uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          path: /tmp/digests
+          pattern: digests-*
+          merge-multiple: true
 
       - uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4.1.0
 
@@ -100,31 +141,32 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
 
-      - uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
-        with:
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+      - run: |
+          cd /tmp/digests
+          mapfile -t tag_args < <(jq -r '.tags[] | "-t", .' <<< "$DOCKER_METADATA_OUTPUT_JSON")
+          refs=()
+          for digest in *; do
+            refs+=("1915keke/commitlint@sha256:${digest}")
+          done
+          docker buildx imagetools create "${tag_args[@]}" "${refs[@]}"
 
   publish:
     runs-on: ubuntu-latest
     needs:
       - build
       - crate
-      - docker
+      - docker-merge
       - schema
       - web
     steps:
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           path: commitlint
-          pattern: commitlint-*
+          pattern: "{commitlint-*,schema.json}"
           merge-multiple: true
       - uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
         with:
-          artifacts: commitlint/commitlint-*.tar.gz,schema.json
+          artifacts: commitlint/commitlint-*.tar.gz,commitlint/schema.json
           generateReleaseNotes: true
 
   schema:
@@ -132,6 +174,7 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
       - run: cargo run --package schema -- --path schema.json
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:

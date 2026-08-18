@@ -3,8 +3,12 @@ on:
   pull_request:
     types:
       - opened
-      - edited
+      - edited # Only the title job needs this, other jobs skip it
       - synchronize
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read # To checkout
@@ -13,6 +17,7 @@ permissions:
 jobs:
   actionlint:
     name: actionlint
+    if: github.event.action != 'edited'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -22,6 +27,7 @@ jobs:
           reporter: github-pr-review
 
   alex:
+    if: github.event.action != 'edited'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -31,19 +37,20 @@ jobs:
           reporter: github-pr-review
 
   assign-author:
+    if: github.event.action == 'opened'
     runs-on: ubuntu-latest
     steps:
       - uses: toshimaru/auto-author-assign@3e19bfc990cb1cf0589dce95e9f75289bb1e22de # v3.0.3
 
   clippy:
+    if: github.event.action != 'edited'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: dtolnay/rust-toolchain@5b842231ba77f5c045dba54ac5560fed2db780e2 # nightly
+      - uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
         with:
-          components: rustfmt, clippy
-
-      - run: cargo clippy
+          components: clippy
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
 
       - uses: sksat/action-clippy@87e08e0c289f2654fe702b0aaf88c2f1027a3e57 # v1.1.1
         with:
@@ -51,6 +58,7 @@ jobs:
 
   markdown:
     name: markdown
+    if: github.event.action != 'edited'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -62,6 +70,7 @@ jobs:
 
   misspell:
     name: misspell
+    if: github.event.action != 'edited'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
