@@ -15,14 +15,29 @@ permissions:
   pull-requests: write # To comment to PRs
 
 jobs:
+  actions-lock:
+    name: actions-lock
+    if: github.event.action != 'edited'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - run: gh extension install github/gh-actions-lock --pin v0.2.0
+      - run: gh actions-lock --verify
+
   actionlint:
     name: actionlint
     if: github.event.action != 'edited'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
 
-      - uses: reviewdog/action-actionlint@6fb7acc99f4a1008869fa8a0f09cfca740837d9d # v1.72.0
+      - uses: reviewdog/action-actionlint@v1.80.6
         with:
           reporter: github-pr-review
 
@@ -30,9 +45,11 @@ jobs:
     if: github.event.action != 'edited'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
 
-      - uses: reviewdog/action-alex@347481655add010a2ae302df34b57c9bcfa0d6e4 # v1.17.0
+      - uses: reviewdog/action-alex@v1.19.0
         with:
           reporter: github-pr-review
 
@@ -40,19 +57,22 @@ jobs:
     if: github.event.action == 'opened'
     runs-on: ubuntu-latest
     steps:
-      - uses: toshimaru/auto-author-assign@3e19bfc990cb1cf0589dce95e9f75289bb1e22de # v3.0.3
+      - uses: toshimaru/auto-author-assign@v3.1.0
 
   clippy:
     if: github.event.action != 'edited'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
+      - uses: actions/checkout@v7.0.1
         with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
           components: clippy
-      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+      - uses: Swatinem/rust-cache@v2.9.3
 
-      - uses: sksat/action-clippy@87e08e0c289f2654fe702b0aaf88c2f1027a3e57 # v1.1.1
+      - uses: sksat/action-clippy@v1.1.1
         with:
           reporter: github-pr-review
 
@@ -61,8 +81,10 @@ jobs:
     if: github.event.action != 'edited'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: reviewdog/action-markdownlint@844fd04b127b0d78328653f182d32988ad41d3d7 # v0.27.0
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: reviewdog/action-markdownlint@v0.32.0
         with:
           level: warning
           markdownlint_flags: website/docs/**/*.md
@@ -73,9 +95,11 @@ jobs:
     if: github.event.action != 'edited'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
 
-      - uses: reviewdog/action-misspell@d6429416b12b09b4e2768307d53bef58d172e962 # v1.27.0
+      - uses: reviewdog/action-misspell@v1.30.3
         with:
           level: warning
           reporter: github-pr-review
@@ -83,7 +107,7 @@ jobs:
   title:
     runs-on: ubuntu-latest
     steps:
-      - uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6.1.1
+      - uses: amannn/action-semantic-pull-request@v6.1.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

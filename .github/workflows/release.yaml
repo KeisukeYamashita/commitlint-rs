@@ -38,17 +38,20 @@ jobs:
             rust_target: aarch64-pc-windows-msvc
             ext: ".exe"
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-      - uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
+      - uses: actions/checkout@v7.0.1
         with:
+          persist-credentials: false
+
+      - uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
           targets: ${{ matrix.config.rust_target }}
 
       - run: cargo build --package commitlint-rs --release --target ${{ matrix.config.rust_target }}
 
       - run: tar czvf commitlint-${{ github.ref_name }}-${{ matrix.config.rust_target }}.tar.gz -C target/${{ matrix.config.rust_target }}/release commitlint${{ matrix.config.ext }}
 
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@v7.0.2
         with:
           name: commitlint-${{ matrix.config.rust_target }}
           path: commitlint-${{ github.ref_name }}-${{ matrix.config.rust_target }}.tar.gz
@@ -58,9 +61,13 @@ jobs:
     runs-on: ubuntu-latest
     environment: crate
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
-      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+      - uses: Swatinem/rust-cache@v2.9.3
       - run: cargo publish --package commitlint-rs
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
@@ -84,15 +91,15 @@ jobs:
         env:
           PLATFORM: ${{ matrix.platform }}
 
-      - uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4.1.0
+      - uses: docker/setup-buildx-action@v4.4.1
 
-      - uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
+      - uses: docker/login-action@v4.7.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - id: build
-        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        uses: docker/build-push-action@v7.4.0
         with:
           platforms: ${{ matrix.platform }}
           outputs: type=image,name=1915keke/commitlint,push-by-digest=true,name-canonical=true,push=true
@@ -105,7 +112,7 @@ jobs:
         env:
           DIGEST: ${{ steps.build.outputs.digest }}
 
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@v7.0.2
         with:
           name: digests-${{ steps.platform.outputs.pair }}
           path: /tmp/digests/*
@@ -118,20 +125,20 @@ jobs:
     needs:
       - docker
     steps:
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+      - uses: actions/download-artifact@v8.0.2
         with:
           path: /tmp/digests
           pattern: digests-*
           merge-multiple: true
 
-      - uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4.1.0
+      - uses: docker/setup-buildx-action@v4.4.1
 
-      - uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
+      - uses: docker/login-action@v4.7.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - uses: docker/metadata-action@80c7e94dd9b9319bd5eb7a0e0fe9291e23a2a2e9 # v6.1.0
+      - uses: docker/metadata-action@v6.2.0
         id: meta
         with:
           images: 1915keke/commitlint
@@ -159,12 +166,12 @@ jobs:
       - schema
       - web
     steps:
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+      - uses: actions/download-artifact@v8.0.2
         with:
           path: commitlint
           pattern: "{commitlint-*,schema.json}"
           merge-multiple: true
-      - uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
+      - uses: ncipollo/release-action@v1.21.0
         with:
           artifacts: commitlint/commitlint-*.tar.gz,commitlint/schema.json
           generateReleaseNotes: true
@@ -172,11 +179,15 @@ jobs:
   schema:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
-      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+      - uses: Swatinem/rust-cache@v2.9.3
       - run: cargo run --package schema -- --path schema.json
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@v7.0.2
         with:
           name: schema.json
           path: schema.json
@@ -188,9 +199,11 @@ jobs:
       name: web
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: withastro/action@b7d53628f8b666036b0238aadb0b984a2a489f26 # v6.1.1
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: withastro/action@v6.1.4
         with:
           path: ./web
       - id: deployment
-        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0
+        uses: actions/deploy-pages@v5.0.1
